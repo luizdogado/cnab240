@@ -18,7 +18,7 @@ Armazena o registro Header de Arquivo (Tipo 0) do CNAB240. Existe exatamente um 
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB001_IPAGTB002_FK01` | `ID_ARQUIVO` | `IPAGTB001_ARQUIVO` | `ID_ARQUIVO` |
-| `IPAGTB034_IPAGTB002_FK01` | `ID_TIPO_INSCRICAO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB002_FK02` | `ID_TIPO_INSCRICAO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 
 ---
 
@@ -41,8 +41,8 @@ Representa um Lote de Serviço/Produto dentro do arquivo CNAB240. Um arquivo pod
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB001_IPAGTB004_FK01` | `ID_ARQUIVO` | `IPAGTB001_ARQUIVO` | `ID_ARQUIVO` |
-| `IPAGTB031_IPAGTB004_FK01` | `ID_TIPO_SERVICO` | `IPAGTB031_TIPO_SERVICO` | `ID_TIPO_SERVICO` |
-| `IPAGTB032_IPAGTB004_FK01` | `ID_TIPO_OPERACAO` | `IPAGTB032_TIPO_OPERACAO` | `ID_TIPO_OPERACAO` |
+| `IPAGTB031_IPAGTB004_FK02` | `ID_TIPO_SERVICO` | `IPAGTB031_TIPO_SERVICO` | `ID_TIPO_SERVICO` |
+| `IPAGTB032_IPAGTB004_FK02` | `ID_TIPO_OPERACAO` | `IPAGTB032_TIPO_OPERACAO` | `ID_TIPO_OPERACAO` |
 
 ---
 
@@ -54,7 +54,7 @@ Armazena o registro Header de Lote (Tipo 1) do CNAB240. Existe exatamente um por
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB004_IPAGTB005_FK01` | `ID_LOTE` | `IPAGTB004_LOTE` | `ID_LOTE` |
-| `IPAGTB034_IPAGTB005_FK01` | `ID_TIPO_INSCRICAO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB005_FK02` | `ID_TIPO_INSCRICAO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 
 ---
 
@@ -77,7 +77,7 @@ Agrupa os segmentos de um mesmo registro de detalhe CNAB240 (Tipo 3). Um registr
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB004_IPAGTB007_FK01` | `ID_LOTE` | `IPAGTB004_LOTE` | `ID_LOTE` |
-| `IPAGTB033_IPAGTB007_FK01` | `ID_TIPO_MOVIMENTO` | `IPAGTB033_TIPO_MOVIMENTO` | `ID_TIPO_MOVIMENTO` |
+| `IPAGTB033_IPAGTB007_FK02` | `ID_TIPO_MOVIMENTO` | `IPAGTB033_TIPO_MOVIMENTO` | `ID_TIPO_MOVIMENTO` |
 
 ---
 
@@ -89,8 +89,8 @@ Agrupa os segmentos de um mesmo registro de detalhe CNAB240 (Tipo 3). Um registr
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB007_IPAGTB010_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` | `ID_DETALHE_REG` |
-| `IPAGTB035_IPAGTB010_FK01` | `ID_TIPO_MOEDA` | `IPAGTB035_TIPO_MOEDA` | `ID_TIPO_MOEDA` |
-| `IPAGTB036_IPAGTB010_FK01` | `ID_CAMARA_CENTRALIZADORA` | `IPAGTB036_CAMARA_CENTRAL` | `ID_CAMARA_CENTRALIZADORA` |
+| `IPAGTB035_IPAGTB010_FK02` | `ID_TIPO_MOEDA` | `IPAGTB035_TIPO_MOEDA` | `ID_TIPO_MOEDA` |
+| `IPAGTB036_IPAGTB010_FK03` | `ID_CAMARA_CENTRALIZADORA` | `IPAGTB036_CAMARA_CENTRAL` | `ID_CAMARA_CENTRALIZADORA` |
 
 ---
 
@@ -102,7 +102,7 @@ Agrupa os segmentos de um mesmo registro de detalhe CNAB240 (Tipo 3). Um registr
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB007_IPAGTB011_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` | `ID_DETALHE_REG` |
-| `IPAGTB034_IPAGTB011_FK01` | `ID_TIPO_INSCRICAO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB011_FK02` | `ID_TIPO_INSCRICAO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 
 ---
 
@@ -136,9 +136,9 @@ Agrupa os segmentos de um mesmo registro de detalhe CNAB240 (Tipo 3). Um registr
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB007_IPAGTB014_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` | `ID_DETALHE_REG` |
-| `IPAGTB034_IPAGTB014_FK01` | `ID_TIPO_INSCRICAO_PAGADOR` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
-| `IPAGTB034_IPAGTB014_FK02` | `ID_TIPO_INSCRICAO_BENEF` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
-| `IPAGTB034_IPAGTB014_FK03` | `ID_TIPO_INSCRICAO_SACADOR` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB014_FK02` | `ID_TIPO_INSCRICAO_PAGADOR` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB014_FK03` | `ID_TIPO_INSCRICAO_BENEF` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB014_FK04` | `ID_TIPO_INSCRICAO_SACADOR` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 
 ---
 
@@ -150,8 +150,8 @@ Agrupa os segmentos de um mesmo registro de detalhe CNAB240 (Tipo 3). Um registr
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB007_IPAGTB015_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` | `ID_DETALHE_REG` |
-| `IPAGTB034_IPAGTB015_FK01` | `ID_TIPO_INSCRICAO_DEVEDOR` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
-| `IPAGTB034_IPAGTB015_FK02` | `ID_TIPO_INSCRICAO_FAVO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB015_FK02` | `ID_TIPO_INSCRICAO_DEVEDOR` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB015_FK03` | `ID_TIPO_INSCRICAO_FAVO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 
 ---
 
@@ -207,7 +207,7 @@ Agrupa os segmentos de um mesmo registro de detalhe CNAB240 (Tipo 3). Um registr
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB007_IPAGTB020_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` | `ID_DETALHE_REG` |
-| `IPAGTB034_IPAGTB020_FK01` | `ID_TIPO_INSCRICAO_SACADO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB020_FK02` | `ID_TIPO_INSCRICAO_SACADO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 
 ---
 
@@ -219,8 +219,8 @@ Agrupa os segmentos de um mesmo registro de detalhe CNAB240 (Tipo 3). Um registr
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB007_IPAGTB021_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` | `ID_DETALHE_REG` |
-| `IPAGTB034_IPAGTB021_FK01` | `ID_TIPO_INSCRICAO_SACADO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
-| `IPAGTB034_IPAGTB021_FK02` | `ID_TIPO_INSCRICAO_SACADOR` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB021_FK02` | `ID_TIPO_INSCRICAO_SACADO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB021_FK03` | `ID_TIPO_INSCRICAO_SACADOR` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 
 ---
 
@@ -243,7 +243,7 @@ Agrupa os segmentos de um mesmo registro de detalhe CNAB240 (Tipo 3). Um registr
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB007_IPAGTB023_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` | `ID_DETALHE_REG` |
-| `IPAGTB034_IPAGTB023_FK01` | `ID_TIPO_INSCRICAO_SACADO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB023_FK02` | `ID_TIPO_INSCRICAO_SACADO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 
 ---
 
@@ -266,7 +266,7 @@ Registra o estado de carga de cada arquivo CNAB240 no banco de dados. Permite re
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB001_IPAGTB025_FK01` | `ID_ARQUIVO` | `IPAGTB001_ARQUIVO` | `ID_ARQUIVO` |
-| `IPAGTB004_IPAGTB025_FK01` | `ID_ULTIMO_LOTE_CONCLUIDO` | `IPAGTB004_LOTE` | `ID_LOTE` |
+| `IPAGTB004_IPAGTB025_FK02` | `ID_ULTIMO_LOTE_CONCLUIDO` | `IPAGTB004_LOTE` | `ID_LOTE` |
 
 ---
 
@@ -278,7 +278,7 @@ Registra o estado de carga de cada lote CNAB240 individualmente. Granularidade f
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB025_IPAGTB026_FK01` | `ID_CONTROLE_CARGA` | `IPAGTB025_CONTROLE_CARGA` | `ID_CONTROLE_CARGA` |
-| `IPAGTB004_IPAGTB026_FK01` | `ID_LOTE` | `IPAGTB004_LOTE` | `ID_LOTE` |
+| `IPAGTB004_IPAGTB026_FK02` | `ID_LOTE` | `IPAGTB004_LOTE` | `ID_LOTE` |
 
 ---
 
@@ -290,7 +290,7 @@ Registra o estado atual de envio (dispatch) de cada lote para cada serviço de d
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB004_IPAGTB027_FK01` | `ID_LOTE` | `IPAGTB004_LOTE` | `ID_LOTE` |
-| `IPAGTB037_IPAGTB027_FK01` | `ID_SERVICO_DESTINO` | `IPAGTB037_SERVICO_DESTINO` | `ID_SERVICO_DESTINO` |
+| `IPAGTB037_IPAGTB027_FK02` | `ID_SERVICO_DESTINO` | `IPAGTB037_SERVICO_DESTINO` | `ID_SERVICO_DESTINO` |
 
 ---
 
@@ -313,7 +313,7 @@ Registra cada linha física (240 posições) de um arquivo CNAB240 e seu estado 
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB001_IPAGTB029_FK01` | `ID_ARQUIVO` | `IPAGTB001_ARQUIVO` | `ID_ARQUIVO` |
-| `IPAGTB030_IPAGTB029_FK01` | `ID_TIPO_REGISTRO` | `IPAGTB030_TIPO_REGISTRO` | `ID_TIPO_REGISTRO` |
+| `IPAGTB030_IPAGTB029_FK02` | `ID_TIPO_REGISTRO` | `IPAGTB030_TIPO_REGISTRO` | `ID_TIPO_REGISTRO` |
 
 ---
 

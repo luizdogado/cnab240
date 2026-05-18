@@ -42,7 +42,7 @@ IPAGTB[NNN]_[NOME_DESCRITIVO]
 - Sempre em MAIÚSCULAS.
 - Sem caracteres especiais além de `_`.
 - O número sequencial deve ser único e nunca reutilizado (mesmo se a tabela for excluída).
-- Tabelas de domínio/código devem ter prefixo `IPAGTD` (ex: `IPAGTD001_TIPO_SERVICO`).
+- Tabelas de domínio/código usam o mesmo prefixo `IPAGTB`, numeradas a partir de 030 (ex: `IPAGTB030_TIPO_CODIGO_BANCO`, `IPAGTB031_TIPO_SERVICO`).
 
 ---
 
@@ -102,13 +102,19 @@ Exemplo: `IPAGTB001_PK`
 
 ### Foreign Key
 ```
-[TAG_TABELA_ORIGEM]_[TAG_TABELA_DESTINO]_FK[NN]
+[IPAGTB_PAI]_[IPAGTB_FILHA]_FK[NN]
 ```
-Onde `NN` é sequencial (01, 02, ...) quando há mais de uma FK entre as mesmas tabelas.
+Onde:
+- `[IPAGTB_PAI]` é a tabela **pai** (referenciada pela FK)
+- `[IPAGTB_FILHA]` é a tabela **filha** (que declara a FK)
+- `NN` é o número sequencial **por tabela filha** — contador único de todas as FKs declaradas na FILHA, independentemente da tabela pai (01, 02, 03, ...)
 
 Exemplos:
-- `IPAGTB005_IPAGTB004_FK01`
-- `IPAGTB010_IPAGTB004_FK02`
+- `IPAGTB001_IPAGTB002_FK01` — primeira (e única) FK da tabela IPAGTB002
+- `IPAGTB001_IPAGTB004_FK01` — primeira FK da tabela IPAGTB004 (vinda de IPAGTB001)
+- `IPAGTB031_IPAGTB004_FK02` — segunda FK da tabela IPAGTB004 (vinda de IPAGTB031)
+- `IPAGTB032_IPAGTB004_FK02` — FK de IPAGTB032 para IPAGTB004 (mesmo número não conflita pois o prefixo PAI difere)
+- `IPAGTB007_IPAGTB014_FK01`, `IPAGTB034_IPAGTB014_FK02`, `IPAGTB034_IPAGTB014_FK03`, `IPAGTB034_IPAGTB014_FK04` — múltiplas FKs de IPAGTB034 para IPAGTB014
 
 ### Unique Key
 ```
@@ -150,7 +156,7 @@ As seguintes entidades são compartilhadas entre vários segmentos e DEVEM ser n
 | Dados de Banco/Agência/Conta | Reaparecem em múltiplos segmentos |
 
 ### Tabelas de lookup/domínio
-Criar tabelas de domínio (`IPAGTD`) para:
+Criar tabelas de domínio (`IPAGTB030`–`IPAGTB037`) para:
 - Tipos de registro (0,1,2,3,4,5,9)
 - Tipos de serviço
 - Tipos de operação
