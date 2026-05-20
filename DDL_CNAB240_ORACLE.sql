@@ -1311,15 +1311,15 @@ CREATE SEQUENCE IPAGTB020_DET_DADOS_TITULO_SQ START WITH 1 INCREMENT BY 1 NOCACH
 CREATE TABLE IPAGTB020_DET_DADOS_TITULO (
     ID_SEG_P                   NUMBER        DEFAULT ON NULL IPAGTB020_DET_DADOS_TITULO_SQ.NEXTVAL,
     ID_DETALHE_REG             NUMBER        NOT NULL,
-    -- Conta do beneficiario
+    -- Conta do beneficiario (campos 08.3P a 12.3P)
     NU_AGENCIA_BENEFICIARIO    NUMBER(5),
     CO_DV_AGENCIA_BENEF        CHAR(1),
     NU_CONTA_BENEFICIARIO      VARCHAR2(12),
     CO_DV_CONTA_BENEF          CHAR(1),
     CO_DV_AGENCIA_CONTA_BENEF  CHAR(1),
-    -- Dados do titulo
+    -- Dados do titulo (campos 13.3P a 26.3P)
     NU_NOSSO_NUMERO            VARCHAR2(20),
-    CO_CARTEIRA                VARCHAR2(3),
+    CO_CARTEIRA                CHAR(1),
     CO_FORMA_CADASTRAMENTO     CHAR(1),
     CO_TIPO_DOCUMENTO          CHAR(1),
     CO_EMISSAO_BLOQUETO        CHAR(1),
@@ -1332,84 +1332,79 @@ CREATE TABLE IPAGTB020_DET_DADOS_TITULO (
     CO_ESPECIE_TITULO          VARCHAR2(2),
     IN_ACEITE                  CHAR(1),
     DH_EMISSAO_TITULO          DATE,
-    -- Instrucoes de cobranca
-    CO_INSTRUCAO_1             VARCHAR2(2),
-    CO_INSTRUCAO_2             VARCHAR2(2),
-    NU_VALOR_MORA_DIA          NUMBER(15,2),
-    DH_LIMITE_DESCONTO         DATE,
-    NU_VALOR_DESCONTO          NUMBER(15,2),
+    -- Juros de mora (campos 27.3P a 29.3P)
+    CO_JUROS_MORA              CHAR(1),
+    DH_DATA_JUROS_MORA         DATE,
+    NU_VALOR_JUROS_MORA        NUMBER(15,2),
+    -- Desconto 1 (campos 30.3P a 32.3P)
+    CO_TIPO_DESCONTO_1         CHAR(1),
+    DH_DATA_DESCONTO_1         DATE,
+    NU_VALOR_DESCONTO_1        NUMBER(15,2),
+    -- IOF e abatimento (campos 33.3P e 34.3P)
     NU_VALOR_IOF               NUMBER(15,2),
     NU_VALOR_ABATIMENTO        NUMBER(15,2),
-    -- Sacado (devedor)
-    CO_TIPO_INSCRICAO_SACADO   CHAR(1),
-    NU_INSCRICAO_SACADO        VARCHAR2(15),
-    NO_SACADO                  VARCHAR2(40),
-    NU_LOGRADOURO_NUMERO       NUMBER(5),
-    NO_COMPLEMENTO_ENDERECO    VARCHAR2(15),
-    NO_CEP_SACADO              NUMBER(5),
-    CO_COMPLEMENTO_CEP_SACADO  CHAR(3),
-    NO_LOGRADOURO_SACADO       VARCHAR2(40),
-    NO_CIDADE_SACADO           VARCHAR2(15),
-    SG_UF_SACADO               CHAR(2),
-    -- Mensagem e ocorrencias
-    TE_MENSAGEM_SACADO         VARCHAR2(40),
+    -- Identificacao e instrucoes (campos 35.3P a 42.3P)
+    TE_IDENTIFICACAO_TITULO_EMPR VARCHAR2(25),
+    CO_PROTESTO                CHAR(1),
+    NU_PRAZO_PROTESTO          NUMBER(2),
+    CO_BAIXA_DEVOLUCAO         CHAR(1),
+    NU_PRAZO_BAIXA_DEVOLUCAO   NUMBER(3),
+    CO_MOEDA                   NUMBER(2),
+    NU_NUMERO_CONTRATO         VARCHAR2(10),
+    CO_USO_LIVRE               CHAR(1),
+    -- Ocorrencias retorno
     TE_OCORRENCIA             CHAR(10),
     DH_INCLUSAO                DATE          DEFAULT SYSDATE NOT NULL,
     DH_ALTERACAO               DATE,
     NO_USUARIO_INCLUSAO        VARCHAR2(60)  NOT NULL,
     NO_USUARIO_ALTERACAO       VARCHAR2(60),
-    ID_TIPO_INSCRICAO_SACADO   NUMBER,
     CONSTRAINT IPAGTB020_DET_DADOS_TITULO_PK   PRIMARY KEY (ID_SEG_P),
     CONSTRAINT IPAGTB020_DET_DADOS_TITULO_UK01 UNIQUE (ID_DETALHE_REG),
     CONSTRAINT IPAGTB007_IPAGTB020_FK01
-        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG),
-    CONSTRAINT IPAGTB034_IPAGTB020_FK02
-        FOREIGN KEY (ID_TIPO_INSCRICAO_SACADO) REFERENCES IPAGTB034_TIPO_INSCRICAO (ID_TIPO_INSCRICAO)
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
 );
 CREATE INDEX IPAGTB020_DET_DADOS_TITULO_IDX01 ON IPAGTB020_DET_DADOS_TITULO (DH_VENCIMENTO);
 CREATE INDEX IPAGTB020_DET_DADOS_TITULO_IDX02 ON IPAGTB020_DET_DADOS_TITULO (NU_NOSSO_NUMERO);
 
-COMMENT ON TABLE IPAGTB020_DET_DADOS_TITULO IS 'Segmento P do CNAB240. Obrigatorio na Cobranca Remessa (titulos em cobranca). Contem dados do titulo: nosso numero, carteira, valor nominal, vencimento, instrucoes de cobranca e dados do sacado (devedor). Registro enviado do beneficiario ao banco.';
+COMMENT ON TABLE IPAGTB020_DET_DADOS_TITULO IS 'Segmento P do CNAB240. Obrigatorio na Cobranca Remessa. Contem dados do titulo: conta do beneficiario, nosso numero, carteira, vencimento, valor nominal, juros de mora, desconto 1, IOF, abatimento, protesto, baixa/devolucao, moeda e contrato. Campos 08.3P a 42.3P.';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.ID_SEG_P                   IS 'Identificador surrogate gerado por sequence.';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.ID_DETALHE_REG             IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_AGENCIA_BENEFICIARIO    IS 'Agencia da conta do beneficiario (cedente). Campo G008.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_AGENCIA_BENEF        IS 'DV da agencia do beneficiario. Campo G009.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_CONTA_BENEFICIARIO      IS 'Conta corrente do beneficiario. Campo G010.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_CONTA_BENEF          IS 'DV da conta do beneficiario. Campo G011.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_AGENCIA_CONTA_BENEF  IS 'DV conjunto agencia/conta do beneficiario. Campo G012.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_NOSSO_NUMERO            IS 'Nosso numero do titulo - identificacao no banco do beneficiario. Campo C004.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_CARTEIRA                IS 'Codigo da carteira de cobranca. Campo C005. Exemplos: 01=Simples, 02=Vinculada.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_FORMA_CADASTRAMENTO     IS 'Forma de cadastramento do titulo (com ou sem registro). Campo C006.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_TIPO_DOCUMENTO          IS 'Tipo do documento de cobranca. Campo C007.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_EMISSAO_BLOQUETO        IS 'Identificacao de emissao do bloqueto. Campo C008.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DISTRIBUICAO_BLOQUETO   IS 'Identificacao da distribuicao do bloqueto. Campo C009.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_NUMERO_DOCUMENTO        IS 'Numero do documento (seu numero). Campo G064.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.DH_VENCIMENTO              IS 'Data de vencimento do titulo convertida de DDMMAAAA. Campo G044.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_NOMINAL           IS 'Valor nominal do titulo. Campo G042.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_AGENCIA_COBRADORA       IS 'Agencia cobradora (praÃ§a de pagamento). Campo G008.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_AGENCIA_COBRADORA    IS 'DV da agencia cobradora. Campo G009.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_ESPECIE_TITULO          IS 'Especie do titulo. Campo C010. Ex: 01=Duplicata Mercantil, 02=Nota Promissoria.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.IN_ACEITE                  IS 'Indicador de aceite do titulo. Campo C011. A=Aceite, N=Sem Aceite.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.DH_EMISSAO_TITULO          IS 'Data de emissao do titulo. Campo G045 (DDMMAAAA).';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_INSTRUCAO_1             IS 'Codigo da instrucao 1 para o banco. Campo C012. Ex: 01=Protestar.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_INSTRUCAO_2             IS 'Codigo da instrucao 2 para o banco. Campo C012.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_MORA_DIA          IS 'Valor de mora por dia de atraso. Campo G046.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.DH_LIMITE_DESCONTO         IS 'Data limite para concessao de desconto. Campo G044.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_DESCONTO          IS 'Valor do desconto. Campo G046.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_IOF               IS 'Valor do IOF. Campo G052.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_ABATIMENTO        IS 'Valor do abatimento concedido pelo beneficiario. Campo G046.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_TIPO_INSCRICAO_SACADO   IS 'Tipo de inscricao do sacado (devedor). Campo G005.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_INSCRICAO_SACADO        IS 'CPF/CNPJ do sacado. Campo G006.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NO_SACADO                  IS 'Nome do sacado (devedor). Campo G013.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_LOGRADOURO_NUMERO       IS 'Numero do logradouro do sacado. Campo G032.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NO_COMPLEMENTO_ENDERECO    IS 'Complemento do endereco do sacado. Campo G032.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NO_CEP_SACADO              IS 'CEP do sacado. Campo G034.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_COMPLEMENTO_CEP_SACADO  IS 'Complemento do CEP do sacado. Campo G035.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NO_LOGRADOURO_SACADO       IS 'Logradouro do sacado. Campo G032.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NO_CIDADE_SACADO           IS 'Cidade do sacado. Campo G033.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.SG_UF_SACADO               IS 'UF do sacado. Campo G036.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.TE_MENSAGEM_SACADO         IS 'Mensagem ao sacado impressa no bloqueto. Campo C013.';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno. Campo G059. Posicoes 231-240.';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_AGENCIA_BENEFICIARIO    IS 'Agencia mantenedora da conta do beneficiario. Campo 08.3P (G008).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_AGENCIA_BENEF        IS 'DV da agencia do beneficiario. Campo 09.3P (G009).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_CONTA_BENEFICIARIO      IS 'Numero da conta corrente do beneficiario. Campo 10.3P (G010).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_CONTA_BENEF          IS 'DV da conta do beneficiario. Campo 11.3P (G011).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_AGENCIA_CONTA_BENEF  IS 'DV conjunto agencia/conta do beneficiario. Campo 12.3P (G012).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_NOSSO_NUMERO            IS 'Identificacao do titulo no banco (nosso numero). Campo 13.3P (G069).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_CARTEIRA                IS 'Codigo da carteira de cobranca. Campo 14.3P (C006).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_FORMA_CADASTRAMENTO     IS 'Forma de cadastramento do titulo no banco. Campo 15.3P (C007).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_TIPO_DOCUMENTO          IS 'Tipo de documento de cobranca. Campo 16.3P (C008).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_EMISSAO_BLOQUETO        IS 'Identificacao da emissao do boleto de pagamento. Campo 17.3P (C009).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DISTRIBUICAO_BLOQUETO   IS 'Identificacao da distribuicao do boleto. Campo 18.3P (C010).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_NUMERO_DOCUMENTO        IS 'Numero do documento de cobranca. Campo 19.3P (C011).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.DH_VENCIMENTO              IS 'Data de vencimento do titulo. Campo 20.3P (C012). Convertida de DDMMAAAA.';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_NOMINAL           IS 'Valor nominal do titulo. Campo 21.3P (G070).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_AGENCIA_COBRADORA       IS 'Agencia encarregada da cobranca. Campo 22.3P (C014).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_AGENCIA_COBRADORA    IS 'DV da agencia cobradora. Campo 23.3P (G009).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_ESPECIE_TITULO          IS 'Especie do titulo. Campo 24.3P (C015). Ex: 01=Duplicata, 02=Nota Promissoria.';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.IN_ACEITE                  IS 'Identificacao de titulo aceito/nao aceito. Campo 25.3P (C016).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.DH_EMISSAO_TITULO          IS 'Data da emissao do titulo. Campo 26.3P (G071). Convertida de DDMMAAAA.';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_JUROS_MORA              IS 'Codigo do juros de mora. Campo 27.3P (C018). 1=Valor/dia, 2=Taxa mensal, 3=Isento.';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.DH_DATA_JUROS_MORA         IS 'Data do juros de mora. Campo 28.3P (C019). Convertida de DDMMAAAA.';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_JUROS_MORA        IS 'Juros de mora por dia/taxa. Campo 29.3P (C020).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_TIPO_DESCONTO_1         IS 'Codigo do desconto 1. Campo 30.3P (C021). 1=Valor fixo, 2=Percentual.';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.DH_DATA_DESCONTO_1         IS 'Data do desconto 1. Campo 31.3P (C022). Convertida de DDMMAAAA.';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_DESCONTO_1        IS 'Valor/percentual do desconto 1. Campo 32.3P (C023).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_IOF               IS 'Valor do IOF a ser recolhido. Campo 33.3P (C024).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_ABATIMENTO        IS 'Valor do abatimento. Campo 34.3P (G045).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.TE_IDENTIFICACAO_TITULO_EMPR IS 'Identificacao do titulo na empresa beneficiaria. Campo 35.3P (G072).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_PROTESTO                IS 'Codigo para protesto. Campo 36.3P (C026). 1=Protestar dias corridos, 3=Nao protestar.';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_PRAZO_PROTESTO          IS 'Numero de dias para protesto. Campo 37.3P (C027).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_BAIXA_DEVOLUCAO         IS 'Codigo para baixa/devolucao. Campo 38.3P (C028). 1=Baixar/devolver, 2=Nao baixar.';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_PRAZO_BAIXA_DEVOLUCAO   IS 'Numero de dias para baixa/devolucao. Campo 39.3P (C029).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_MOEDA                   IS 'Codigo da moeda. Campo 40.3P (G065). 09=Real.';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_NUMERO_CONTRATO         IS 'Numero do contrato da operacao de credito. Campo 41.3P (C030).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_USO_LIVRE               IS 'Uso livre banco/empresa ou autorizacao de pagamento parcial. Campo 42.3P (C077).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno. Posicoes 231-240.';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.DH_INCLUSAO                IS 'Data e hora de inclusao.';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.DH_ALTERACAO               IS 'Data e hora da ultima alteracao.';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NO_USUARIO_INCLUSAO        IS 'Login do usuario que incluiu.';
@@ -1427,8 +1422,7 @@ CREATE TABLE IPAGTB021_DET_DADOS_SACADO (
     NU_INSCRICAO_SACADO        VARCHAR2(15),
     NO_SACADO                  VARCHAR2(40),
     NO_LOGRADOURO_SACADO       VARCHAR2(40),
-    NU_LOCAL_SACADO            NUMBER(5),
-    NO_COMPLEMENTO_SACADO      VARCHAR2(15),
+    NO_BAIRRO_SACADO           VARCHAR2(15),
     NO_CIDADE_SACADO           VARCHAR2(15),
     NO_CEP_SACADO              NUMBER(5),
     CO_COMPLEMENTO_CEP_SACADO  CHAR(3),
@@ -1436,7 +1430,7 @@ CREATE TABLE IPAGTB021_DET_DADOS_SACADO (
     CO_TIPO_INSCRICAO_SACADOR  CHAR(1),
     NU_INSCRICAO_SACADOR       VARCHAR2(15),
     NO_SACADOR_AVALISTA        VARCHAR2(40),
-    NU_AGENCIA_CORRESPONDENTE  NUMBER(5),
+    NU_BANCO_CORRESPONDENTE    NUMBER(3),
     NU_NOSSO_NUMERO_CORRESP    VARCHAR2(20),
     TE_OCORRENCIA             CHAR(10),
     DH_INCLUSAO                DATE          DEFAULT SYSDATE NOT NULL,
@@ -1455,25 +1449,24 @@ CREATE TABLE IPAGTB021_DET_DADOS_SACADO (
         FOREIGN KEY (ID_TIPO_INSCRICAO_SACADOR) REFERENCES IPAGTB034_TIPO_INSCRICAO (ID_TIPO_INSCRICAO)
 );
 
-COMMENT ON TABLE IPAGTB021_DET_DADOS_SACADO IS 'Segmento Q do CNAB240. Obrigatorio na Cobranca Remessa. Contem dados complementares do sacado (endereco completo), sacador/avalista e banco correspondente para cobranca em outras pracas.';
+COMMENT ON TABLE IPAGTB021_DET_DADOS_SACADO IS 'Segmento Q do CNAB240. Obrigatorio na Cobranca Remessa. Contem dados do pagador (inscricao, endereco, bairro, cidade, CEP, UF), sacador/avalista e banco correspondente. Campos 08.3Q a 22.3Q.';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.ID_SEG_Q                   IS 'Identificador surrogate gerado por sequence.';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.ID_DETALHE_REG             IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.CO_TIPO_INSCRICAO_SACADO   IS 'Tipo de inscricao do sacado. Campo G005.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_INSCRICAO_SACADO        IS 'CPF/CNPJ do sacado. Campo G006.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_SACADO                  IS 'Nome do sacado (devedor). Campo G013.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_LOGRADOURO_SACADO       IS 'Logradouro do sacado. Campo G032.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_LOCAL_SACADO            IS 'Numero do local do sacado. Campo G032.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_COMPLEMENTO_SACADO      IS 'Complemento do endereco do sacado. Campo G032.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_CIDADE_SACADO           IS 'Cidade do sacado. Campo G033.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_CEP_SACADO              IS 'CEP do sacado. Campo G034.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.CO_COMPLEMENTO_CEP_SACADO  IS 'Complemento do CEP do sacado. Campo G035.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.SG_UF_SACADO               IS 'UF do sacado. Campo G036.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.CO_TIPO_INSCRICAO_SACADOR  IS 'Tipo de inscricao do sacador/avalista. Campo G005.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_INSCRICAO_SACADOR       IS 'CPF/CNPJ do sacador/avalista. Campo G006.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_SACADOR_AVALISTA        IS 'Nome do sacador ou avalista do titulo. Campo G013.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_AGENCIA_CORRESPONDENTE  IS 'Agencia do banco correspondente para cobranca em outra praca. Campo G008.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_NOSSO_NUMERO_CORRESP    IS 'Nosso numero no banco correspondente. Campo C004.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno. Campo G059. Posicoes 231-240.';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.CO_TIPO_INSCRICAO_SACADO   IS 'Tipo de inscricao do pagador. Campo 08.3Q (G005). 1=CPF, 2=CNPJ.';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_INSCRICAO_SACADO        IS 'Numero de inscricao (CPF/CNPJ) do pagador. Campo 09.3Q (G006).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_SACADO                  IS 'Nome do pagador (devedor). Campo 10.3Q (G013).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_LOGRADOURO_SACADO       IS 'Endereco do pagador. Campo 11.3Q (G032).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_BAIRRO_SACADO           IS 'Bairro do pagador. Campo 12.3Q (G032).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_CIDADE_SACADO           IS 'Cidade do pagador. Campo 15.3Q (G033).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_CEP_SACADO              IS 'CEP do pagador. Campo 13.3Q (G034).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.CO_COMPLEMENTO_CEP_SACADO  IS 'Sufixo do CEP do pagador. Campo 14.3Q (G035).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.SG_UF_SACADO               IS 'UF do pagador. Campo 16.3Q (G036).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.CO_TIPO_INSCRICAO_SACADOR  IS 'Tipo de inscricao do sacador/avalista. Campo 17.3Q (G005).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_INSCRICAO_SACADOR       IS 'CPF/CNPJ do sacador/avalista. Campo 18.3Q (G006).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_SACADOR_AVALISTA        IS 'Nome do sacador ou avalista. Campo 19.3Q (G013).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_BANCO_CORRESPONDENTE    IS 'Codigo do banco correspondente na compensacao. Campo 20.3Q (C031).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_NOSSO_NUMERO_CORRESP    IS 'Nosso numero no banco correspondente. Campo 21.3Q (C032).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno. Posicoes 233-240.';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.DH_INCLUSAO                IS 'Data e hora de inclusao.';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.DH_ALTERACAO               IS 'Data e hora da ultima alteracao.';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_USUARIO_INCLUSAO        IS 'Login do usuario que incluiu.';
@@ -1487,20 +1480,32 @@ CREATE SEQUENCE IPAGTB022_DET_DESCONTO_TITULO_SQ START WITH 1 INCREMENT BY 1 NOC
 CREATE TABLE IPAGTB022_DET_DESCONTO_TITULO (
     ID_SEG_R                   NUMBER        DEFAULT ON NULL IPAGTB022_DET_DESCONTO_TITULO_SQ.NEXTVAL,
     ID_DETALHE_REG             NUMBER        NOT NULL,
+    -- Desconto 2 (campos 08.3R a 10.3R)
     CO_TIPO_DESCONTO_2         CHAR(1),
     DH_DATA_DESCONTO_2         DATE,
     NU_VALOR_DESCONTO_2        NUMBER(15,2),
+    -- Desconto 3 (campos 11.3R a 13.3R)
     CO_TIPO_DESCONTO_3         CHAR(1),
     DH_DATA_DESCONTO_3         DATE,
     NU_VALOR_DESCONTO_3        NUMBER(15,2),
+    -- Multa (campos 14.3R a 16.3R)
     CO_TIPO_MULTA              CHAR(1),
     DH_DATA_MULTA              DATE,
     NU_VALOR_MULTA_PERCENT     NUMBER(15,2),
-    TE_INFORMACAO_SACADO       VARCHAR2(40),
+    -- Informacoes e mensagens (campos 17.3R a 19.3R)
+    TE_INFORMACAO_PAGADOR      VARCHAR2(10),
     TE_MENSAGEM_3              VARCHAR2(40),
-    CO_TIPO_JUROS_MORA         CHAR(1),
-    DH_DATA_JUROS              DATE,
-    NU_VALOR_JUROS_MORA        NUMBER(15,5),
+    TE_MENSAGEM_4              VARCHAR2(40),
+    -- Ocorrencia do pagador (campo 21.3R)
+    CO_OCORRENCIA_PAGADOR      NUMBER(8),
+    -- Dados para debito automatico (campos 22.3R a 28.3R)
+    NU_BANCO_DEBITO            NUMBER(3),
+    NU_AGENCIA_DEBITO          NUMBER(5),
+    CO_DV_AGENCIA_DEBITO       CHAR(1),
+    NU_CONTA_CORRENTE_DEBITO   VARCHAR2(12),
+    CO_DV_CONTA_DEBITO         CHAR(1),
+    CO_DV_AGENCIA_CONTA_DEB    CHAR(1),
+    CO_AVISO_DEBITO_AUTOMATICO CHAR(1),
     TE_OCORRENCIA             CHAR(10),
     DH_INCLUSAO                DATE          DEFAULT SYSDATE NOT NULL,
     DH_ALTERACAO               DATE,
@@ -1512,24 +1517,30 @@ CREATE TABLE IPAGTB022_DET_DESCONTO_TITULO (
         FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
 );
 
-COMMENT ON TABLE IPAGTB022_DET_DESCONTO_TITULO IS 'Segmento R do CNAB240. Opcional na Cobranca Remessa. Contem descontos adicionais (2 e 3), tipo e valor de multa, tipo e valor de juros de mora e mensagem adicional ao sacado. Complementa as instrucoes do Segmento P.';
+COMMENT ON TABLE IPAGTB022_DET_DESCONTO_TITULO IS 'Segmento R do CNAB240. Opcional na Cobranca Remessa. Contem descontos 2 e 3, multa, informacao ao pagador, mensagens 3 e 4, ocorrencia do pagador e dados para debito automatico. Campos 08.3R a 28.3R.';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.ID_SEG_R                   IS 'Identificador surrogate gerado por sequence.';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.ID_DETALHE_REG             IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_TIPO_DESCONTO_2         IS 'Tipo do segundo desconto. Campo C014. 0=Sem desconto, 1=Valor fixo, 2=Percentual.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.DH_DATA_DESCONTO_2         IS 'Data limite para o segundo desconto.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_VALOR_DESCONTO_2        IS 'Valor ou percentual do segundo desconto.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_TIPO_DESCONTO_3         IS 'Tipo do terceiro desconto.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.DH_DATA_DESCONTO_3         IS 'Data limite para o terceiro desconto.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_VALOR_DESCONTO_3        IS 'Valor ou percentual do terceiro desconto.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_TIPO_MULTA              IS 'Tipo de multa. Campo C015. 0=Sem, 1=Valor fixo, 2=Percentual.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.DH_DATA_MULTA              IS 'Data a partir da qual a multa e aplicada.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_VALOR_MULTA_PERCENT     IS 'Valor ou percentual da multa.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.TE_INFORMACAO_SACADO       IS 'Informacao adicional ao sacado. Campo C016.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.TE_MENSAGEM_3              IS 'Mensagem 3 para impressao no bloqueto. Campo C017.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_TIPO_JUROS_MORA         IS 'Tipo de juros de mora. Campo G046. 0=Sem, 1=Valor/dia, 2=Taxa mensal.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.DH_DATA_JUROS              IS 'Data a partir da qual os juros sao cobrados.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_VALOR_JUROS_MORA        IS 'Valor ou percentual de juros de mora por dia.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno. Campo G059.';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_TIPO_DESCONTO_2         IS 'Codigo do desconto 2. Campo 08.3R (C021). 0=Sem, 1=Valor fixo, 2=Percentual.';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.DH_DATA_DESCONTO_2         IS 'Data do desconto 2. Campo 09.3R (C022). Convertida de DDMMAAAA.';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_VALOR_DESCONTO_2        IS 'Valor/percentual do desconto 2. Campo 10.3R (C023).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_TIPO_DESCONTO_3         IS 'Codigo do desconto 3. Campo 11.3R (C021).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.DH_DATA_DESCONTO_3         IS 'Data do desconto 3. Campo 12.3R (C022). Convertida de DDMMAAAA.';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_VALOR_DESCONTO_3        IS 'Valor/percentual do desconto 3. Campo 13.3R (C023).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_TIPO_MULTA              IS 'Codigo da multa. Campo 14.3R (G073). 0=Sem, 1=Valor fixo, 2=Percentual.';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.DH_DATA_MULTA              IS 'Data da multa. Campo 15.3R (G074). Convertida de DDMMAAAA.';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_VALOR_MULTA_PERCENT     IS 'Valor/percentual da multa. Campo 16.3R (G075).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.TE_INFORMACAO_PAGADOR      IS 'Informacao ao pagador. Campo 17.3R (C036). 10 posicoes.';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.TE_MENSAGEM_3              IS 'Mensagem 3 para impressao no boleto. Campo 18.3R (C037).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.TE_MENSAGEM_4              IS 'Mensagem 4 para impressao no boleto. Campo 19.3R (C037).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_OCORRENCIA_PAGADOR      IS 'Codigo de ocorrencia do pagador. Campo 21.3R (C038).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_BANCO_DEBITO            IS 'Codigo do banco na conta de debito automatico. Campo 22.3R (G001).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_AGENCIA_DEBITO          IS 'Codigo da agencia de debito. Campo 23.3R (G008).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_DV_AGENCIA_DEBITO       IS 'DV da agencia de debito. Campo 24.3R (G009).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_CONTA_CORRENTE_DEBITO   IS 'Conta corrente para debito. Campo 25.3R (G010).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_DV_CONTA_DEBITO         IS 'DV da conta de debito. Campo 26.3R (G011).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_DV_AGENCIA_CONTA_DEB    IS 'DV conjunto agencia/conta de debito. Campo 27.3R (G012).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_AVISO_DEBITO_AUTOMATICO IS 'Aviso para debito automatico. Campo 28.3R (C039).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno. Posicoes 232-240.';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.DH_INCLUSAO                IS 'Data e hora de inclusao.';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.DH_ALTERACAO               IS 'Data e hora da ultima alteracao.';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NO_USUARIO_INCLUSAO        IS 'Login do usuario que incluiu.';
@@ -1547,25 +1558,33 @@ CREATE SEQUENCE IPAGTB023_DET_RETORNO_TITULO_SQ START WITH 1 INCREMENT BY 1 NOCA
 CREATE TABLE IPAGTB023_DET_RETORNO_TITULO (
     ID_SEG_T                   NUMBER        DEFAULT ON NULL IPAGTB023_DET_RETORNO_TITULO_SQ.NEXTVAL,
     ID_DETALHE_REG             NUMBER        NOT NULL,
+    -- Conta do beneficiario (campos 08.3T a 12.3T)
     NU_AGENCIA_BENEFICIARIO    NUMBER(5),
     CO_DV_AGENCIA_BENEF        CHAR(1),
     NU_CONTA_BENEFICIARIO      VARCHAR2(12),
     CO_DV_CONTA_BENEF          CHAR(1),
     CO_DV_AGENCIA_CONTA_BENEF  CHAR(1),
+    -- Dados do titulo (campos 13.3T a 20.3T)
     NU_NOSSO_NUMERO            VARCHAR2(20),
-    CO_CARTEIRA                VARCHAR2(3),
+    CO_CARTEIRA                CHAR(1),
     NU_NUMERO_DOCUMENTO        VARCHAR2(15),
     DH_VENCIMENTO              DATE,
     NU_VALOR_NOMINAL           NUMBER(15,2),
     NU_BANCO_COBRADOR          NUMBER(3),
     NU_AGENCIA_COBRADORA       NUMBER(5),
     CO_DV_AGENCIA_COBRADORA    CHAR(1),
+    -- Identificacao do titulo na empresa (campo 21.3T)
+    TE_IDENTIFICACAO_TITULO_EMPR VARCHAR2(25),
+    -- Moeda (campo 22.3T)
+    CO_MOEDA                   NUMBER(2),
+    -- Pagador (campos 23.3T a 25.3T)
     CO_TIPO_INSCRICAO_SACADO   CHAR(1),
     NU_INSCRICAO_SACADO        VARCHAR2(15),
     NO_SACADO                  VARCHAR2(40),
+    -- Contrato, tarifa e motivo (campos 26.3T a 28.3T)
     NU_NUMERO_CONTRATO         VARCHAR2(10),
-    NU_VALOR_DESCONTO_DADO     NUMBER(15,2),
-    NU_VALOR_ABATIMENTO        NUMBER(15,2),
+    NU_VALOR_TARIFA_CUSTAS     NUMBER(15,2),
+    TE_MOTIVO_OCORRENCIA       VARCHAR2(10),
     TE_OCORRENCIA             CHAR(10),
     DH_INCLUSAO                DATE          DEFAULT SYSDATE NOT NULL,
     DH_ALTERACAO               DATE,
@@ -1582,29 +1601,31 @@ CREATE TABLE IPAGTB023_DET_RETORNO_TITULO (
 CREATE INDEX IPAGTB023_DET_RETORNO_TITULO_IDX01 ON IPAGTB023_DET_RETORNO_TITULO (DH_VENCIMENTO);
 CREATE INDEX IPAGTB023_DET_RETORNO_TITULO_IDX02 ON IPAGTB023_DET_RETORNO_TITULO (NU_NOSSO_NUMERO);
 
-COMMENT ON TABLE IPAGTB023_DET_RETORNO_TITULO IS 'Segmento T do CNAB240. Obrigatorio no retorno da Cobranca. Contem confirmacao dos dados do titulo: nosso numero, carteira, sacado, vencimento e valores. Enviado pelo banco ao beneficiario confirmando movimentacoes dos titulos.';
+COMMENT ON TABLE IPAGTB023_DET_RETORNO_TITULO IS 'Segmento T do CNAB240. Obrigatorio no retorno da Cobranca. Contem confirmacao dos dados do titulo: conta beneficiario, nosso numero, carteira, vencimento, valor nominal, banco cobrador, identificacao na empresa, moeda, pagador, contrato, tarifa e motivo de ocorrencia. Campos 08.3T a 28.3T.';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.ID_SEG_T                   IS 'Identificador surrogate gerado por sequence.';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.ID_DETALHE_REG             IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_AGENCIA_BENEFICIARIO    IS 'Agencia do beneficiario (cedente). Campo G008.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_AGENCIA_BENEF        IS 'DV da agencia do beneficiario. Campo G009.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_CONTA_BENEFICIARIO      IS 'Conta corrente do beneficiario. Campo G010.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_CONTA_BENEF          IS 'DV da conta do beneficiario. Campo G011.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_AGENCIA_CONTA_BENEF  IS 'DV conjunto agencia/conta do beneficiario. Campo G012.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_NOSSO_NUMERO            IS 'Nosso numero do titulo no banco. Campo C004.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_CARTEIRA                IS 'Carteira de cobranca. Campo C005.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_NUMERO_DOCUMENTO        IS 'Numero do documento da empresa. Campo G064.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.DH_VENCIMENTO              IS 'Data de vencimento. Campo G044.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_VALOR_NOMINAL           IS 'Valor nominal do titulo. Campo G042.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_BANCO_COBRADOR          IS 'Codigo do banco cobrador. Campo G001.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_AGENCIA_COBRADORA       IS 'Agencia cobradora. Campo G008.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_AGENCIA_COBRADORA    IS 'DV da agencia cobradora. Campo G009.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_TIPO_INSCRICAO_SACADO   IS 'Tipo de inscricao do sacado. Campo G005.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_INSCRICAO_SACADO        IS 'CPF/CNPJ do sacado. Campo G006.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NO_SACADO                  IS 'Nome do sacado (devedor). Campo G013.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_NUMERO_CONTRATO         IS 'Numero do contrato relacionado ao titulo. Campo C018.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_VALOR_DESCONTO_DADO     IS 'Valor do desconto concedido. Campo G046.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_VALOR_ABATIMENTO        IS 'Valor do abatimento concedido. Campo G046.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.TE_OCORRENCIA             IS 'Codigos de ocorrencias do retorno do banco. Campo G059. Posicoes 231-240.';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_AGENCIA_BENEFICIARIO    IS 'Agencia mantenedora da conta do beneficiario. Campo 08.3T (G008).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_AGENCIA_BENEF        IS 'DV da agencia do beneficiario. Campo 09.3T (G009).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_CONTA_BENEFICIARIO      IS 'Conta corrente do beneficiario. Campo 10.3T (G010).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_CONTA_BENEF          IS 'DV da conta do beneficiario. Campo 11.3T (G011).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_AGENCIA_CONTA_BENEF  IS 'DV conjunto agencia/conta do beneficiario. Campo 12.3T (G012).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_NOSSO_NUMERO            IS 'Identificacao do titulo no banco. Campo 13.3T (G069).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_CARTEIRA                IS 'Codigo da carteira. Campo 14.3T (C006).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_NUMERO_DOCUMENTO        IS 'Numero do documento de cobranca. Campo 15.3T (C011).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.DH_VENCIMENTO              IS 'Data de vencimento do titulo. Campo 16.3T (C012). Convertida de DDMMAAAA.';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_VALOR_NOMINAL           IS 'Valor nominal do titulo. Campo 17.3T (G070).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_BANCO_COBRADOR          IS 'Numero do banco cobrador/recebedor. Campo 18.3T (C045).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_AGENCIA_COBRADORA       IS 'Agencia cobradora/recebedora. Campo 19.3T (G008).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_AGENCIA_COBRADORA    IS 'DV da agencia cobradora. Campo 20.3T (G009).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.TE_IDENTIFICACAO_TITULO_EMPR IS 'Identificacao do titulo na empresa (uso empresa). Campo 21.3T (G072).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_MOEDA                   IS 'Codigo da moeda. Campo 22.3T (G065). 09=Real.';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_TIPO_INSCRICAO_SACADO   IS 'Tipo de inscricao do pagador. Campo 23.3T (G005). 1=CPF, 2=CNPJ.';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_INSCRICAO_SACADO        IS 'Numero de inscricao (CPF/CNPJ) do pagador. Campo 24.3T (G006).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NO_SACADO                  IS 'Nome do pagador. Campo 25.3T (G013).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_NUMERO_CONTRATO         IS 'Numero do contrato da operacao de credito. Campo 26.3T (C030).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_VALOR_TARIFA_CUSTAS     IS 'Valor da tarifa/custas cobradas pelo banco. Campo 27.3T (G076).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.TE_MOTIVO_OCORRENCIA       IS 'Identificacao para rejeicoes, tarifas, custas, liquidacao e baixas. Campo 28.3T (C047).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno. Posicoes 224-240.';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.DH_INCLUSAO                IS 'Data e hora de inclusao.';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.DH_ALTERACAO               IS 'Data e hora da ultima alteracao.';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NO_USUARIO_INCLUSAO        IS 'Login do usuario que incluiu.';
@@ -1618,6 +1639,7 @@ CREATE SEQUENCE IPAGTB024_DET_COMPL_RETORNO_SQ START WITH 1 INCREMENT BY 1 NOCAC
 CREATE TABLE IPAGTB024_DET_COMPL_RETORNO (
     ID_SEG_U                   NUMBER        DEFAULT ON NULL IPAGTB024_DET_COMPL_RETORNO_SQ.NEXTVAL,
     ID_DETALHE_REG             NUMBER        NOT NULL,
+    -- Dados do titulo (campos 08.3U a 17.3U)
     NU_VALOR_ACRESCIMOS        NUMBER(15,2),
     NU_VALOR_DESCONTO          NUMBER(15,2),
     NU_VALOR_ABATIMENTO        NUMBER(15,2),
@@ -1628,16 +1650,14 @@ CREATE TABLE IPAGTB024_DET_COMPL_RETORNO (
     NU_VALOR_OUTROS_ACRESCIMOS NUMBER(15,2),
     DH_OCORRENCIA              DATE,
     DH_CREDITO                 DATE,
-    CO_OCORRENCIA_SACADO_1     VARCHAR2(2),
-    CO_OCORRENCIA_SACADO_2     VARCHAR2(2),
-    CO_OCORRENCIA_SACADO_3     VARCHAR2(2),
-    NU_CODIGO_BANCO_PAGADOR    NUMBER(3),
-    NU_AGENCIA_PAGADORA        NUMBER(5),
-    CO_DV_AGENCIA_PAGADORA     CHAR(1),
-    NU_CONTA_PAGADORA          VARCHAR2(12),
-    CO_DV_CONTA_PAGADORA       CHAR(1),
-    CO_DV_AGENCIA_CONTA_PAG    CHAR(1),
-    NU_VALOR_TARIFAS           NUMBER(15,2),
+    -- Ocorrencia do pagador (campos 18.3U a 21.3U)
+    CO_OCORRENCIA_PAGADOR      VARCHAR2(4),
+    DH_OCORRENCIA_PAGADOR      DATE,
+    NU_VALOR_OCORRENCIA        NUMBER(15,2),
+    TE_COMPLEMENTO_OCORRENCIA  VARCHAR2(30),
+    -- Banco correspondente (campos 22.3U a 23.3U)
+    NU_BANCO_CORRESPONDENTE    NUMBER(3),
+    NU_NOSSO_NUMERO_CORRESP    VARCHAR2(20),
     TE_OCORRENCIA             CHAR(10),
     DH_INCLUSAO                DATE          DEFAULT SYSDATE NOT NULL,
     DH_ALTERACAO               DATE,
@@ -1650,30 +1670,26 @@ CREATE TABLE IPAGTB024_DET_COMPL_RETORNO (
 );
 CREATE INDEX IPAGTB024_DET_COMPL_RETORNO_IDX01 ON IPAGTB024_DET_COMPL_RETORNO (DH_CREDITO);
 
-COMMENT ON TABLE IPAGTB024_DET_COMPL_RETORNO IS 'Segmento U do CNAB240. Obrigatorio no retorno da Cobranca. Contem os valores financeiros da liquidacao: acrescimos, descontos, abatimento, IOF, valor pago, valor liquido, data de ocorrencia e credito e dados do pagador. Complementa o Segmento T.';
+COMMENT ON TABLE IPAGTB024_DET_COMPL_RETORNO IS 'Segmento U do CNAB240. Obrigatorio no retorno da Cobranca. Contem valores financeiros da liquidacao: acrescimos, desconto, abatimento, IOF, valor pago, valor liquido, outras deducoes/creditos, datas de ocorrencia/credito, ocorrencia do pagador e banco correspondente. Campos 08.3U a 23.3U.';
 COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.ID_SEG_U                   IS 'Identificador surrogate gerado por sequence.';
 COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.ID_DETALHE_REG             IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_ACRESCIMOS        IS 'Valor dos acrescimos (mora+multa) cobrados. Campo G046.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_DESCONTO          IS 'Valor do desconto concedido. Campo G046.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_ABATIMENTO        IS 'Valor do abatimento concedido. Campo G046.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_IOF               IS 'Valor do IOF recolhido. Campo G052.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_PAGO              IS 'Valor efetivamente pago pelo sacado. Campo G042.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_LIQUIDO           IS 'Valor liquido creditado ao beneficiario (pago - tarifas - deducoes). Campo G042.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_OUTRAS_DEDUCOES   IS 'Valor de outras deducoes sobre o credito. Campo G053.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_OUTROS_ACRESCIMOS IS 'Valor de outros acrescimos ao credito. Campo G054.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.DH_OCORRENCIA              IS 'Data da ocorrencia (pagamento, baixa, etc). Campo G045.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.DH_CREDITO                 IS 'Data prevista de credito na conta do beneficiario. Campo G045.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.CO_OCORRENCIA_SACADO_1     IS 'Codigo de ocorrencia informada pelo sacado (1). Campo C019.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.CO_OCORRENCIA_SACADO_2     IS 'Codigo de ocorrencia informada pelo sacado (2). Campo C019.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.CO_OCORRENCIA_SACADO_3     IS 'Codigo de ocorrencia informada pelo sacado (3). Campo C019.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_CODIGO_BANCO_PAGADOR    IS 'Codigo do banco onde o pagamento foi efetuado. Campo G001.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_AGENCIA_PAGADORA        IS 'Agencia onde o pagamento foi efetuado. Campo G008.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.CO_DV_AGENCIA_PAGADORA     IS 'DV da agencia pagadora. Campo G009.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_CONTA_PAGADORA          IS 'Conta onde o pagamento foi debitado. Campo G010.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.CO_DV_CONTA_PAGADORA       IS 'DV da conta pagadora. Campo G011.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.CO_DV_AGENCIA_CONTA_PAG    IS 'DV conjunto agencia/conta pagadora. Campo G012.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_TARIFAS           IS 'Valor das tarifas bancarias debitadas pelo banco. Campo C020.';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno. Campo G059. Posicoes 231-240.';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_ACRESCIMOS        IS 'Juros/multa/encargos. Campo 08.3U (C048).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_DESCONTO          IS 'Valor do desconto concedido. Campo 09.3U (C049).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_ABATIMENTO        IS 'Valor do abatimento concedido/cancelado. Campo 10.3U (C050).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_IOF               IS 'Valor do IOF recolhido. Campo 11.3U (G077).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_PAGO              IS 'Valor pago pelo pagador. Campo 12.3U (C052).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_LIQUIDO           IS 'Valor liquido a ser creditado. Campo 13.3U (G078).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_OUTRAS_DEDUCOES   IS 'Valor de outras despesas. Campo 14.3U (C054).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_OUTROS_ACRESCIMOS IS 'Valor de outros creditos. Campo 15.3U (C055).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.DH_OCORRENCIA              IS 'Data da ocorrencia. Campo 16.3U (C056). Convertida de DDMMAAAA.';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.DH_CREDITO                 IS 'Data da efetivacao do credito. Campo 17.3U (C057). Convertida de DDMMAAAA.';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.CO_OCORRENCIA_PAGADOR      IS 'Codigo da ocorrencia do pagador. Campo 18.3U (A001). 4 posicoes alfanumericas.';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.DH_OCORRENCIA_PAGADOR      IS 'Data da ocorrencia do pagador. Campo 19.3U (C058). Convertida de DDMMAAAA.';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_OCORRENCIA        IS 'Valor da ocorrencia do pagador. Campo 20.3U (C059).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.TE_COMPLEMENTO_OCORRENCIA  IS 'Complemento da ocorrencia do pagador. Campo 21.3U (A002).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_BANCO_CORRESPONDENTE    IS 'Codigo do banco correspondente na compensacao. Campo 22.3U (C031).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_NOSSO_NUMERO_CORRESP    IS 'Nosso numero no banco correspondente. Campo 23.3U (C032).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno. Posicoes 234-240.';
 COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.DH_INCLUSAO                IS 'Data e hora de inclusao.';
 COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.DH_ALTERACAO               IS 'Data e hora da ultima alteracao.';
 COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NO_USUARIO_INCLUSAO        IS 'Login do usuario que incluiu.';
