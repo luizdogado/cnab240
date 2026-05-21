@@ -34,12 +34,16 @@ IPAGTB[NNN]_[NOME_DESCRITIVO]
 
 ### Exemplos válidos
 - `IPAGTB001_ARQUIVO`
-- `IPAGTB002_HEADER_ARQUIVO`
+- `IPAGTB002_CABECALHO_ARQUIVO`
 - `IPAGTB015_SEG_A_PAGAMENTO`
 
 ### Regras adicionais
 - Máximo de 30 caracteres (limite Oracle).
 - Sempre em MAIÚSCULAS.
+- **Todos os nomes devem estar em português.** Proibido usar palavras em inglês.
+  - Correto: `CABECALHO_ARQUIVO`, `RODAPE_LOTE`, `DESPACHO_LOTE`, `CONTEUDO_ENVIADO`.
+  - Incorreto: `HEADER_ARQUIVO`, `TRAILER_LOTE`, `DISPATCH_LOTE`, `PAYLOAD_ENVIADO`.
+  - Exceções aceitas: siglas técnicas universais (`PIX`, `HTTP`, `URL`, `CLOB`, `CNAB`).
 - Sem caracteres especiais além de `_`.
 - O número sequencial deve ser único e nunca reutilizado (mesmo se a tabela for excluída).
 - Tabelas de domínio/código usam o mesmo prefixo `IPAGTB`, numeradas a partir de 030 (ex: `IPAGTB030_TIPO_CODIGO_BANCO`, `IPAGTB031_TIPO_SERVICO`).
@@ -83,7 +87,10 @@ O contexto deve ser autoexplicativo e descrever o conteúdo, nunca apenas repeti
 - Máximo de 30 caracteres.
 - Sempre em MAIÚSCULAS.
 - **Todos os nomes de coluna devem estar no singular.** Correto: `QT_REGISTRO_LOTE`, `TE_OCORRENCIA`. Incorreto: `QT_REGISTROS_LOTE`, `TE_OCORRENCIAS`.
-- Sem abreviações não óbvias. Prefira nomes completos.
+- **Proibido abreviar nomes de colunas.** Usar sempre o nome completo, sem truncar palavras.
+  - Correto: `CO_DV_AGENCIA_CONTA_BENEFICIARIO`, `NU_NOSSO_NUMERO_CORRESPONDENTE`, `NU_VALOR_MULTA_PERCENTUAL`.
+  - Incorreto: `CO_DV_AGENCIA_CONTA_BENEF`, `NU_NOSSO_NUMERO_CORRESP`, `NU_VALOR_MULTA_PERCENT`.
+  - Exceções aceitas: siglas consagradas do domínio bancário (`DV` = Dígito Verificador, `CEP`, `UF`, `IOF`, `CPF`, `CNPJ`, `PIX`, `IR`, `ISS`, `INSS`).
 - Colunas de auditoria padrão (obrigatórias em toda tabela):
   - `DH_INCLUSAO DATE NOT NULL` — data/hora de inclusão do registro
   - `DH_ALTERACAO DATE` — data/hora da última alteração
@@ -126,7 +133,7 @@ Exemplo: `IPAGTB001_ARQUIVO_UK01`
 ```
 [NOME_TABELA]_[COLUNA]_CK[NN]
 ```
-Exemplo: `IPAGTB002_HEADER_ARQUIVO_CO_TIPO_REGISTRO_CK01`
+Exemplo: `IPAGTB002_CABECALHO_ARQUIVO_CO_TIPO_REGISTRO_CK01`
 
 ### Index
 ```
@@ -149,10 +156,10 @@ As seguintes entidades são compartilhadas entre vários segmentos e DEVEM ser n
 | Entidade | Justificativa |
 |---|---|
 | Arquivo (`IPAGTB001`) | Raiz de todos os registros |
-| Header/Trailer do Arquivo | Unicidade por arquivo |
+| Cabeçalho/Rodapé do Arquivo | Unicidade por arquivo |
 | Lote de Serviço (`IPAGTB004`) | Agrupa segmentos por tipo de serviço |
-| Header/Trailer do Lote | Um por lote |
-| Dados de Empresa (CNPJ, nome, conta) | Aparecem no Header de Arquivo e Header de Lote |
+| Cabeçalho/Rodapé do Lote | Um por lote |
+| Dados de Empresa (CNPJ, nome, conta) | Aparecem no Cabeçalho de Arquivo e Cabeçalho de Lote |
 | Dados de Banco/Agência/Conta | Reaparecem em múltiplos segmentos |
 
 ### Tabelas de lookup/domínio
@@ -194,6 +201,41 @@ COMMENT ON COLUMN IPAGTB001_ARQUIVO.NO_NOME_ARQUIVO IS
 - Incluir exemplos de valores quando relevante.
 - Referenciar o campo CNAB de origem quando aplicável (ex: "Campo G001 do CNAB240").
 
+### Classificação de dados pessoais — Tag `[DADO_PESSOAL]`
+
+Toda coluna que armazene **CPF, CNPJ ou outro número de identificação de pessoa física/jurídica** deve
+ser marcada com a tag `[DADO_PESSOAL]` para permitir rastreabilidade e conformidade com LGPD.
+
+#### Como aplicar
+
+**No DDL Oracle (COMMENT ON COLUMN):**
+Prefixar o texto do comentário com `[DADO_PESSOAL]`:
+```sql
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_INSCRICAO_SACADO IS
+  '[DADO_PESSOAL] Numero de inscricao (CPF/CNPJ) do pagador. Campo 09.3Q (G006).';
+```
+
+**No DDL Visual Paradigm (comentário inline):**
+Adicionar `-- [DADO_PESSOAL]` ao final da definição da coluna:
+```sql
+NU_INSCRICAO_SACADO        VARCHAR2(15),  -- [DADO_PESSOAL]
+```
+
+#### Colunas que DEVEM receber a tag
+| Padrão de nome | Conteúdo |
+|---|---|
+| `NU_INSCRICAO_*` | CPF ou CNPJ de pessoa/empresa |
+| `NU_IDENTIFICACAO_CONTRIBUINTE` | CPF/CNPJ/RENAVAM do contribuinte |
+| `TE_CHAVE_PAGAMENTO_PIX` | Chave PIX (pode conter CPF, celular ou e-mail) |
+
+#### Consulta para listar colunas sensíveis no Oracle
+```sql
+SELECT table_name, column_name, comments
+  FROM user_col_comments
+ WHERE comments LIKE '%[DADO_PESSOAL]%'
+ ORDER BY table_name, column_name;
+```
+
 ---
 
 ## 6. Sequences e PKs
@@ -225,11 +267,11 @@ COMMENT ON COLUMN IPAGTB001_ARQUIVO.NO_NOME_ARQUIVO IS
 
 ```
 IPAGTB001_ARQUIVO
-  └─ IPAGTB002_HEADER_ARQUIVO   (1:1 com Arquivo)
-  └─ IPAGTB003_TRAILER_ARQUIVO  (1:1 com Arquivo)
-  └─ IPAGTB004_LOTE             (1:N com Arquivo)
-       └─ IPAGTB005_HEADER_LOTE     (1:1 com Lote)
-       └─ IPAGTB006_TRAILER_LOTE    (1:1 com Lote)
+  └─ IPAGTB002_CABECALHO_ARQUIVO (1:1 com Arquivo)
+  └─ IPAGTB003_RODAPE_ARQUIVO    (1:1 com Arquivo)
+  └─ IPAGTB004_LOTE              (1:N com Arquivo)
+       └─ IPAGTB005_CABECALHO_LOTE  (1:1 com Lote)
+       └─ IPAGTB006_RODAPE_LOTE     (1:1 com Lote)
        └─ IPAGTB007_DETALHE_REG     (1:N com Lote — agrupa segmentos de um mesmo registro)
             └─ IPAGTB010_SEG_A      (0:1 com Detalhe)
             └─ IPAGTB011_SEG_B      ...

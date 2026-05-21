@@ -21,11 +21,11 @@ Arquivo (Tipo 0 + Tipo 9)
 | Tabela | Tipo Registro | Descrição |
 |--------|--------------|-----------|
 | `IPAGTB001_ARQUIVO` | — (raiz) | Entidade raiz. Representa o arquivo físico CNAB240 recebido ou gerado. |
-| `IPAGTB002_HEADER_ARQUIVO` | **Tipo 0** — Header de Arquivo | Dados do banco destino, empresa e data/hora de geração do arquivo. |
-| `IPAGTB003_TRAILER_ARQUIVO` | **Tipo 9** — Trailer de Arquivo | Totalizadores: quantidade de lotes e registros do arquivo. |
+| `IPAGTB002_CABECALHO_ARQUIVO` | **Tipo 0** — Cabeçalho de Arquivo | Dados do banco destino, empresa e data/hora de geração do arquivo. |
+| `IPAGTB003_RODAPE_ARQUIVO` | **Tipo 9** — Rodapé de Arquivo | Totalizadores: quantidade de lotes e registros do arquivo. |
 | `IPAGTB004_LOTE` | — (contêiner) | Representa um Lote de Serviço/Produto. Um arquivo pode ter múltiplos lotes. |
-| `IPAGTB005_HEADER_LOTE` | **Tipo 1** — Header de Lote | Dados da empresa, tipo de serviço, tipo de operação e endereço. |
-| `IPAGTB006_TRAILER_LOTE` | **Tipo 5** — Trailer de Lote | Totalizadores do lote: qtd registros, somatório de valores. |
+| `IPAGTB005_CABECALHO_LOTE` | **Tipo 1** — Cabeçalho de Lote | Dados da empresa, tipo de serviço, tipo de operação e endereço. |
+| `IPAGTB006_RODAPE_LOTE` | **Tipo 5** — Rodapé de Lote | Totalizadores do lote: qtd registros, somatório de valores. |
 | `IPAGTB007_DETALHE_REG` | **Tipo 3** — Detalhe (agrupador) | Agrupa os segmentos de um mesmo registro de detalhe. Cada instância pode ter 1 ou mais segmentos filhos. |
 
 ---
@@ -46,15 +46,15 @@ Arquivo (Tipo 0 + Tipo 9)
 
 ---
 
-## 3. Segmentos de Pagamento de Títulos de Cobrança e QR Code PIX
+## 3. Segmentos de Pagamento de Títulos de Cobrança e Código QR PIX
 
 | Tabela | Segmento | Obrigatoriedade | Descrição |
 |--------|----------|----------------|-----------|
 | `IPAGTB013_DET_TITULO_COBRANCA` | **Segmento J** | Obrigatório | Código de barras do título, nome do beneficiário, data de vencimento, valor nominal. Campo de referência: campos L001–L010. |
 | `IPAGTB014_DET_PARTES_TITULO` | **Segmento J-52** | Obrigatório | Identificação do Pagador, Beneficiário e Sacador/Avalista do título. Campos: inscrição, nome. |
-| `IPAGTB015_DET_PIX_QR_CODE` | **Segmento J-52 PIX** | Obrigatório (quando PIX) | Variante do J-52 para pagamentos via QR Code PIX. Contém identificação do devedor, favorecido e dados do QR. |
+| `IPAGTB015_DET_PIX_CODIGO_QR` | **Segmento J-52 PIX** | Obrigatório (quando PIX) | Variante do J-52 para pagamentos via Código QR PIX. Contém identificação do devedor, favorecido e dados do QR. |
 
-**Serviço:** Pagamento de Títulos de Cobrança e QR Code PIX — Remessa e Retorno
+**Serviço:** Pagamento de Títulos de Cobrança e Código QR PIX — Remessa e Retorno
 
 ---
 
@@ -116,8 +116,8 @@ Arquivo (Tipo 0 + Tipo 9)
 |--------|-----------|
 | `IPAGTB025_CONTROLE_CARGA` | Estado de carga de cada arquivo: PENDENTE, EM_ANDAMENTO, CONCLUIDO, ERRO, AGUARDANDO_RETOMADA. Permite retomada do processamento a partir do último lote concluído. |
 | `IPAGTB026_CTRL_CARGA_LOTE` | Estado de carga de cada lote individualmente. Granularidade fina do checkpoint. |
-| `IPAGTB027_DISPATCH_LOTE` | Estado atual de envio (dispatch) de cada lote para cada serviço de destino. Visão corrente da máquina de estados. |
-| `IPAGTB028_HISTORICO_DISPATCH` | Log imutável (append-only) de todas as tentativas de dispatch. Nunca atualizado após inserção. |
+| `IPAGTB027_DESPACHO_LOTE` | Estado atual de envio (despacho) de cada lote para cada serviço de destino. Visão corrente da máquina de estados. |
+| `IPAGTB028_HISTORICO_DESPACHO` | Log imutável (append-only) de todas as tentativas de despacho. Nunca atualizado após inserção. |
 | `IPAGTB029_CONTROLE_LINHA` | Cada linha física (240 posições) do arquivo e seu estado de processamento. |
 
 ---
@@ -141,8 +141,8 @@ Arquivo (Tipo 0 + Tipo 9)
 
 | View | Descrição |
 |------|-----------|
-| `IPAGTV001_STATUS_ARQUIVO` | Status consolidado de carga e dispatch por arquivo. |
-| `IPAGTV002_DISPATCH_PENDENTE` | Fila de trabalho para workers: lotes prontos para envio ou retentativa. |
+| `IPAGTV001_STATUS_ARQUIVO` | Status consolidado de carga e despacho por arquivo. |
+| `IPAGTV002_DESPACHO_PENDENTE` | Fila de trabalho para processos: lotes prontos para envio ou retentativa. |
 | `IPAGTV003_LINHAS_ERRO` | Diagnóstico: linhas com status ERRO ou PENDENTE não processadas. |
 
 ---
@@ -172,18 +172,18 @@ Os segmentos abaixo constam no padrão CNAB240 V10.9 (PDF FEBRABAN) mas ainda n�
 | # | Tabela | Segmento | Serviço Principal |
 |---|--------|----------|------------------|
 | TB001 | IPAGTB001_ARQUIVO | — | Raiz |
-| TB002 | IPAGTB002_HEADER_ARQUIVO | Tipo 0 | Header Arquivo |
-| TB003 | IPAGTB003_TRAILER_ARQUIVO | Tipo 9 | Trailer Arquivo |
+| TB002 | IPAGTB002_CABECALHO_ARQUIVO | Tipo 0 | Cabeçalho Arquivo |
+| TB003 | IPAGTB003_RODAPE_ARQUIVO | Tipo 9 | Rodapé Arquivo |
 | TB004 | IPAGTB004_LOTE | — | Contêiner de Lote |
-| TB005 | IPAGTB005_HEADER_LOTE | Tipo 1 | Header Lote |
-| TB006 | IPAGTB006_TRAILER_LOTE | Tipo 5 | Trailer Lote |
+| TB005 | IPAGTB005_CABECALHO_LOTE | Tipo 1 | Cabeçalho Lote |
+| TB006 | IPAGTB006_RODAPE_LOTE | Tipo 5 | Rodapé Lote |
 | TB007 | IPAGTB007_DETALHE_REG | Tipo 3 | Agrupador Detalhe |
 | TB010 | IPAGTB010_DET_PAGAMENTO | **Seg A** | Pagamento / Débito / Vendor / Compror |
 | TB011 | IPAGTB011_DET_INFO_FAVORECIDO | **Seg B** | Complementar ao A |
 | TB012 | IPAGTB012_DET_COMPLEMENTAR | **Seg C** | Deduções (IR/ISS/IOF) |
-| TB013 | IPAGTB013_DET_TITULO_COBRANCA | **Seg J** | Pag. Títulos Cobrança / QR Code PIX |
+| TB013 | IPAGTB013_DET_TITULO_COBRANCA | **Seg J** | Pag. Títulos Cobrança / Código QR PIX |
 | TB014 | IPAGTB014_DET_PARTES_TITULO | **Seg J-52** | Partes do Título |
-| TB015 | IPAGTB015_DET_PIX_QR_CODE | **Seg J-52 PIX** | QR Code PIX |
+| TB015 | IPAGTB015_DET_PIX_CODIGO_QR | **Seg J-52 PIX** | Código QR PIX |
 | TB016 | IPAGTB016_DET_TRIBUTO_SEM_CB | **Seg N** | Tributos sem Código de Barras |
 | TB017 | IPAGTB017_DET_TRIBUTO_COM_CB | **Seg O** | Tributos com Código de Barras |
 | TB018 | IPAGTB018_DET_COMPL_TRIBUTO | **Seg W** | Complementar Tributos / FGTS |
@@ -195,8 +195,8 @@ Os segmentos abaixo constam no padrão CNAB240 V10.9 (PDF FEBRABAN) mas ainda n�
 | TB024 | IPAGTB024_DET_COMPL_RETORNO | **Seg U** | Cobrança Retorno — Valores |
 | TB025 | IPAGTB025_CONTROLE_CARGA | — | Controle de Carga (operacional) |
 | TB026 | IPAGTB026_CTRL_CARGA_LOTE | — | Controle de Carga por Lote |
-| TB027 | IPAGTB027_DISPATCH_LOTE | — | Estado de Dispatch |
-| TB028 | IPAGTB028_HISTORICO_DISPATCH | — | Log de Dispatch |
+| TB027 | IPAGTB027_DESPACHO_LOTE | — | Estado de Despacho |
+| TB028 | IPAGTB028_HISTORICO_DESPACHO | — | Log de Despacho |
 | TB029 | IPAGTB029_CONTROLE_LINHA | — | Controle de Linhas Físicas |
 | TB030 | IPAGTB030_TIPO_REGISTRO | — | Domínio tipos de registro |
 | TB031 | IPAGTB031_TIPO_SERVICO | — | Domínio tipos de serviço/produto |
@@ -212,14 +212,14 @@ Os segmentos abaixo constam no padrão CNAB240 V10.9 (PDF FEBRABAN) mas ainda n�
 
 ## 13. Chaves Estrangeiras por Tabela
 
-### IPAGTB002_HEADER_ARQUIVO
+### IPAGTB002_CABECALHO_ARQUIVO
 
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB001_IPAGTB002_FK01` | `ID_ARQUIVO` | `IPAGTB001_ARQUIVO` | `ID_ARQUIVO` |
 | `IPAGTB034_IPAGTB002_FK02` | `ID_TIPO_INSCRICAO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 
-### IPAGTB003_TRAILER_ARQUIVO
+### IPAGTB003_RODAPE_ARQUIVO
 
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
@@ -233,14 +233,14 @@ Os segmentos abaixo constam no padrão CNAB240 V10.9 (PDF FEBRABAN) mas ainda n�
 | `IPAGTB031_IPAGTB004_FK02` | `ID_TIPO_SERVICO` | `IPAGTB031_TIPO_SERVICO` | `ID_TIPO_SERVICO` |
 | `IPAGTB032_IPAGTB004_FK02` | `ID_TIPO_OPERACAO` | `IPAGTB032_TIPO_OPERACAO` | `ID_TIPO_OPERACAO` |
 
-### IPAGTB005_HEADER_LOTE
+### IPAGTB005_CABECALHO_LOTE
 
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB004_IPAGTB005_FK01` | `ID_LOTE` | `IPAGTB004_LOTE` | `ID_LOTE` |
 | `IPAGTB034_IPAGTB005_FK02` | `ID_TIPO_INSCRICAO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 
-### IPAGTB006_TRAILER_LOTE
+### IPAGTB006_RODAPE_LOTE
 
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
@@ -286,16 +286,16 @@ Os segmentos abaixo constam no padrão CNAB240 V10.9 (PDF FEBRABAN) mas ainda n�
 |------------|-----------|------------|---------------|
 | `IPAGTB007_IPAGTB014_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` | `ID_DETALHE_REG` |
 | `IPAGTB034_IPAGTB014_FK02` | `ID_TIPO_INSCRICAO_PAGADOR` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
-| `IPAGTB034_IPAGTB014_FK03` | `ID_TIPO_INSCRICAO_BENEF` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB014_FK03` | `ID_TIPO_INSCRICAO_BENEFICIARIO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 | `IPAGTB034_IPAGTB014_FK04` | `ID_TIPO_INSCRICAO_SACADOR` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 
-### IPAGTB015_DET_PIX_QR_CODE
+### IPAGTB015_DET_PIX_CODIGO_QR
 
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB007_IPAGTB015_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` | `ID_DETALHE_REG` |
 | `IPAGTB034_IPAGTB015_FK02` | `ID_TIPO_INSCRICAO_DEVEDOR` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
-| `IPAGTB034_IPAGTB015_FK03` | `ID_TIPO_INSCRICAO_FAVO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
+| `IPAGTB034_IPAGTB015_FK03` | `ID_TIPO_INSCRICAO_FAVORECIDO` | `IPAGTB034_TIPO_INSCRICAO` | `ID_TIPO_INSCRICAO` |
 
 ### IPAGTB016_DET_TRIBUTO_SEM_CB
 
@@ -369,18 +369,18 @@ Os segmentos abaixo constam no padrão CNAB240 V10.9 (PDF FEBRABAN) mas ainda n�
 | `IPAGTB004_IPAGTB026_FK02` | `ID_LOTE` | `IPAGTB004_LOTE` | `ID_LOTE` |
 | `IPAGTB025_IPAGTB026_FK01` | `ID_CONTROLE_CARGA` | `IPAGTB025_CONTROLE_CARGA` | `ID_CONTROLE_CARGA` |
 
-### IPAGTB027_DISPATCH_LOTE
+### IPAGTB027_DESPACHO_LOTE
 
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB004_IPAGTB027_FK01` | `ID_LOTE` | `IPAGTB004_LOTE` | `ID_LOTE` |
 | `IPAGTB037_IPAGTB027_FK02` | `ID_SERVICO_DESTINO` | `IPAGTB037_SERVICO_DESTINO` | `ID_SERVICO_DESTINO` |
 
-### IPAGTB028_HISTORICO_DISPATCH
+### IPAGTB028_HISTORICO_DESPACHO
 
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
-| `IPAGTB027_IPAGTB028_FK01` | `ID_DISPATCH_LOTE` | `IPAGTB027_DISPATCH_LOTE` | `ID_DISPATCH_LOTE` |
+| `IPAGTB027_IPAGTB028_FK01` | `ID_DESPACHO_LOTE` | `IPAGTB027_DESPACHO_LOTE` | `ID_DESPACHO_LOTE` |
 
 ### IPAGTB029_CONTROLE_LINHA
 

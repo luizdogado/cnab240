@@ -29,11 +29,11 @@ CREATE TABLE IPAGTB030_TIPO_REGISTRO (
 
 COMMENT ON TABLE IPAGTB030_TIPO_REGISTRO IS
   'Dominio dos tipos de registro CNAB240. Cada linha representa um dos sete tipos validos '
-  'definidos pelo padrao FEBRABAN: 0=Header Arquivo, 1=Header Lote, 2=Inicial Lote, '
-  '3=Detalhe, 4=Final Lote, 5=Trailer Lote, 9=Trailer Arquivo.';
+  'definidos pelo padrao FEBRABAN: 0=Cabecalho Arquivo, 1=Cabecalho Lote, 2=Inicial Lote, '
+  '3=Detalhe, 4=Final Lote, 5=Rodape Lote, 9=Rodape Arquivo.';
 COMMENT ON COLUMN IPAGTB030_TIPO_REGISTRO.ID_TIPO_REGISTRO     IS 'Identificador surrogate gerado por sequence. Chave primaria interna sem significado de negocio.';
 COMMENT ON COLUMN IPAGTB030_TIPO_REGISTRO.CO_TIPO_REGISTRO     IS 'Codigo do tipo de registro conforme padrao CNAB240. Campo G003. Valores: 0,1,2,3,4,5,9.';
-COMMENT ON COLUMN IPAGTB030_TIPO_REGISTRO.NO_TIPO_REGISTRO     IS 'Descricao por extenso do tipo de registro. Exemplo: Header de Arquivo.';
+COMMENT ON COLUMN IPAGTB030_TIPO_REGISTRO.NO_TIPO_REGISTRO     IS 'Descricao por extenso do tipo de registro. Exemplo: Cabecalho de Arquivo.';
 COMMENT ON COLUMN IPAGTB030_TIPO_REGISTRO.DH_INCLUSAO          IS 'Data e hora em que o registro foi incluido na tabela.';
 COMMENT ON COLUMN IPAGTB030_TIPO_REGISTRO.DH_ALTERACAO         IS 'Data e hora da ultima alteracao do registro. Nulo se nunca alterado.';
 COMMENT ON COLUMN IPAGTB030_TIPO_REGISTRO.NO_USUARIO_INCLUSAO  IS 'Login do usuario que incluiu o registro.';
@@ -86,7 +86,7 @@ CREATE TABLE IPAGTB032_TIPO_OPERACAO (
 );
 
 COMMENT ON TABLE IPAGTB032_TIPO_OPERACAO IS
-  'Dominio dos tipos de operacao do Header de Lote. Campo G028 do padrao FEBRABAN. '
+  'Dominio dos tipos de operacao do Cabecalho de Lote. Campo G028 do padrao FEBRABAN. '
   'Indica se o lote e de Credito (C), Debito (D) ou Extrato (E).';
 COMMENT ON COLUMN IPAGTB032_TIPO_OPERACAO.ID_TIPO_OPERACAO     IS 'Identificador surrogate gerado por sequence.';
 COMMENT ON COLUMN IPAGTB032_TIPO_OPERACAO.CO_TIPO_OPERACAO     IS 'Codigo da operacao. Campo G028. Valores: C=Credito, D=Debito, E=Extrato Conciliacao.';
@@ -214,9 +214,9 @@ COMMENT ON COLUMN IPAGTB036_CAMARA_CENTRAL.NO_USUARIO_ALTERACAO      IS 'Login d
 -- =============================================================================
 
 INSERT INTO IPAGTB030_TIPO_REGISTRO (CO_TIPO_REGISTRO, NO_TIPO_REGISTRO, NO_USUARIO_INCLUSAO)
-VALUES ('0', 'Header de Arquivo', 'SISTEMA');
+VALUES ('0', 'Cabecalho de Arquivo', 'SISTEMA');
 INSERT INTO IPAGTB030_TIPO_REGISTRO (CO_TIPO_REGISTRO, NO_TIPO_REGISTRO, NO_USUARIO_INCLUSAO)
-VALUES ('1', 'Header de Lote', 'SISTEMA');
+VALUES ('1', 'Cabecalho de Lote', 'SISTEMA');
 INSERT INTO IPAGTB030_TIPO_REGISTRO (CO_TIPO_REGISTRO, NO_TIPO_REGISTRO, NO_USUARIO_INCLUSAO)
 VALUES ('2', 'Registro Inicial de Lote', 'SISTEMA');
 INSERT INTO IPAGTB030_TIPO_REGISTRO (CO_TIPO_REGISTRO, NO_TIPO_REGISTRO, NO_USUARIO_INCLUSAO)
@@ -224,9 +224,9 @@ VALUES ('3', 'Registro Detalhe', 'SISTEMA');
 INSERT INTO IPAGTB030_TIPO_REGISTRO (CO_TIPO_REGISTRO, NO_TIPO_REGISTRO, NO_USUARIO_INCLUSAO)
 VALUES ('4', 'Registro Final de Lote', 'SISTEMA');
 INSERT INTO IPAGTB030_TIPO_REGISTRO (CO_TIPO_REGISTRO, NO_TIPO_REGISTRO, NO_USUARIO_INCLUSAO)
-VALUES ('5', 'Trailer de Lote', 'SISTEMA');
+VALUES ('5', 'Rodape de Lote', 'SISTEMA');
 INSERT INTO IPAGTB030_TIPO_REGISTRO (CO_TIPO_REGISTRO, NO_TIPO_REGISTRO, NO_USUARIO_INCLUSAO)
-VALUES ('9', 'Trailer de Arquivo', 'SISTEMA');
+VALUES ('9', 'Rodape de Arquivo', 'SISTEMA');
 
 INSERT INTO IPAGTB031_TIPO_SERVICO (CO_TIPO_SERVICO, NO_TIPO_SERVICO, NO_USUARIO_INCLUSAO)
 VALUES ('01', 'Cobranca', 'SISTEMA');
@@ -383,7 +383,7 @@ COMMENT ON COLUMN IPAGTB001_ARQUIVO.ID_ARQUIVO            IS 'Identificador surr
 COMMENT ON COLUMN IPAGTB001_ARQUIVO.NO_NOME_ARQUIVO       IS 'Nome fisico do arquivo CNAB240, incluindo extensao. Exemplo: PAGAMENTOS_20260518.REM';
 COMMENT ON COLUMN IPAGTB001_ARQUIVO.TE_CAMINHO_ARQUIVO    IS 'Caminho completo no sistema de arquivos onde o arquivo foi recebido ou gerado. Exemplo: /files/cnab/entrada/2026/05/';
 COMMENT ON COLUMN IPAGTB001_ARQUIVO.CO_REMESSA_RETORNO    IS 'Indica se o arquivo e de Remessa (1) ou Retorno (2). Campo G015 do CNAB240. Remessa = empresa para banco; Retorno = banco para empresa.';
-COMMENT ON COLUMN IPAGTB001_ARQUIVO.DH_GERACAO_ARQUIVO    IS 'Data e hora de geracao do arquivo conforme campos G016 (DDMMAAAA) e G017 (HHMMSS) do Header do Arquivo.';
+COMMENT ON COLUMN IPAGTB001_ARQUIVO.DH_GERACAO_ARQUIVO    IS 'Data e hora de geracao do arquivo conforme campos G016 (DDMMAAAA) e G017 (HHMMSS) do Cabecalho do Arquivo.';
 COMMENT ON COLUMN IPAGTB001_ARQUIVO.NU_SEQUENCIAL_ARQUIVO IS 'Numero sequencial do arquivo no dia, gerado pelo emissor. Campo G018 do CNAB240. Ate 6 digitos.';
 COMMENT ON COLUMN IPAGTB001_ARQUIVO.NU_BANCO_COMPENSACAO  IS 'Codigo do banco na camara de compensacao, conforme tabela FEBRABAN. Campo G001 do CNAB240. Exemplo: 341=Itau, 033=Santander.';
 COMMENT ON COLUMN IPAGTB001_ARQUIVO.IN_PROCESSADO         IS 'Indicador se o arquivo ja foi processado pelo sistema. S=Sim, N=Nao. Permite controle de reprocessamento.';
@@ -396,12 +396,12 @@ COMMENT ON COLUMN IPAGTB001_ARQUIVO.NO_USUARIO_ALTERACAO  IS 'Login do usuario o
 
 
 -- ----------------------------------------------------------------------------
--- IPAGTB002_HEADER_ARQUIVO - Registro tipo 0, 1:1 com IPAGTB001
+-- IPAGTB002_CABECALHO_ARQUIVO - Registro tipo 0, 1:1 com IPAGTB001
 -- ----------------------------------------------------------------------------
-CREATE SEQUENCE IPAGTB002_HEADER_ARQUIVO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE SEQUENCE IPAGTB002_CABECALHO_ARQUIVO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
 
-CREATE TABLE IPAGTB002_HEADER_ARQUIVO (
-    ID_HEADER_ARQUIVO          NUMBER        DEFAULT ON NULL IPAGTB002_HEADER_ARQUIVO_SQ.NEXTVAL,
+CREATE TABLE IPAGTB002_CABECALHO_ARQUIVO (
+    ID_CABECALHO_ARQUIVO          NUMBER        DEFAULT ON NULL IPAGTB002_CABECALHO_ARQUIVO_SQ.NEXTVAL,
     ID_ARQUIVO                 NUMBER        NOT NULL,
     -- G001: posicoes 1-3
     NU_BANCO_COMPENSACAO       NUMBER(3)     NOT NULL,
@@ -444,55 +444,55 @@ CREATE TABLE IPAGTB002_HEADER_ARQUIVO (
     NO_USUARIO_INCLUSAO        VARCHAR2(60)  NOT NULL,
     NO_USUARIO_ALTERACAO       VARCHAR2(60),
     ID_TIPO_INSCRICAO          NUMBER,
-    CONSTRAINT IPAGTB002_HEADER_ARQUIVO_PK   PRIMARY KEY (ID_HEADER_ARQUIVO),
-    CONSTRAINT IPAGTB002_HEADER_ARQUIVO_UK01 UNIQUE (ID_ARQUIVO),
+    CONSTRAINT IPAGTB002_CABECALHO_ARQUIVO_PK   PRIMARY KEY (ID_CABECALHO_ARQUIVO),
+    CONSTRAINT IPAGTB002_CABECALHO_ARQUIVO_UK01 UNIQUE (ID_ARQUIVO),
     CONSTRAINT IPAGTB001_IPAGTB002_FK01
         FOREIGN KEY (ID_ARQUIVO) REFERENCES IPAGTB001_ARQUIVO (ID_ARQUIVO),
     CONSTRAINT IPAGTB034_IPAGTB002_FK02
         FOREIGN KEY (ID_TIPO_INSCRICAO) REFERENCES IPAGTB034_TIPO_INSCRICAO (ID_TIPO_INSCRICAO),
-    CONSTRAINT IPAGTB002_HEADER_ARQUIVO_CO_TIPO_INSC_CK01
+    CONSTRAINT IPAGTB002_CABECALHO_ARQUIVO_CO_TIPO_INSC_CK01
         CHECK (CO_TIPO_INSCRICAO_EMPRESA IN ('0','1','2','3','9')),
-    CONSTRAINT IPAGTB002_HEADER_ARQUIVO_CO_REMESSA_CK01
+    CONSTRAINT IPAGTB002_CABECALHO_ARQUIVO_CO_REMESSA_CK01
         CHECK (CO_REMESSA_RETORNO IN ('1','2'))
 );
 
-COMMENT ON TABLE IPAGTB002_HEADER_ARQUIVO IS
-  'Armazena o registro Header de Arquivo (Tipo 0) do CNAB240. Existe exatamente um registro '
+COMMENT ON TABLE IPAGTB002_CABECALHO_ARQUIVO IS
+  'Armazena o registro Cabecalho de Arquivo (Tipo 0) do CNAB240. Existe exatamente um registro '
   'por arquivo fisico. Contem dados de identificacao do banco, empresa, conta e metadados do arquivo. '
   'Relacionamento 1:1 com IPAGTB001_ARQUIVO. Campos mapeados ao layout FEBRABAN posicoes 1-240.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.ID_HEADER_ARQUIVO          IS 'Identificador surrogate gerado por sequence. Chave primaria interna.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.ID_ARQUIVO                 IS 'Chave estrangeira para IPAGTB001_ARQUIVO. Associa o header ao arquivo pai.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.NU_BANCO_COMPENSACAO       IS 'Codigo do banco na camara de compensacao. Campo G001. Posicoes 1-3. Exemplo: 341=Itau.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.CO_TIPO_INSCRICAO_EMPRESA  IS 'Tipo de inscricao da empresa (pagador/beneficiario principal). Campo G005. Posicao 18. 1=CPF, 2=CNPJ.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.NU_INSCRICAO_EMPRESA       IS 'Numero de inscricao (CPF/CNPJ) da empresa. Campo G006. Posicoes 19-32. Armazenado sem mascara.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.CO_CONVENIO_BANCO          IS 'Codigo do convenio firmado com o banco para prestacao do servico. Campo G007. Posicoes 33-52.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.NU_AGENCIA_EMPRESA         IS 'Numero da agencia bancaria da empresa. Campo G008. Posicoes 53-57.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.CO_DV_AGENCIA_EMPRESA      IS 'Digito verificador da agencia. Campo G009. Posicao 58.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.NU_CONTA_CORRENTE_EMPRESA  IS 'Numero da conta corrente da empresa. Campo G010. Posicoes 59-70.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.CO_DV_CONTA_EMPRESA        IS 'Digito verificador da conta corrente. Campo G011. Posicao 71.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.CO_DV_AGENCIA_CONTA        IS 'Digito verificador do conjunto agencia/conta. Campo G012. Posicao 72.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.NO_EMPRESA                 IS 'Nome da empresa (pagador/beneficiario). Campo G013. Posicoes 73-102.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.NO_BANCO                   IS 'Nome do banco conforme tabela FEBRABAN. Campo G014. Posicoes 103-132.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.CO_REMESSA_RETORNO         IS 'Indica se e Remessa (1) ou Retorno (2). Campo G015. Posicao 143.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.DH_GERACAO_ARQUIVO         IS 'Data e hora de geracao do arquivo, formada pela concatenacao dos campos G016 (posicoes 144-151 DDMMAAAA) e G017 (posicoes 152-157 HHMMSS).';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.NU_SEQUENCIAL_ARQUIVO      IS 'Numero sequencial do arquivo no dia. Campo G018. Posicoes 158-163.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.NU_VERSAO_LAYOUT_ARQUIVO   IS 'Numero da versao do layout do arquivo. Campo G019. Posicoes 164-166. Valor padrao: 103 (v10.3).';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.NU_DENSIDADE_GRAVACAO      IS 'Densidade de gravacao do arquivo em bpi. Campo G020. Posicoes 167-171. Atualmente em desuso.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.TE_RESERVADO_BANCO         IS 'Campo de uso reservado pelo banco. Campo G021. Posicoes 172-191.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.TE_RESERVADO_EMPRESA       IS 'Campo de uso reservado pela empresa. Campo G022. Posicoes 192-211.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.DH_INCLUSAO                IS 'Data e hora de inclusao do registro.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.DH_ALTERACAO               IS 'Data e hora da ultima alteracao.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.NO_USUARIO_INCLUSAO        IS 'Login do usuario ou processo que incluiu.';
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.NO_USUARIO_ALTERACAO       IS 'Login do usuario ou processo que alterou.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.ID_CABECALHO_ARQUIVO          IS 'Identificador surrogate gerado por sequence. Chave primaria interna.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.ID_ARQUIVO                 IS 'Chave estrangeira para IPAGTB001_ARQUIVO. Associa o cabecalho ao arquivo pai.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.NU_BANCO_COMPENSACAO       IS 'Codigo do banco na camara de compensacao. Campo G001. Posicoes 1-3. Exemplo: 341=Itau.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.CO_TIPO_INSCRICAO_EMPRESA  IS 'Tipo de inscricao da empresa (pagador/beneficiario principal). Campo G005. Posicao 18. 1=CPF, 2=CNPJ.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.NU_INSCRICAO_EMPRESA       IS '[DADO_PESSOAL] Numero de inscricao (CPF/CNPJ) da empresa. Campo G006. Posicoes 19-32. Armazenado sem mascara.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.CO_CONVENIO_BANCO          IS 'Codigo do convenio firmado com o banco para prestacao do servico. Campo G007. Posicoes 33-52.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.NU_AGENCIA_EMPRESA         IS 'Numero da agencia bancaria da empresa. Campo G008. Posicoes 53-57.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.CO_DV_AGENCIA_EMPRESA      IS 'Digito verificador da agencia. Campo G009. Posicao 58.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.NU_CONTA_CORRENTE_EMPRESA  IS 'Numero da conta corrente da empresa. Campo G010. Posicoes 59-70.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.CO_DV_CONTA_EMPRESA        IS 'Digito verificador da conta corrente. Campo G011. Posicao 71.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.CO_DV_AGENCIA_CONTA        IS 'Digito verificador do conjunto agencia/conta. Campo G012. Posicao 72.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.NO_EMPRESA                 IS 'Nome da empresa (pagador/beneficiario). Campo G013. Posicoes 73-102.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.NO_BANCO                   IS 'Nome do banco conforme tabela FEBRABAN. Campo G014. Posicoes 103-132.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.CO_REMESSA_RETORNO         IS 'Indica se e Remessa (1) ou Retorno (2). Campo G015. Posicao 143.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.DH_GERACAO_ARQUIVO         IS 'Data e hora de geracao do arquivo, formada pela concatenacao dos campos G016 (posicoes 144-151 DDMMAAAA) e G017 (posicoes 152-157 HHMMSS).';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.NU_SEQUENCIAL_ARQUIVO      IS 'Numero sequencial do arquivo no dia. Campo G018. Posicoes 158-163.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.NU_VERSAO_LAYOUT_ARQUIVO   IS 'Numero da versao do layout do arquivo. Campo G019. Posicoes 164-166. Valor padrao: 103 (v10.3).';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.NU_DENSIDADE_GRAVACAO      IS 'Densidade de gravacao do arquivo em bpi. Campo G020. Posicoes 167-171. Atualmente em desuso.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.TE_RESERVADO_BANCO         IS 'Campo de uso reservado pelo banco. Campo G021. Posicoes 172-191.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.TE_RESERVADO_EMPRESA       IS 'Campo de uso reservado pela empresa. Campo G022. Posicoes 192-211.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.DH_INCLUSAO                IS 'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.DH_ALTERACAO               IS 'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.NO_USUARIO_INCLUSAO        IS 'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.NO_USUARIO_ALTERACAO       IS 'Login do usuario ou processo que alterou.';
 
 
 -- ----------------------------------------------------------------------------
--- IPAGTB003_TRAILER_ARQUIVO - Registro tipo 9, 1:1 com IPAGTB001
+-- IPAGTB003_RODAPE_ARQUIVO - Registro tipo 9, 1:1 com IPAGTB001
 -- ----------------------------------------------------------------------------
-CREATE SEQUENCE IPAGTB003_TRAILER_ARQUIVO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE SEQUENCE IPAGTB003_RODAPE_ARQUIVO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
 
-CREATE TABLE IPAGTB003_TRAILER_ARQUIVO (
-    ID_TRAILER_ARQUIVO         NUMBER        DEFAULT ON NULL IPAGTB003_TRAILER_ARQUIVO_SQ.NEXTVAL,
+CREATE TABLE IPAGTB003_RODAPE_ARQUIVO (
+    ID_RODAPE_ARQUIVO         NUMBER        DEFAULT ON NULL IPAGTB003_RODAPE_ARQUIVO_SQ.NEXTVAL,
     ID_ARQUIVO                 NUMBER        NOT NULL,
     -- G001: posicoes 1-3
     NU_BANCO_COMPENSACAO       NUMBER(3)     NOT NULL,
@@ -506,26 +506,26 @@ CREATE TABLE IPAGTB003_TRAILER_ARQUIVO (
     DH_ALTERACAO               DATE,
     NO_USUARIO_INCLUSAO        VARCHAR2(60)  NOT NULL,
     NO_USUARIO_ALTERACAO       VARCHAR2(60),
-    CONSTRAINT IPAGTB003_TRAILER_ARQUIVO_PK   PRIMARY KEY (ID_TRAILER_ARQUIVO),
-    CONSTRAINT IPAGTB003_TRAILER_ARQUIVO_UK01 UNIQUE (ID_ARQUIVO),
+    CONSTRAINT IPAGTB003_RODAPE_ARQUIVO_PK   PRIMARY KEY (ID_RODAPE_ARQUIVO),
+    CONSTRAINT IPAGTB003_RODAPE_ARQUIVO_UK01 UNIQUE (ID_ARQUIVO),
     CONSTRAINT IPAGTB001_IPAGTB003_FK01
         FOREIGN KEY (ID_ARQUIVO) REFERENCES IPAGTB001_ARQUIVO (ID_ARQUIVO)
 );
 
-COMMENT ON TABLE IPAGTB003_TRAILER_ARQUIVO IS
-  'Armazena o registro Trailer de Arquivo (Tipo 9) do CNAB240. Existe exatamente um por arquivo. '
+COMMENT ON TABLE IPAGTB003_RODAPE_ARQUIVO IS
+  'Armazena o registro Rodape de Arquivo (Tipo 9) do CNAB240. Existe exatamente um por arquivo. '
   'Contem totalizadores de controle: quantidade de lotes e quantidade total de registros do arquivo. '
   'Relacionamento 1:1 com IPAGTB001_ARQUIVO.';
-COMMENT ON COLUMN IPAGTB003_TRAILER_ARQUIVO.ID_TRAILER_ARQUIVO       IS 'Identificador surrogate gerado por sequence.';
-COMMENT ON COLUMN IPAGTB003_TRAILER_ARQUIVO.ID_ARQUIVO               IS 'Chave estrangeira para IPAGTB001_ARQUIVO.';
-COMMENT ON COLUMN IPAGTB003_TRAILER_ARQUIVO.NU_BANCO_COMPENSACAO     IS 'Codigo do banco na camara de compensacao. Campo G001. Posicoes 1-3.';
-COMMENT ON COLUMN IPAGTB003_TRAILER_ARQUIVO.QT_LOTE_ARQUIVO         IS 'Quantidade total de lotes contidos no arquivo. Campo G049. Posicoes 18-23. Usado para validacao de integridade.';
-COMMENT ON COLUMN IPAGTB003_TRAILER_ARQUIVO.QT_REGISTRO_ARQUIVO     IS 'Quantidade total de registros (linhas) do arquivo, incluindo header e trailer. Campo G056. Posicoes 24-29.';
-COMMENT ON COLUMN IPAGTB003_TRAILER_ARQUIVO.QT_CONTAS_CONCILIACAO    IS 'Quantidade de contas para conciliacao bancaria. Campo G037. Posicoes 30-35. Uso especifico do servico de extrato.';
-COMMENT ON COLUMN IPAGTB003_TRAILER_ARQUIVO.DH_INCLUSAO              IS 'Data e hora de inclusao.';
-COMMENT ON COLUMN IPAGTB003_TRAILER_ARQUIVO.DH_ALTERACAO             IS 'Data e hora da ultima alteracao.';
-COMMENT ON COLUMN IPAGTB003_TRAILER_ARQUIVO.NO_USUARIO_INCLUSAO      IS 'Login do usuario ou processo que incluiu.';
-COMMENT ON COLUMN IPAGTB003_TRAILER_ARQUIVO.NO_USUARIO_ALTERACAO     IS 'Login do usuario ou processo que alterou.';
+COMMENT ON COLUMN IPAGTB003_RODAPE_ARQUIVO.ID_RODAPE_ARQUIVO       IS 'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB003_RODAPE_ARQUIVO.ID_ARQUIVO               IS 'Chave estrangeira para IPAGTB001_ARQUIVO.';
+COMMENT ON COLUMN IPAGTB003_RODAPE_ARQUIVO.NU_BANCO_COMPENSACAO     IS 'Codigo do banco na camara de compensacao. Campo G001. Posicoes 1-3.';
+COMMENT ON COLUMN IPAGTB003_RODAPE_ARQUIVO.QT_LOTE_ARQUIVO         IS 'Quantidade total de lotes contidos no arquivo. Campo G049. Posicoes 18-23. Usado para validacao de integridade.';
+COMMENT ON COLUMN IPAGTB003_RODAPE_ARQUIVO.QT_REGISTRO_ARQUIVO     IS 'Quantidade total de registros (linhas) do arquivo, incluindo cabecalho e rodape. Campo G056. Posicoes 24-29.';
+COMMENT ON COLUMN IPAGTB003_RODAPE_ARQUIVO.QT_CONTAS_CONCILIACAO    IS 'Quantidade de contas para conciliacao bancaria. Campo G037. Posicoes 30-35. Uso especifico do servico de extrato.';
+COMMENT ON COLUMN IPAGTB003_RODAPE_ARQUIVO.DH_INCLUSAO              IS 'Data e hora de inclusao.';
+COMMENT ON COLUMN IPAGTB003_RODAPE_ARQUIVO.DH_ALTERACAO             IS 'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB003_RODAPE_ARQUIVO.NO_USUARIO_INCLUSAO      IS 'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB003_RODAPE_ARQUIVO.NO_USUARIO_ALTERACAO     IS 'Login do usuario ou processo que alterou.';
 
 
 -- =============================================================================
@@ -542,7 +542,7 @@ CREATE TABLE IPAGTB004_LOTE (
     ID_ARQUIVO                 NUMBER        NOT NULL,
     -- G002: numero do lote dentro do arquivo
     NU_NUMERO_LOTE             NUMBER(4)     NOT NULL,
-    -- G028: posicao 9 do header lote
+    -- G028: posicao 9 do cabecalho lote
     CO_TIPO_OPERACAO           CHAR(1)       NOT NULL,
     -- G025: posicoes 10-11
     CO_TIPO_SERVICO            CHAR(2)       NOT NULL,
@@ -574,11 +574,11 @@ CREATE INDEX IPAGTB004_LOTE_IDX02 ON IPAGTB004_LOTE (CO_TIPO_SERVICO);
 COMMENT ON TABLE IPAGTB004_LOTE IS
   'Representa um Lote de Servico/Produto dentro do arquivo CNAB240. Um arquivo pode ter multiplos lotes. '
   'Cada lote contem exclusivamente um tipo de servico. Relacionamento N:1 com IPAGTB001_ARQUIVO '
-  'e 1:1 com IPAGTB005_HEADER_LOTE e IPAGTB006_TRAILER_LOTE.';
+  'e 1:1 com IPAGTB005_CABECALHO_LOTE e IPAGTB006_RODAPE_LOTE.';
 COMMENT ON COLUMN IPAGTB004_LOTE.ID_LOTE               IS 'Identificador surrogate gerado por sequence.';
 COMMENT ON COLUMN IPAGTB004_LOTE.ID_ARQUIVO             IS 'Chave estrangeira para IPAGTB001_ARQUIVO. Identifica o arquivo a que o lote pertence.';
 COMMENT ON COLUMN IPAGTB004_LOTE.NU_NUMERO_LOTE         IS 'Numero sequencial do lote dentro do arquivo. Campo G002. Valor entre 0001 e 9998. Unico por arquivo.';
-COMMENT ON COLUMN IPAGTB004_LOTE.CO_TIPO_OPERACAO       IS 'Tipo da operacao do lote. Campo G028. Posicao 9 do Header Lote. C=Credito, D=Debito, E=Extrato.';
+COMMENT ON COLUMN IPAGTB004_LOTE.CO_TIPO_OPERACAO       IS 'Tipo da operacao do lote. Campo G028. Posicao 9 do Cabecalho Lote. C=Credito, D=Debito, E=Extrato.';
 COMMENT ON COLUMN IPAGTB004_LOTE.CO_TIPO_SERVICO        IS 'Tipo de servico/produto do lote. Campo G025. Posicoes 10-11. Exemplo: 20=Pag.Fornecedor, 01=Cobranca.';
 COMMENT ON COLUMN IPAGTB004_LOTE.NU_FORMA_LANCAMENTO    IS 'Forma de lancamento dos pagamentos no lote. Campo G029. Posicoes 12-13.';
 COMMENT ON COLUMN IPAGTB004_LOTE.NU_VERSAO_LAYOUT_LOTE  IS 'Versao do layout do lote conforme FEBRABAN. Campo G030. Posicoes 14-16.';
@@ -589,12 +589,12 @@ COMMENT ON COLUMN IPAGTB004_LOTE.NO_USUARIO_ALTERACAO   IS 'Login do usuario ou 
 
 
 -- ----------------------------------------------------------------------------
--- IPAGTB005_HEADER_LOTE - Registro tipo 1, 1:1 com IPAGTB004
+-- IPAGTB005_CABECALHO_LOTE - Registro tipo 1, 1:1 com IPAGTB004
 -- ----------------------------------------------------------------------------
-CREATE SEQUENCE IPAGTB005_HEADER_LOTE_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE SEQUENCE IPAGTB005_CABECALHO_LOTE_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
 
-CREATE TABLE IPAGTB005_HEADER_LOTE (
-    ID_HEADER_LOTE             NUMBER        DEFAULT ON NULL IPAGTB005_HEADER_LOTE_SQ.NEXTVAL,
+CREATE TABLE IPAGTB005_CABECALHO_LOTE (
+    ID_CABECALHO_LOTE             NUMBER        DEFAULT ON NULL IPAGTB005_CABECALHO_LOTE_SQ.NEXTVAL,
     ID_LOTE                    NUMBER        NOT NULL,
     -- G001
     NU_BANCO_COMPENSACAO       NUMBER(3)     NOT NULL,
@@ -627,55 +627,55 @@ CREATE TABLE IPAGTB005_HEADER_LOTE (
     NO_USUARIO_INCLUSAO        VARCHAR2(60)  NOT NULL,
     NO_USUARIO_ALTERACAO       VARCHAR2(60),
     ID_TIPO_INSCRICAO          NUMBER,
-    CONSTRAINT IPAGTB005_HEADER_LOTE_PK   PRIMARY KEY (ID_HEADER_LOTE),
-    CONSTRAINT IPAGTB005_HEADER_LOTE_UK01 UNIQUE (ID_LOTE),
+    CONSTRAINT IPAGTB005_CABECALHO_LOTE_PK   PRIMARY KEY (ID_CABECALHO_LOTE),
+    CONSTRAINT IPAGTB005_CABECALHO_LOTE_UK01 UNIQUE (ID_LOTE),
     CONSTRAINT IPAGTB004_IPAGTB005_FK01
         FOREIGN KEY (ID_LOTE) REFERENCES IPAGTB004_LOTE (ID_LOTE),
     CONSTRAINT IPAGTB034_IPAGTB005_FK02
         FOREIGN KEY (ID_TIPO_INSCRICAO) REFERENCES IPAGTB034_TIPO_INSCRICAO (ID_TIPO_INSCRICAO),
-    CONSTRAINT IPAGTB005_HEADER_LOTE_CO_TIPO_INSC_CK01
+    CONSTRAINT IPAGTB005_CABECALHO_LOTE_CO_TIPO_INSC_CK01
         CHECK (CO_TIPO_INSCRICAO_EMPRESA IN ('0','1','2','3','9'))
 );
 
-COMMENT ON TABLE IPAGTB005_HEADER_LOTE IS
-  'Armazena o registro Header de Lote (Tipo 1) do CNAB240. Existe exatamente um por lote. '
+COMMENT ON TABLE IPAGTB005_CABECALHO_LOTE IS
+  'Armazena o registro Cabecalho de Lote (Tipo 1) do CNAB240. Existe exatamente um por lote. '
   'Contem dados da empresa, endereco, convenio e metadados do lote. Relacionamento 1:1 com IPAGTB004_LOTE. '
-  'Campos mapeados ao layout do Header Lote do servico de Pagamentos (posicoes 1-240).';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.ID_HEADER_LOTE             IS 'Identificador surrogate gerado por sequence.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.ID_LOTE                    IS 'Chave estrangeira para IPAGTB004_LOTE. Relacionamento 1:1.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.NU_BANCO_COMPENSACAO       IS 'Codigo do banco na camara de compensacao. Campo G001. Posicoes 1-3.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.CO_TIPO_INSCRICAO_EMPRESA  IS 'Tipo de inscricao da empresa. Campo G005. Posicao 18. 1=CPF, 2=CNPJ.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.NU_INSCRICAO_EMPRESA       IS 'Numero CPF/CNPJ da empresa. Campo G006. Posicoes 19-32.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.CO_CONVENIO_BANCO          IS 'Codigo do convenio firmado com o banco. Campo G007. Posicoes 33-52.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.NU_AGENCIA_EMPRESA         IS 'Agencia bancaria da empresa. Campo G008. Posicoes 53-57.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.CO_DV_AGENCIA_EMPRESA      IS 'DV da agencia. Campo G009. Posicao 58.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.NU_CONTA_CORRENTE_EMPRESA  IS 'Numero da conta corrente da empresa. Campo G010. Posicoes 59-70.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.CO_DV_CONTA_EMPRESA        IS 'DV da conta corrente. Campo G011. Posicao 71.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.CO_DV_AGENCIA_CONTA        IS 'DV do conjunto agencia/conta. Campo G012. Posicao 72.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.NO_EMPRESA                 IS 'Nome da empresa. Campo G013. Posicoes 73-102.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.TE_MENSAGEM_LOTE           IS 'Mensagem ou finalidade do lote informada pela empresa. Campo G031. Posicoes 103-142.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.NO_LOGRADOURO_EMPRESA      IS 'Logradouro do endereco da empresa (rua, av, pca). Campo G032. Posicoes 143-172.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.NU_LOCAL_EMPRESA           IS 'Numero do local no logradouro. Campo G032. Posicoes 173-177.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.TE_COMPLEMENTO_EMPRESA     IS 'Complemento do endereco (apto, sala, bloco). Campo G032. Posicoes 178-192.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.NO_CIDADE_EMPRESA          IS 'Nome da cidade da empresa. Campo G033. Posicoes 193-212.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.NU_CEP_EMPRESA             IS 'CEP sem complemento. Campo G034. Posicoes 213-217.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.CO_COMPLEMENTO_CEP         IS 'Complemento do CEP (sufixo de 3 digitos). Campo G035. Posicoes 218-220.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.SG_ESTADO_EMPRESA          IS 'Sigla UF da empresa. Campo G036. Posicoes 221-222.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.NU_INDICATIVO_FORMA_PAGTO  IS 'Indicativo da forma de pagamento do servico. Campo P014. Posicoes 223-224.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno do banco. Campo G059. Posicoes 231-240. Preenchido apenas em arquivo de retorno.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.DH_INCLUSAO                IS 'Data e hora de inclusao.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.DH_ALTERACAO               IS 'Data e hora da ultima alteracao.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.NO_USUARIO_INCLUSAO        IS 'Login do usuario ou processo que incluiu.';
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.NO_USUARIO_ALTERACAO       IS 'Login do usuario ou processo que alterou.';
+  'Campos mapeados ao layout do Cabecalho Lote do servico de Pagamentos (posicoes 1-240).';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.ID_CABECALHO_LOTE             IS 'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.ID_LOTE                    IS 'Chave estrangeira para IPAGTB004_LOTE. Relacionamento 1:1.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.NU_BANCO_COMPENSACAO       IS 'Codigo do banco na camara de compensacao. Campo G001. Posicoes 1-3.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.CO_TIPO_INSCRICAO_EMPRESA  IS 'Tipo de inscricao da empresa. Campo G005. Posicao 18. 1=CPF, 2=CNPJ.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.NU_INSCRICAO_EMPRESA       IS '[DADO_PESSOAL] Numero CPF/CNPJ da empresa. Campo G006. Posicoes 19-32.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.CO_CONVENIO_BANCO          IS 'Codigo do convenio firmado com o banco. Campo G007. Posicoes 33-52.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.NU_AGENCIA_EMPRESA         IS 'Agencia bancaria da empresa. Campo G008. Posicoes 53-57.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.CO_DV_AGENCIA_EMPRESA      IS 'DV da agencia. Campo G009. Posicao 58.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.NU_CONTA_CORRENTE_EMPRESA  IS 'Numero da conta corrente da empresa. Campo G010. Posicoes 59-70.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.CO_DV_CONTA_EMPRESA        IS 'DV da conta corrente. Campo G011. Posicao 71.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.CO_DV_AGENCIA_CONTA        IS 'DV do conjunto agencia/conta. Campo G012. Posicao 72.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.NO_EMPRESA                 IS 'Nome da empresa. Campo G013. Posicoes 73-102.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.TE_MENSAGEM_LOTE           IS 'Mensagem ou finalidade do lote informada pela empresa. Campo G031. Posicoes 103-142.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.NO_LOGRADOURO_EMPRESA      IS 'Logradouro do endereco da empresa (rua, av, pca). Campo G032. Posicoes 143-172.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.NU_LOCAL_EMPRESA           IS 'Numero do local no logradouro. Campo G032. Posicoes 173-177.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.TE_COMPLEMENTO_EMPRESA     IS 'Complemento do endereco (apto, sala, bloco). Campo G032. Posicoes 178-192.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.NO_CIDADE_EMPRESA          IS 'Nome da cidade da empresa. Campo G033. Posicoes 193-212.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.NU_CEP_EMPRESA             IS 'CEP sem complemento. Campo G034. Posicoes 213-217.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.CO_COMPLEMENTO_CEP         IS 'Complemento do CEP (sufixo de 3 digitos). Campo G035. Posicoes 218-220.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.SG_ESTADO_EMPRESA          IS 'Sigla UF da empresa. Campo G036. Posicoes 221-222.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.NU_INDICATIVO_FORMA_PAGTO  IS 'Indicativo da forma de pagamento do servico. Campo P014. Posicoes 223-224.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno do banco. Campo G059. Posicoes 231-240. Preenchido apenas em arquivo de retorno.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.DH_INCLUSAO                IS 'Data e hora de inclusao.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.DH_ALTERACAO               IS 'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.NO_USUARIO_INCLUSAO        IS 'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.NO_USUARIO_ALTERACAO       IS 'Login do usuario ou processo que alterou.';
 
 
 -- ----------------------------------------------------------------------------
--- IPAGTB006_TRAILER_LOTE - Registro tipo 5, 1:1 com IPAGTB004
+-- IPAGTB006_RODAPE_LOTE - Registro tipo 5, 1:1 com IPAGTB004
 -- ----------------------------------------------------------------------------
-CREATE SEQUENCE IPAGTB006_TRAILER_LOTE_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE SEQUENCE IPAGTB006_RODAPE_LOTE_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
 
-CREATE TABLE IPAGTB006_TRAILER_LOTE (
-    ID_TRAILER_LOTE            NUMBER          DEFAULT ON NULL IPAGTB006_TRAILER_LOTE_SQ.NEXTVAL,
+CREATE TABLE IPAGTB006_RODAPE_LOTE (
+    ID_RODAPE_LOTE            NUMBER          DEFAULT ON NULL IPAGTB006_RODAPE_LOTE_SQ.NEXTVAL,
     ID_LOTE                    NUMBER          NOT NULL,
     NU_BANCO_COMPENSACAO       NUMBER(3)       NOT NULL,
     -- G057: posicoes 18-23
@@ -692,28 +692,28 @@ CREATE TABLE IPAGTB006_TRAILER_LOTE (
     DH_ALTERACAO               DATE,
     NO_USUARIO_INCLUSAO        VARCHAR2(60)    NOT NULL,
     NO_USUARIO_ALTERACAO       VARCHAR2(60),
-    CONSTRAINT IPAGTB006_TRAILER_LOTE_PK   PRIMARY KEY (ID_TRAILER_LOTE),
-    CONSTRAINT IPAGTB006_TRAILER_LOTE_UK01 UNIQUE (ID_LOTE),
+    CONSTRAINT IPAGTB006_RODAPE_LOTE_PK   PRIMARY KEY (ID_RODAPE_LOTE),
+    CONSTRAINT IPAGTB006_RODAPE_LOTE_UK01 UNIQUE (ID_LOTE),
     CONSTRAINT IPAGTB004_IPAGTB006_FK01
         FOREIGN KEY (ID_LOTE) REFERENCES IPAGTB004_LOTE (ID_LOTE)
 );
 
-COMMENT ON TABLE IPAGTB006_TRAILER_LOTE IS
-  'Armazena o registro Trailer de Lote (Tipo 5) do CNAB240. Existe exatamente um por lote. '
+COMMENT ON TABLE IPAGTB006_RODAPE_LOTE IS
+  'Armazena o registro Rodape de Lote (Tipo 5) do CNAB240. Existe exatamente um por lote. '
   'Contem totalizadores do lote: quantidade de registros, somatoria de valores e numero de aviso de debito. '
   'Relacionamento 1:1 com IPAGTB004_LOTE.';
-COMMENT ON COLUMN IPAGTB006_TRAILER_LOTE.ID_TRAILER_LOTE         IS 'Identificador surrogate gerado por sequence.';
-COMMENT ON COLUMN IPAGTB006_TRAILER_LOTE.ID_LOTE                 IS 'Chave estrangeira para IPAGTB004_LOTE.';
-COMMENT ON COLUMN IPAGTB006_TRAILER_LOTE.NU_BANCO_COMPENSACAO    IS 'Codigo do banco na camara de compensacao. Campo G001.';
-COMMENT ON COLUMN IPAGTB006_TRAILER_LOTE.QT_REGISTRO_LOTE       IS 'Quantidade total de registros do lote (incluindo header e trailer). Campo G057. Posicoes 18-23.';
-COMMENT ON COLUMN IPAGTB006_TRAILER_LOTE.NU_SOMATORIA_VALOR    IS 'Somatoria dos valores de pagamento do lote, com 2 casas decimais. Posicoes 24-41. Usado para conferencia de integridade.';
-COMMENT ON COLUMN IPAGTB006_TRAILER_LOTE.NU_SOMATORIA_QTDE_MOEDA IS 'Somatoria das quantidades de moeda do lote, com 5 casas decimais. Campo G058. Posicoes 42-59.';
-COMMENT ON COLUMN IPAGTB006_TRAILER_LOTE.NU_NUMERO_AVISO_DEBITO  IS 'Numero do aviso de debito bancario. Campo G066. Posicoes 60-65.';
-COMMENT ON COLUMN IPAGTB006_TRAILER_LOTE.TE_OCORRENCIA          IS 'Codigos de ocorrencias de retorno. Campo G059. Posicoes 231-240.';
-COMMENT ON COLUMN IPAGTB006_TRAILER_LOTE.DH_INCLUSAO             IS 'Data e hora de inclusao.';
-COMMENT ON COLUMN IPAGTB006_TRAILER_LOTE.DH_ALTERACAO            IS 'Data e hora da ultima alteracao.';
-COMMENT ON COLUMN IPAGTB006_TRAILER_LOTE.NO_USUARIO_INCLUSAO     IS 'Login do usuario ou processo que incluiu.';
-COMMENT ON COLUMN IPAGTB006_TRAILER_LOTE.NO_USUARIO_ALTERACAO    IS 'Login do usuario ou processo que alterou.';
+COMMENT ON COLUMN IPAGTB006_RODAPE_LOTE.ID_RODAPE_LOTE         IS 'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB006_RODAPE_LOTE.ID_LOTE                 IS 'Chave estrangeira para IPAGTB004_LOTE.';
+COMMENT ON COLUMN IPAGTB006_RODAPE_LOTE.NU_BANCO_COMPENSACAO    IS 'Codigo do banco na camara de compensacao. Campo G001.';
+COMMENT ON COLUMN IPAGTB006_RODAPE_LOTE.QT_REGISTRO_LOTE       IS 'Quantidade total de registros do lote (incluindo cabecalho e rodape). Campo G057. Posicoes 18-23.';
+COMMENT ON COLUMN IPAGTB006_RODAPE_LOTE.NU_SOMATORIA_VALOR    IS 'Somatoria dos valores de pagamento do lote, com 2 casas decimais. Posicoes 24-41. Usado para conferencia de integridade.';
+COMMENT ON COLUMN IPAGTB006_RODAPE_LOTE.NU_SOMATORIA_QTDE_MOEDA IS 'Somatoria das quantidades de moeda do lote, com 5 casas decimais. Campo G058. Posicoes 42-59.';
+COMMENT ON COLUMN IPAGTB006_RODAPE_LOTE.NU_NUMERO_AVISO_DEBITO  IS 'Numero do aviso de debito bancario. Campo G066. Posicoes 60-65.';
+COMMENT ON COLUMN IPAGTB006_RODAPE_LOTE.TE_OCORRENCIA          IS 'Codigos de ocorrencias de retorno. Campo G059. Posicoes 231-240.';
+COMMENT ON COLUMN IPAGTB006_RODAPE_LOTE.DH_INCLUSAO             IS 'Data e hora de inclusao.';
+COMMENT ON COLUMN IPAGTB006_RODAPE_LOTE.DH_ALTERACAO            IS 'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB006_RODAPE_LOTE.NO_USUARIO_INCLUSAO     IS 'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB006_RODAPE_LOTE.NO_USUARIO_ALTERACAO    IS 'Login do usuario ou processo que alterou.';
 
 
 -- =============================================================================
@@ -785,9 +785,9 @@ CREATE TABLE IPAGTB010_DET_PAGAMENTO (
     NU_BANCO_FAVORECIDO        NUMBER(3),
     NU_AGENCIA_FAVORECIDO      NUMBER(5),
     CO_DV_AGENCIA_FAVORECIDO   CHAR(1),
-    NU_CONTA_CORRENTE_FAVO     VARCHAR2(12),
+    NU_CONTA_CORRENTE_FAVORECIDO     VARCHAR2(12),
     CO_DV_CONTA_FAVORECIDO     CHAR(1),
-    CO_DV_AGENCIA_CONTA_FAVO   CHAR(1),
+    CO_DV_AGENCIA_CONTA_FAVORECIDO   CHAR(1),
     NO_FAVORECIDO              VARCHAR2(30),
     NU_DOCUMENTO_EMPRESA       VARCHAR2(20),
     DH_PAGAMENTO               DATE            NOT NULL,
@@ -828,9 +828,9 @@ COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.NU_CAMARA_CENTRALIZADORA   IS 'Codigo 
 COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.NU_BANCO_FAVORECIDO        IS 'Codigo do banco do favorecido. Campo P002. Posicoes 21-23.';
 COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.NU_AGENCIA_FAVORECIDO      IS 'Agencia do favorecido. Campo G008. Posicoes 24-28.';
 COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.CO_DV_AGENCIA_FAVORECIDO   IS 'DV da agencia do favorecido. Campo G009. Posicao 29.';
-COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.NU_CONTA_CORRENTE_FAVO     IS 'Conta corrente do favorecido. Campo G010. Posicoes 30-41.';
+COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.NU_CONTA_CORRENTE_FAVORECIDO     IS 'Conta corrente do favorecido. Campo G010. Posicoes 30-41.';
 COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.CO_DV_CONTA_FAVORECIDO     IS 'DV da conta do favorecido. Campo G011. Posicao 42.';
-COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.CO_DV_AGENCIA_CONTA_FAVO   IS 'DV conjunto agencia/conta do favorecido. Campo G012. Posicao 43.';
+COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.CO_DV_AGENCIA_CONTA_FAVORECIDO   IS 'DV conjunto agencia/conta do favorecido. Campo G012. Posicao 43.';
 COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.NO_FAVORECIDO              IS 'Nome do favorecido. Campo G013. Posicoes 44-73.';
 COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.NU_DOCUMENTO_EMPRESA       IS 'Numero do documento da empresa (seu numero). Campo G064. Posicoes 74-93.';
 COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.DH_PAGAMENTO               IS 'Data do pagamento convertida de DDMMAAAA. Campo P009. Posicoes 94-101.';
@@ -861,7 +861,7 @@ CREATE TABLE IPAGTB011_DET_INFO_FAVORECIDO (
     ID_SEG_B                    NUMBER         DEFAULT ON NULL IPAGTB011_DET_INFO_FAVORECIDO_SQ.NEXTVAL,
     ID_DETALHE_REG              NUMBER         NOT NULL,
     CO_IDENTIFICACAO_FAVORECIDO VARCHAR2(3),
-    CO_TIPO_INSCRICAO_FAVO      CHAR(1),
+    CO_TIPO_INSCRICAO_FAVORECIDO      CHAR(1),
     NU_INSCRICAO_FAVORECIDO     VARCHAR2(14),
     TE_INFORMACAO_10            VARCHAR2(35),
     TE_INFORMACAO_11            VARCHAR2(60),
@@ -885,8 +885,8 @@ COMMENT ON TABLE IPAGTB011_DET_INFO_FAVORECIDO IS 'Segmento B do CNAB240. Comple
 COMMENT ON COLUMN IPAGTB011_DET_INFO_FAVORECIDO.ID_SEG_B                    IS 'Identificador surrogate gerado por sequence.';
 COMMENT ON COLUMN IPAGTB011_DET_INFO_FAVORECIDO.ID_DETALHE_REG              IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
 COMMENT ON COLUMN IPAGTB011_DET_INFO_FAVORECIDO.CO_IDENTIFICACAO_FAVORECIDO IS 'Forma de iniciacao PIX. Campo G100. Posicoes 15-17. Ex: 01=CPF/CNPJ, 02=Celular, 04=Chave Aleatoria.';
-COMMENT ON COLUMN IPAGTB011_DET_INFO_FAVORECIDO.CO_TIPO_INSCRICAO_FAVO      IS 'Tipo de inscricao do favorecido. Campo G005. Posicao 18.';
-COMMENT ON COLUMN IPAGTB011_DET_INFO_FAVORECIDO.NU_INSCRICAO_FAVORECIDO     IS 'CPF/CNPJ do favorecido. Campo G006. Posicoes 19-32.';
+COMMENT ON COLUMN IPAGTB011_DET_INFO_FAVORECIDO.CO_TIPO_INSCRICAO_FAVORECIDO      IS 'Tipo de inscricao do favorecido. Campo G005. Posicao 18.';
+COMMENT ON COLUMN IPAGTB011_DET_INFO_FAVORECIDO.NU_INSCRICAO_FAVORECIDO     IS '[DADO_PESSOAL] CPF/CNPJ do favorecido. Campo G006. Posicoes 19-32.';
 COMMENT ON COLUMN IPAGTB011_DET_INFO_FAVORECIDO.TE_INFORMACAO_10            IS 'Dados complementares 1 (35 chars). Campo G101. Posicoes 33-67. Para endereco: logradouro; para PIX: chave.';
 COMMENT ON COLUMN IPAGTB011_DET_INFO_FAVORECIDO.TE_INFORMACAO_11            IS 'Dados complementares 2 (60 chars). Campo G101. Posicoes 68-127.';
 COMMENT ON COLUMN IPAGTB011_DET_INFO_FAVORECIDO.TE_INFORMACAO_12            IS 'Dados complementares 3 (99 chars). Campo G101. Posicoes 128-226. Para endereco: cidade/CEP/estado.';
@@ -913,11 +913,11 @@ CREATE TABLE IPAGTB012_DET_COMPLEMENTAR (
     NU_VALOR_OUTROS_ACRESCIMOS NUMBER(15,2),
     NU_AGENCIA_SUBSTITUTA      NUMBER(5),
     CO_DV_AGENCIA_SUBSTITUTA   CHAR(1),
-    NU_CONTA_CORRENTE_SUBST    VARCHAR2(12),
+    NU_CONTA_CORRENTE_SUBSTITUTA    VARCHAR2(12),
     CO_DV_CONTA_SUBSTITUTA     CHAR(1),
-    CO_DV_AGCONTA_SUBSTITUTA   CHAR(1),
+    CO_DV_AGENCIA_CONTA_SUBSTITUTA   CHAR(1),
     NU_VALOR_INSS              NUMBER(15,2),
-    NU_CONTA_PAGAMENTO_CREDIT  VARCHAR2(20),
+    NU_CONTA_PAGAMENTO_CREDITO  VARCHAR2(20),
     DH_INCLUSAO                DATE            DEFAULT SYSDATE NOT NULL,
     DH_ALTERACAO               DATE,
     NO_USUARIO_INCLUSAO        VARCHAR2(60)    NOT NULL,
@@ -938,11 +938,11 @@ COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.NU_VALOR_OUTRAS_DEDUCOES    IS 'Val
 COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.NU_VALOR_OUTROS_ACRESCIMOS  IS 'Valor de outros acrescimos. Campo G054. Posicoes 78-92.';
 COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.NU_AGENCIA_SUBSTITUTA       IS 'Agencia substituta quando a original foi encerrada. Campo G008. Posicoes 93-97.';
 COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.CO_DV_AGENCIA_SUBSTITUTA    IS 'DV da agencia substituta. Campo G009. Posicao 98.';
-COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.NU_CONTA_CORRENTE_SUBST     IS 'Conta substituta. Campo G010. Posicoes 99-110.';
+COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.NU_CONTA_CORRENTE_SUBSTITUTA     IS 'Conta substituta. Campo G010. Posicoes 99-110.';
 COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.CO_DV_CONTA_SUBSTITUTA      IS 'DV da conta substituta. Campo G011. Posicao 111.';
-COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.CO_DV_AGCONTA_SUBSTITUTA    IS 'DV conjunto agencia/conta substituta. Campo G012. Posicao 112.';
+COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.CO_DV_AGENCIA_CONTA_SUBSTITUTA    IS 'DV conjunto agencia/conta substituta. Campo G012. Posicao 112.';
 COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.NU_VALOR_INSS               IS 'Valor do INSS a deduzir. Campo G055. Posicoes 113-127.';
-COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.NU_CONTA_PAGAMENTO_CREDIT   IS 'Numero da conta de pagamento creditada. Campo P016. Posicoes 128-147.';
+COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.NU_CONTA_PAGAMENTO_CREDITO   IS 'Numero da conta de pagamento creditada. Campo P016. Posicoes 128-147.';
 COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.DH_INCLUSAO                 IS 'Data e hora de inclusao.';
 COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.DH_ALTERACAO                IS 'Data e hora da ultima alteracao.';
 COMMENT ON COLUMN IPAGTB012_DET_COMPLEMENTAR.NO_USUARIO_INCLUSAO         IS 'Login do usuario que incluiu.';
@@ -1020,7 +1020,7 @@ CREATE TABLE IPAGTB014_DET_PARTES_TITULO (
     CO_TIPO_INSCRICAO_PAGADOR  CHAR(1),
     NU_INSCRICAO_PAGADOR       VARCHAR2(15),
     NO_PAGADOR                 VARCHAR2(40),
-    CO_TIPO_INSCRICAO_BENEF    CHAR(1),
+    CO_TIPO_INSCRICAO_BENEFICIARIO    CHAR(1),
     NU_INSCRICAO_BENEFICIARIO  VARCHAR2(15),
     NO_BENEFICIARIO            VARCHAR2(40),
     CO_TIPO_INSCRICAO_SACADOR  CHAR(1),
@@ -1031,7 +1031,7 @@ CREATE TABLE IPAGTB014_DET_PARTES_TITULO (
     NO_USUARIO_INCLUSAO        VARCHAR2(60)  NOT NULL,
     NO_USUARIO_ALTERACAO       VARCHAR2(60),
     ID_TIPO_INSCRICAO_PAGADOR  NUMBER,
-    ID_TIPO_INSCRICAO_BENEF    NUMBER,
+    ID_TIPO_INSCRICAO_BENEFICIARIO    NUMBER,
     ID_TIPO_INSCRICAO_SACADOR  NUMBER,
     CONSTRAINT IPAGTB014_DET_PARTES_TITULO_PK   PRIMARY KEY (ID_SEG_J52),
     CONSTRAINT IPAGTB014_DET_PARTES_TITULO_UK01 UNIQUE (ID_DETALHE_REG),
@@ -1040,7 +1040,7 @@ CREATE TABLE IPAGTB014_DET_PARTES_TITULO (
     CONSTRAINT IPAGTB034_IPAGTB014_FK02
         FOREIGN KEY (ID_TIPO_INSCRICAO_PAGADOR) REFERENCES IPAGTB034_TIPO_INSCRICAO (ID_TIPO_INSCRICAO),
     CONSTRAINT IPAGTB034_IPAGTB014_FK03
-        FOREIGN KEY (ID_TIPO_INSCRICAO_BENEF) REFERENCES IPAGTB034_TIPO_INSCRICAO (ID_TIPO_INSCRICAO),
+        FOREIGN KEY (ID_TIPO_INSCRICAO_BENEFICIARIO) REFERENCES IPAGTB034_TIPO_INSCRICAO (ID_TIPO_INSCRICAO),
     CONSTRAINT IPAGTB034_IPAGTB014_FK04
         FOREIGN KEY (ID_TIPO_INSCRICAO_SACADOR) REFERENCES IPAGTB034_TIPO_INSCRICAO (ID_TIPO_INSCRICAO)
 );
@@ -1050,13 +1050,13 @@ COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.ID_SEG_J52                IS 'Iden
 COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.ID_DETALHE_REG            IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
 COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.CO_IDENTIFICACAO_REG      IS 'Identificacao do registro opcional. Campo G067. Posicoes 18-19. Valor fixo 52.';
 COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.CO_TIPO_INSCRICAO_PAGADOR IS 'Tipo de inscricao do pagador. Campo G005. Posicao 20.';
-COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.NU_INSCRICAO_PAGADOR      IS 'CPF/CNPJ do pagador. Campo G006. Posicoes 21-35.';
+COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.NU_INSCRICAO_PAGADOR      IS '[DADO_PESSOAL] CPF/CNPJ do pagador. Campo G006. Posicoes 21-35.';
 COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.NO_PAGADOR                IS 'Nome do pagador. Campo G013. Posicoes 36-75.';
-COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.CO_TIPO_INSCRICAO_BENEF   IS 'Tipo de inscricao do beneficiario. Campo G005. Posicao 76.';
-COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.NU_INSCRICAO_BENEFICIARIO IS 'CPF/CNPJ do beneficiario. Campo G006. Posicoes 77-91.';
+COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.CO_TIPO_INSCRICAO_BENEFICIARIO   IS 'Tipo de inscricao do beneficiario. Campo G005. Posicao 76.';
+COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.NU_INSCRICAO_BENEFICIARIO IS '[DADO_PESSOAL] CPF/CNPJ do beneficiario. Campo G006. Posicoes 77-91.';
 COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.NO_BENEFICIARIO           IS 'Nome do beneficiario (cedente). Campo G013. Posicoes 92-131.';
 COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.CO_TIPO_INSCRICAO_SACADOR IS 'Tipo de inscricao do sacador/avalista. Campo G005. Posicao 132.';
-COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.NU_INSCRICAO_SACADOR      IS 'CPF/CNPJ do sacador/avalista. Campo G006. Posicoes 133-147.';
+COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.NU_INSCRICAO_SACADOR      IS '[DADO_PESSOAL] CPF/CNPJ do sacador/avalista. Campo G006. Posicoes 133-147.';
 COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.NO_SACADOR                IS 'Nome do sacador/avalista (beneficiario original do titulo). Campo G013. Posicoes 148-187.';
 COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.DH_INCLUSAO               IS 'Data e hora de inclusao.';
 COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.DH_ALTERACAO              IS 'Data e hora da ultima alteracao.';
@@ -1064,55 +1064,55 @@ COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.NO_USUARIO_INCLUSAO       IS 'Logi
 COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.NO_USUARIO_ALTERACAO      IS 'Login do usuario que alterou.';
 
 -- ----------------------------------------------------------------------------
--- IPAGTB015_DET_PIX_QR_CODE - Segmento J-52 PIX (Chave/TXID QR Code)
+-- IPAGTB015_DET_PIX_CODIGO_QR - Segmento J-52 PIX (Chave/TXID QR Code)
 --   Ref: pagina 32 do Layout CNAB240 V10.9
 -- ----------------------------------------------------------------------------
-CREATE SEQUENCE IPAGTB015_DET_PIX_QR_CODE_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE SEQUENCE IPAGTB015_DET_PIX_CODIGO_QR_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
 
-CREATE TABLE IPAGTB015_DET_PIX_QR_CODE (
-    ID_SEG_J52_PIX             NUMBER        DEFAULT ON NULL IPAGTB015_DET_PIX_QR_CODE_SQ.NEXTVAL,
+CREATE TABLE IPAGTB015_DET_PIX_CODIGO_QR (
+    ID_SEG_J52_PIX             NUMBER        DEFAULT ON NULL IPAGTB015_DET_PIX_CODIGO_QR_SQ.NEXTVAL,
     ID_DETALHE_REG             NUMBER        NOT NULL,
     CO_IDENTIFICACAO_REG       VARCHAR2(2)   DEFAULT '52' NOT NULL,
     CO_TIPO_INSCRICAO_DEVEDOR  CHAR(1),
     NU_INSCRICAO_DEVEDOR       VARCHAR2(15),
     NO_DEVEDOR                 VARCHAR2(40),
-    CO_TIPO_INSCRICAO_FAVO     CHAR(1),
+    CO_TIPO_INSCRICAO_FAVORECIDO     CHAR(1),
     NU_INSCRICAO_FAVORECIDO    VARCHAR2(15),
     NO_FAVORECIDO              VARCHAR2(40),
     TE_CHAVE_PAGAMENTO_PIX     VARCHAR2(79),
-    CO_TXID_QRCODE             VARCHAR2(30),
+    CO_TXID_CODIGO_QR             VARCHAR2(30),
     DH_INCLUSAO                DATE          DEFAULT SYSDATE NOT NULL,
     DH_ALTERACAO               DATE,
     NO_USUARIO_INCLUSAO        VARCHAR2(60)  NOT NULL,
     NO_USUARIO_ALTERACAO       VARCHAR2(60),
     ID_TIPO_INSCRICAO_DEVEDOR  NUMBER,
-    ID_TIPO_INSCRICAO_FAVO     NUMBER,
-    CONSTRAINT IPAGTB015_DET_PIX_QR_CODE_PK   PRIMARY KEY (ID_SEG_J52_PIX),
-    CONSTRAINT IPAGTB015_DET_PIX_QR_CODE_UK01 UNIQUE (ID_DETALHE_REG),
+    ID_TIPO_INSCRICAO_FAVORECIDO     NUMBER,
+    CONSTRAINT IPAGTB015_DET_PIX_CODIGO_QR_PK   PRIMARY KEY (ID_SEG_J52_PIX),
+    CONSTRAINT IPAGTB015_DET_PIX_CODIGO_QR_UK01 UNIQUE (ID_DETALHE_REG),
     CONSTRAINT IPAGTB007_IPAGTB015_FK01
         FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG),
     CONSTRAINT IPAGTB034_IPAGTB015_FK02
         FOREIGN KEY (ID_TIPO_INSCRICAO_DEVEDOR) REFERENCES IPAGTB034_TIPO_INSCRICAO (ID_TIPO_INSCRICAO),
     CONSTRAINT IPAGTB034_IPAGTB015_FK03
-        FOREIGN KEY (ID_TIPO_INSCRICAO_FAVO) REFERENCES IPAGTB034_TIPO_INSCRICAO (ID_TIPO_INSCRICAO)
+        FOREIGN KEY (ID_TIPO_INSCRICAO_FAVORECIDO) REFERENCES IPAGTB034_TIPO_INSCRICAO (ID_TIPO_INSCRICAO)
 );
 
-COMMENT ON TABLE IPAGTB015_DET_PIX_QR_CODE IS 'Segmento J-52 PIX do CNAB240. Variante do J-52 para pagamentos via QR Code. Contem identificacao do devedor, favorecido e a chave de enderecamento PIX (CPF, CNPJ, email, celular ou chave aleatoria) mais o TXID. Layout ref: pagina 32.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.ID_SEG_J52_PIX            IS 'Identificador surrogate gerado por sequence.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.ID_DETALHE_REG            IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.CO_IDENTIFICACAO_REG      IS 'Identificacao do registro opcional. Campo G067. Valor fixo 52. Posicoes 18-19.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.CO_TIPO_INSCRICAO_DEVEDOR IS 'Tipo de inscricao do devedor. Campo G005. Posicao 20.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.NU_INSCRICAO_DEVEDOR      IS 'CPF/CNPJ do devedor. Campo G006. Posicoes 21-35.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.NO_DEVEDOR                IS 'Nome do devedor. Campo G013. Posicoes 36-75.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.CO_TIPO_INSCRICAO_FAVO    IS 'Tipo de inscricao do favorecido. Campo G005. Posicao 76.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.NU_INSCRICAO_FAVORECIDO   IS 'CPF/CNPJ do favorecido. Campo G006. Posicoes 77-91.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.NO_FAVORECIDO             IS 'Nome do favorecido. Campo G013. Posicoes 92-131.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.TE_CHAVE_PAGAMENTO_PIX    IS 'Chave de enderecamento PIX (URL, CPF, CNPJ, celular, email ou chave aleatoria). Campo G102. Posicoes 132-210.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.CO_TXID_QRCODE            IS 'TXID do QR Code PIX. Campo G102. Posicoes 211-240.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.DH_INCLUSAO               IS 'Data e hora de inclusao.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.DH_ALTERACAO              IS 'Data e hora da ultima alteracao.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.NO_USUARIO_INCLUSAO       IS 'Login do usuario que incluiu.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.NO_USUARIO_ALTERACAO      IS 'Login do usuario que alterou.';
+COMMENT ON TABLE IPAGTB015_DET_PIX_CODIGO_QR IS 'Segmento J-52 PIX do CNAB240. Variante do J-52 para pagamentos via QR Code. Contem identificacao do devedor, favorecido e a chave de enderecamento PIX (CPF, CNPJ, email, celular ou chave aleatoria) mais o TXID. Layout ref: pagina 32.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.ID_SEG_J52_PIX            IS 'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.ID_DETALHE_REG            IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.CO_IDENTIFICACAO_REG      IS 'Identificacao do registro opcional. Campo G067. Valor fixo 52. Posicoes 18-19.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.CO_TIPO_INSCRICAO_DEVEDOR IS 'Tipo de inscricao do devedor. Campo G005. Posicao 20.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.NU_INSCRICAO_DEVEDOR      IS '[DADO_PESSOAL] CPF/CNPJ do devedor. Campo G006. Posicoes 21-35.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.NO_DEVEDOR                IS 'Nome do devedor. Campo G013. Posicoes 36-75.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.CO_TIPO_INSCRICAO_FAVORECIDO    IS 'Tipo de inscricao do favorecido. Campo G005. Posicao 76.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.NU_INSCRICAO_FAVORECIDO   IS '[DADO_PESSOAL] CPF/CNPJ do favorecido. Campo G006. Posicoes 77-91.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.NO_FAVORECIDO             IS 'Nome do favorecido. Campo G013. Posicoes 92-131.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.TE_CHAVE_PAGAMENTO_PIX    IS '[DADO_PESSOAL] Chave de enderecamento PIX (URL, CPF, CNPJ, celular, email ou chave aleatoria). Campo G102. Posicoes 132-210.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.CO_TXID_CODIGO_QR            IS 'TXID do QR Code PIX. Campo G102. Posicoes 211-240.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.DH_INCLUSAO               IS 'Data e hora de inclusao.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.DH_ALTERACAO              IS 'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.NO_USUARIO_INCLUSAO       IS 'Login do usuario que incluiu.';
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.NO_USUARIO_ALTERACAO      IS 'Login do usuario que alterou.';
 
 -- =============================================================================
 -- SECAO 8: SEGMENTOS DE TRIBUTOS (N, O, W, Z)
@@ -1134,8 +1134,8 @@ CREATE TABLE IPAGTB016_DET_TRIBUTO_SEM_CB (
     NU_VALOR_TOTAL_PAGAMENTO     NUMBER(15,2)  NOT NULL,
     -- Informacoes complementares variaveis por tipo de tributo (posicoes 111-230)
     CO_RECEITA_TRIBUTO           VARCHAR2(6),
-    CO_TIPO_IDENTIFICACAO_CONT   VARCHAR2(2),
-    NU_IDENTIFICACAO_CONTRIB     VARCHAR2(14),
+    CO_TIPO_IDENTIFICACAO_CONTRIBUINTE   VARCHAR2(2),
+    NU_IDENTIFICACAO_CONTRIBUINTE     VARCHAR2(14),
     CO_IDENTIFICACAO_TRIBUTO     VARCHAR2(2),
     TE_PERIODO_APURACAO          VARCHAR2(8),
     NU_REFERENCIA_TRIBUTO        VARCHAR2(17),
@@ -1165,8 +1165,8 @@ COMMENT ON COLUMN IPAGTB016_DET_TRIBUTO_SEM_CB.NO_CONTRIBUINTE              IS '
 COMMENT ON COLUMN IPAGTB016_DET_TRIBUTO_SEM_CB.DH_PAGAMENTO                 IS 'Data do pagamento do tributo. Campo P009. Posicoes 88-95 (DDMMAAAA).';
 COMMENT ON COLUMN IPAGTB016_DET_TRIBUTO_SEM_CB.NU_VALOR_TOTAL_PAGAMENTO     IS 'Valor total do pagamento do tributo. Campo P010. Posicoes 96-110.';
 COMMENT ON COLUMN IPAGTB016_DET_TRIBUTO_SEM_CB.CO_RECEITA_TRIBUTO           IS 'Codigo da receita do tributo. Campo N002. Posicoes 111-116. Ex: 6106 para DARF Simples.';
-COMMENT ON COLUMN IPAGTB016_DET_TRIBUTO_SEM_CB.CO_TIPO_IDENTIFICACAO_CONT   IS 'Tipo de identificacao do contribuinte. Campo N003. Posicoes 117-118.';
-COMMENT ON COLUMN IPAGTB016_DET_TRIBUTO_SEM_CB.NU_IDENTIFICACAO_CONTRIB     IS 'Numero de identificacao do contribuinte (CPF/CNPJ/RENAVAM). Campo N004. Posicoes 119-132.';
+COMMENT ON COLUMN IPAGTB016_DET_TRIBUTO_SEM_CB.CO_TIPO_IDENTIFICACAO_CONTRIBUINTE   IS 'Tipo de identificacao do contribuinte. Campo N003. Posicoes 117-118.';
+COMMENT ON COLUMN IPAGTB016_DET_TRIBUTO_SEM_CB.NU_IDENTIFICACAO_CONTRIBUINTE     IS '[DADO_PESSOAL] Numero de identificacao do contribuinte (CPF/CNPJ/RENAVAM). Campo N004. Posicoes 119-132.';
 COMMENT ON COLUMN IPAGTB016_DET_TRIBUTO_SEM_CB.CO_IDENTIFICACAO_TRIBUTO     IS 'Codigo de identificacao do tributo (ex: codigo da acao judicial). Campo N005. Posicoes 133-134.';
 COMMENT ON COLUMN IPAGTB016_DET_TRIBUTO_SEM_CB.TE_PERIODO_APURACAO          IS 'Periodo de apuracao do tributo (DDMMAAAA ou MMAAAA). Campo N006/N008. Posicoes 135-142.';
 COMMENT ON COLUMN IPAGTB016_DET_TRIBUTO_SEM_CB.NU_REFERENCIA_TRIBUTO        IS 'Numero de referencia do tributo (ex: numero DARF). Campo N009. Posicoes 143-159.';
@@ -1236,8 +1236,8 @@ CREATE TABLE IPAGTB018_DET_COMPL_TRIBUTO (
     ID_DETALHE_REG               NUMBER        NOT NULL,
     NU_COMPLEMENTO_REGISTRO      NUMBER(1),
     CO_IDENTIFICACAO_INFORMACOES CHAR(1),
-    TE_INFORMACAO_COMPLEMENT_1   VARCHAR2(80),
-    TE_INFORMACAO_COMPLEMENT_2   VARCHAR2(80),
+    TE_INFORMACAO_COMPLEMENTAR_1   VARCHAR2(80),
+    TE_INFORMACAO_COMPLEMENTAR_2   VARCHAR2(80),
     CO_IDENTIFICADOR_TRIBUTO     VARCHAR2(2),
     TE_INFORMACAO_TRIBUTO        VARCHAR2(48),
     TE_OCORRENCIA               CHAR(10),
@@ -1256,8 +1256,8 @@ COMMENT ON COLUMN IPAGTB018_DET_COMPL_TRIBUTO.ID_SEG_W                     IS 'I
 COMMENT ON COLUMN IPAGTB018_DET_COMPL_TRIBUTO.ID_DETALHE_REG               IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
 COMMENT ON COLUMN IPAGTB018_DET_COMPL_TRIBUTO.NU_COMPLEMENTO_REGISTRO      IS 'Numero sequencial do registro complementar W. Campo N023. Posicao 15.';
 COMMENT ON COLUMN IPAGTB018_DET_COMPL_TRIBUTO.CO_IDENTIFICACAO_INFORMACOES IS 'Identificacao do uso das informacoes 1 e 2. Campo N024. Posicao 16.';
-COMMENT ON COLUMN IPAGTB018_DET_COMPL_TRIBUTO.TE_INFORMACAO_COMPLEMENT_1   IS 'Informacao complementar 1 (80 chars). Campo N025. Posicoes 17-96. Para FGTS: codigo conectividade social.';
-COMMENT ON COLUMN IPAGTB018_DET_COMPL_TRIBUTO.TE_INFORMACAO_COMPLEMENT_2   IS 'Informacao complementar 2 (80 chars). Campo N025. Posicoes 97-176.';
+COMMENT ON COLUMN IPAGTB018_DET_COMPL_TRIBUTO.TE_INFORMACAO_COMPLEMENTAR_1   IS 'Informacao complementar 1 (80 chars). Campo N025. Posicoes 17-96. Para FGTS: codigo conectividade social.';
+COMMENT ON COLUMN IPAGTB018_DET_COMPL_TRIBUTO.TE_INFORMACAO_COMPLEMENTAR_2   IS 'Informacao complementar 2 (80 chars). Campo N025. Posicoes 97-176.';
 COMMENT ON COLUMN IPAGTB018_DET_COMPL_TRIBUTO.CO_IDENTIFICADOR_TRIBUTO     IS 'Identificador do tipo de tributo nas informacoes do campo 3. Campo N027. Posicoes 177-178.';
 COMMENT ON COLUMN IPAGTB018_DET_COMPL_TRIBUTO.TE_INFORMACAO_TRIBUTO        IS 'Dados especificos do tributo (ex: lacre FGTS, digito lacre). Campo N026. Posicoes 179-228.';
 COMMENT ON COLUMN IPAGTB018_DET_COMPL_TRIBUTO.TE_OCORRENCIA               IS 'Codigos de ocorrencias de retorno. Campo G059. Posicoes 231-240.';
@@ -1313,10 +1313,10 @@ CREATE TABLE IPAGTB020_DET_DADOS_TITULO (
     ID_DETALHE_REG             NUMBER        NOT NULL,
     -- Conta do beneficiario (campos 08.3P a 12.3P)
     NU_AGENCIA_BENEFICIARIO    NUMBER(5),
-    CO_DV_AGENCIA_BENEF        CHAR(1),
+    CO_DV_AGENCIA_BENEFICIARIO        CHAR(1),
     NU_CONTA_BENEFICIARIO      VARCHAR2(12),
-    CO_DV_CONTA_BENEF          CHAR(1),
-    CO_DV_AGENCIA_CONTA_BENEF  CHAR(1),
+    CO_DV_CONTA_BENEFICIARIO          CHAR(1),
+    CO_DV_AGENCIA_CONTA_BENEFICIARIO  CHAR(1),
     -- Dados do titulo (campos 13.3P a 26.3P)
     NU_NOSSO_NUMERO            VARCHAR2(20),
     CO_CARTEIRA                CHAR(1),
@@ -1344,7 +1344,7 @@ CREATE TABLE IPAGTB020_DET_DADOS_TITULO (
     NU_VALOR_IOF               NUMBER(15,2),
     NU_VALOR_ABATIMENTO        NUMBER(15,2),
     -- Identificacao e instrucoes (campos 35.3P a 42.3P)
-    TE_IDENTIFICACAO_TITULO_EMPR VARCHAR2(25),
+    TE_IDENTIFICACAO_TITULO_EMPRESA VARCHAR2(25),
     CO_PROTESTO                CHAR(1),
     NU_PRAZO_PROTESTO          NUMBER(2),
     CO_BAIXA_DEVOLUCAO         CHAR(1),
@@ -1370,10 +1370,10 @@ COMMENT ON TABLE IPAGTB020_DET_DADOS_TITULO IS 'Segmento P do CNAB240. Obrigator
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.ID_SEG_P                   IS 'Identificador surrogate gerado por sequence.';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.ID_DETALHE_REG             IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_AGENCIA_BENEFICIARIO    IS 'Agencia mantenedora da conta do beneficiario. Campo 08.3P (G008).';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_AGENCIA_BENEF        IS 'DV da agencia do beneficiario. Campo 09.3P (G009).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_AGENCIA_BENEFICIARIO        IS 'DV da agencia do beneficiario. Campo 09.3P (G009).';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_CONTA_BENEFICIARIO      IS 'Numero da conta corrente do beneficiario. Campo 10.3P (G010).';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_CONTA_BENEF          IS 'DV da conta do beneficiario. Campo 11.3P (G011).';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_AGENCIA_CONTA_BENEF  IS 'DV conjunto agencia/conta do beneficiario. Campo 12.3P (G012).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_CONTA_BENEFICIARIO          IS 'DV da conta do beneficiario. Campo 11.3P (G011).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_DV_AGENCIA_CONTA_BENEFICIARIO  IS 'DV conjunto agencia/conta do beneficiario. Campo 12.3P (G012).';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_NOSSO_NUMERO            IS 'Identificacao do titulo no banco (nosso numero). Campo 13.3P (G069).';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_CARTEIRA                IS 'Codigo da carteira de cobranca. Campo 14.3P (C006).';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_FORMA_CADASTRAMENTO     IS 'Forma de cadastramento do titulo no banco. Campo 15.3P (C007).';
@@ -1396,7 +1396,7 @@ COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.DH_DATA_DESCONTO_1         IS 'Data
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_DESCONTO_1        IS 'Valor/percentual do desconto 1. Campo 32.3P (C023).';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_IOF               IS 'Valor do IOF a ser recolhido. Campo 33.3P (C024).';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_VALOR_ABATIMENTO        IS 'Valor do abatimento. Campo 34.3P (G045).';
-COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.TE_IDENTIFICACAO_TITULO_EMPR IS 'Identificacao do titulo na empresa beneficiaria. Campo 35.3P (G072).';
+COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.TE_IDENTIFICACAO_TITULO_EMPRESA IS 'Identificacao do titulo na empresa beneficiaria. Campo 35.3P (G072).';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_PROTESTO                IS 'Codigo para protesto. Campo 36.3P (C026). 1=Protestar dias corridos, 3=Nao protestar.';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.NU_PRAZO_PROTESTO          IS 'Numero de dias para protesto. Campo 37.3P (C027).';
 COMMENT ON COLUMN IPAGTB020_DET_DADOS_TITULO.CO_BAIXA_DEVOLUCAO         IS 'Codigo para baixa/devolucao. Campo 38.3P (C028). 1=Baixar/devolver, 2=Nao baixar.';
@@ -1431,7 +1431,7 @@ CREATE TABLE IPAGTB021_DET_DADOS_SACADO (
     NU_INSCRICAO_SACADOR       VARCHAR2(15),
     NO_SACADOR_AVALISTA        VARCHAR2(40),
     NU_BANCO_CORRESPONDENTE    NUMBER(3),
-    NU_NOSSO_NUMERO_CORRESP    VARCHAR2(20),
+    NU_NOSSO_NUMERO_CORRESPONDENTE    VARCHAR2(20),
     TE_OCORRENCIA             CHAR(10),
     DH_INCLUSAO                DATE          DEFAULT SYSDATE NOT NULL,
     DH_ALTERACAO               DATE,
@@ -1453,7 +1453,7 @@ COMMENT ON TABLE IPAGTB021_DET_DADOS_SACADO IS 'Segmento Q do CNAB240. Obrigator
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.ID_SEG_Q                   IS 'Identificador surrogate gerado por sequence.';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.ID_DETALHE_REG             IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.CO_TIPO_INSCRICAO_SACADO   IS 'Tipo de inscricao do pagador. Campo 08.3Q (G005). 1=CPF, 2=CNPJ.';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_INSCRICAO_SACADO        IS 'Numero de inscricao (CPF/CNPJ) do pagador. Campo 09.3Q (G006).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_INSCRICAO_SACADO        IS '[DADO_PESSOAL] Numero de inscricao (CPF/CNPJ) do pagador. Campo 09.3Q (G006).';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_SACADO                  IS 'Nome do pagador (devedor). Campo 10.3Q (G013).';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_LOGRADOURO_SACADO       IS 'Endereco do pagador. Campo 11.3Q (G032).';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_BAIRRO_SACADO           IS 'Bairro do pagador. Campo 12.3Q (G032).';
@@ -1462,10 +1462,10 @@ COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_CEP_SACADO              IS 'CEP 
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.CO_COMPLEMENTO_CEP_SACADO  IS 'Sufixo do CEP do pagador. Campo 14.3Q (G035).';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.SG_UF_SACADO               IS 'UF do pagador. Campo 16.3Q (G036).';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.CO_TIPO_INSCRICAO_SACADOR  IS 'Tipo de inscricao do sacador/avalista. Campo 17.3Q (G005).';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_INSCRICAO_SACADOR       IS 'CPF/CNPJ do sacador/avalista. Campo 18.3Q (G006).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_INSCRICAO_SACADOR       IS '[DADO_PESSOAL] CPF/CNPJ do sacador/avalista. Campo 18.3Q (G006).';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NO_SACADOR_AVALISTA        IS 'Nome do sacador ou avalista. Campo 19.3Q (G013).';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_BANCO_CORRESPONDENTE    IS 'Codigo do banco correspondente na compensacao. Campo 20.3Q (C031).';
-COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_NOSSO_NUMERO_CORRESP    IS 'Nosso numero no banco correspondente. Campo 21.3Q (C032).';
+COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.NU_NOSSO_NUMERO_CORRESPONDENTE    IS 'Nosso numero no banco correspondente. Campo 21.3Q (C032).';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno. Posicoes 233-240.';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.DH_INCLUSAO                IS 'Data e hora de inclusao.';
 COMMENT ON COLUMN IPAGTB021_DET_DADOS_SACADO.DH_ALTERACAO               IS 'Data e hora da ultima alteracao.';
@@ -1491,7 +1491,7 @@ CREATE TABLE IPAGTB022_DET_DESCONTO_TITULO (
     -- Multa (campos 14.3R a 16.3R)
     CO_TIPO_MULTA              CHAR(1),
     DH_DATA_MULTA              DATE,
-    NU_VALOR_MULTA_PERCENT     NUMBER(15,2),
+    NU_VALOR_MULTA_PERCENTUAL     NUMBER(15,2),
     -- Informacoes e mensagens (campos 17.3R a 19.3R)
     TE_INFORMACAO_PAGADOR      VARCHAR2(10),
     TE_MENSAGEM_3              VARCHAR2(40),
@@ -1504,7 +1504,7 @@ CREATE TABLE IPAGTB022_DET_DESCONTO_TITULO (
     CO_DV_AGENCIA_DEBITO       CHAR(1),
     NU_CONTA_CORRENTE_DEBITO   VARCHAR2(12),
     CO_DV_CONTA_DEBITO         CHAR(1),
-    CO_DV_AGENCIA_CONTA_DEB    CHAR(1),
+    CO_DV_AGENCIA_CONTA_DEBITO    CHAR(1),
     CO_AVISO_DEBITO_AUTOMATICO CHAR(1),
     TE_OCORRENCIA             CHAR(10),
     DH_INCLUSAO                DATE          DEFAULT SYSDATE NOT NULL,
@@ -1528,7 +1528,7 @@ COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.DH_DATA_DESCONTO_3         IS 'D
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_VALOR_DESCONTO_3        IS 'Valor/percentual do desconto 3. Campo 13.3R (C023).';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_TIPO_MULTA              IS 'Codigo da multa. Campo 14.3R (G073). 0=Sem, 1=Valor fixo, 2=Percentual.';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.DH_DATA_MULTA              IS 'Data da multa. Campo 15.3R (G074). Convertida de DDMMAAAA.';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_VALOR_MULTA_PERCENT     IS 'Valor/percentual da multa. Campo 16.3R (G075).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_VALOR_MULTA_PERCENTUAL     IS 'Valor/percentual da multa. Campo 16.3R (G075).';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.TE_INFORMACAO_PAGADOR      IS 'Informacao ao pagador. Campo 17.3R (C036). 10 posicoes.';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.TE_MENSAGEM_3              IS 'Mensagem 3 para impressao no boleto. Campo 18.3R (C037).';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.TE_MENSAGEM_4              IS 'Mensagem 4 para impressao no boleto. Campo 19.3R (C037).';
@@ -1538,7 +1538,7 @@ COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_AGENCIA_DEBITO          IS 'C
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_DV_AGENCIA_DEBITO       IS 'DV da agencia de debito. Campo 24.3R (G009).';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.NU_CONTA_CORRENTE_DEBITO   IS 'Conta corrente para debito. Campo 25.3R (G010).';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_DV_CONTA_DEBITO         IS 'DV da conta de debito. Campo 26.3R (G011).';
-COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_DV_AGENCIA_CONTA_DEB    IS 'DV conjunto agencia/conta de debito. Campo 27.3R (G012).';
+COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_DV_AGENCIA_CONTA_DEBITO    IS 'DV conjunto agencia/conta de debito. Campo 27.3R (G012).';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.CO_AVISO_DEBITO_AUTOMATICO IS 'Aviso para debito automatico. Campo 28.3R (C039).';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno. Posicoes 232-240.';
 COMMENT ON COLUMN IPAGTB022_DET_DESCONTO_TITULO.DH_INCLUSAO                IS 'Data e hora de inclusao.';
@@ -1560,10 +1560,10 @@ CREATE TABLE IPAGTB023_DET_RETORNO_TITULO (
     ID_DETALHE_REG             NUMBER        NOT NULL,
     -- Conta do beneficiario (campos 08.3T a 12.3T)
     NU_AGENCIA_BENEFICIARIO    NUMBER(5),
-    CO_DV_AGENCIA_BENEF        CHAR(1),
+    CO_DV_AGENCIA_BENEFICIARIO        CHAR(1),
     NU_CONTA_BENEFICIARIO      VARCHAR2(12),
-    CO_DV_CONTA_BENEF          CHAR(1),
-    CO_DV_AGENCIA_CONTA_BENEF  CHAR(1),
+    CO_DV_CONTA_BENEFICIARIO          CHAR(1),
+    CO_DV_AGENCIA_CONTA_BENEFICIARIO  CHAR(1),
     -- Dados do titulo (campos 13.3T a 20.3T)
     NU_NOSSO_NUMERO            VARCHAR2(20),
     CO_CARTEIRA                CHAR(1),
@@ -1574,7 +1574,7 @@ CREATE TABLE IPAGTB023_DET_RETORNO_TITULO (
     NU_AGENCIA_COBRADORA       NUMBER(5),
     CO_DV_AGENCIA_COBRADORA    CHAR(1),
     -- Identificacao do titulo na empresa (campo 21.3T)
-    TE_IDENTIFICACAO_TITULO_EMPR VARCHAR2(25),
+    TE_IDENTIFICACAO_TITULO_EMPRESA VARCHAR2(25),
     -- Moeda (campo 22.3T)
     CO_MOEDA                   NUMBER(2),
     -- Pagador (campos 23.3T a 25.3T)
@@ -1605,10 +1605,10 @@ COMMENT ON TABLE IPAGTB023_DET_RETORNO_TITULO IS 'Segmento T do CNAB240. Obrigat
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.ID_SEG_T                   IS 'Identificador surrogate gerado por sequence.';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.ID_DETALHE_REG             IS 'Chave estrangeira para IPAGTB007_DETALHE_REG.';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_AGENCIA_BENEFICIARIO    IS 'Agencia mantenedora da conta do beneficiario. Campo 08.3T (G008).';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_AGENCIA_BENEF        IS 'DV da agencia do beneficiario. Campo 09.3T (G009).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_AGENCIA_BENEFICIARIO        IS 'DV da agencia do beneficiario. Campo 09.3T (G009).';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_CONTA_BENEFICIARIO      IS 'Conta corrente do beneficiario. Campo 10.3T (G010).';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_CONTA_BENEF          IS 'DV da conta do beneficiario. Campo 11.3T (G011).';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_AGENCIA_CONTA_BENEF  IS 'DV conjunto agencia/conta do beneficiario. Campo 12.3T (G012).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_CONTA_BENEFICIARIO          IS 'DV da conta do beneficiario. Campo 11.3T (G011).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_AGENCIA_CONTA_BENEFICIARIO  IS 'DV conjunto agencia/conta do beneficiario. Campo 12.3T (G012).';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_NOSSO_NUMERO            IS 'Identificacao do titulo no banco. Campo 13.3T (G069).';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_CARTEIRA                IS 'Codigo da carteira. Campo 14.3T (C006).';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_NUMERO_DOCUMENTO        IS 'Numero do documento de cobranca. Campo 15.3T (C011).';
@@ -1617,10 +1617,10 @@ COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_VALOR_NOMINAL           IS 'Va
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_BANCO_COBRADOR          IS 'Numero do banco cobrador/recebedor. Campo 18.3T (C045).';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_AGENCIA_COBRADORA       IS 'Agencia cobradora/recebedora. Campo 19.3T (G008).';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_DV_AGENCIA_COBRADORA    IS 'DV da agencia cobradora. Campo 20.3T (G009).';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.TE_IDENTIFICACAO_TITULO_EMPR IS 'Identificacao do titulo na empresa (uso empresa). Campo 21.3T (G072).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.TE_IDENTIFICACAO_TITULO_EMPRESA IS 'Identificacao do titulo na empresa (uso empresa). Campo 21.3T (G072).';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_MOEDA                   IS 'Codigo da moeda. Campo 22.3T (G065). 09=Real.';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.CO_TIPO_INSCRICAO_SACADO   IS 'Tipo de inscricao do pagador. Campo 23.3T (G005). 1=CPF, 2=CNPJ.';
-COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_INSCRICAO_SACADO        IS 'Numero de inscricao (CPF/CNPJ) do pagador. Campo 24.3T (G006).';
+COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_INSCRICAO_SACADO        IS '[DADO_PESSOAL] Numero de inscricao (CPF/CNPJ) do pagador. Campo 24.3T (G006).';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NO_SACADO                  IS 'Nome do pagador. Campo 25.3T (G013).';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_NUMERO_CONTRATO         IS 'Numero do contrato da operacao de credito. Campo 26.3T (C030).';
 COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.NU_VALOR_TARIFA_CUSTAS     IS 'Valor da tarifa/custas cobradas pelo banco. Campo 27.3T (G076).';
@@ -1657,7 +1657,7 @@ CREATE TABLE IPAGTB024_DET_COMPL_RETORNO (
     TE_COMPLEMENTO_OCORRENCIA  VARCHAR2(30),
     -- Banco correspondente (campos 22.3U a 23.3U)
     NU_BANCO_CORRESPONDENTE    NUMBER(3),
-    NU_NOSSO_NUMERO_CORRESP    VARCHAR2(20),
+    NU_NOSSO_NUMERO_CORRESPONDENTE    VARCHAR2(20),
     TE_OCORRENCIA             CHAR(10),
     DH_INCLUSAO                DATE          DEFAULT SYSDATE NOT NULL,
     DH_ALTERACAO               DATE,
@@ -1688,7 +1688,7 @@ COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.DH_OCORRENCIA_PAGADOR      IS 'Dat
 COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_VALOR_OCORRENCIA        IS 'Valor da ocorrencia do pagador. Campo 20.3U (C059).';
 COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.TE_COMPLEMENTO_OCORRENCIA  IS 'Complemento da ocorrencia do pagador. Campo 21.3U (A002).';
 COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_BANCO_CORRESPONDENTE    IS 'Codigo do banco correspondente na compensacao. Campo 22.3U (C031).';
-COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_NOSSO_NUMERO_CORRESP    IS 'Nosso numero no banco correspondente. Campo 23.3U (C032).';
+COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NU_NOSSO_NUMERO_CORRESPONDENTE    IS 'Nosso numero no banco correspondente. Campo 23.3U (C032).';
 COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.TE_OCORRENCIA             IS 'Codigos de ocorrencias de retorno. Posicoes 234-240.';
 COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.DH_INCLUSAO                IS 'Data e hora de inclusao.';
 COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.DH_ALTERACAO               IS 'Data e hora da ultima alteracao.';
@@ -1710,18 +1710,18 @@ COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NO_USUARIO_ALTERACAO       IS 'Log
 --
 -- Hierarquia implementada:
 --   IPAGTB001_ARQUIVO
---     |-- IPAGTB002_HEADER_ARQUIVO  (1:1)
---     |-- IPAGTB003_TRAILER_ARQUIVO (1:1)
+--     |-- IPAGTB002_CABECALHO_ARQUIVO  (1:1)
+--     |-- IPAGTB003_RODAPE_ARQUIVO (1:1)
 --     |-- IPAGTB004_LOTE            (1:N)
---           |-- IPAGTB005_HEADER_LOTE     (1:1)
---           |-- IPAGTB006_TRAILER_LOTE    (1:1)
+--           |-- IPAGTB005_CABECALHO_LOTE     (1:1)
+--           |-- IPAGTB006_RODAPE_LOTE    (1:1)
 --           |-- IPAGTB007_DETALHE_REG     (1:N)
 --                 |-- IPAGTB010_DET_PAGAMENTO     (0:1)
 --                 |-- IPAGTB011_DET_INFO_FAVORECIDO     (0:1)
 --                 |-- IPAGTB012_DET_COMPLEMENTAR     (0:1)
 --                 |-- IPAGTB013_DET_TITULO_COBRANCA     (0:1)
 --                 |-- IPAGTB014_DET_PARTES_TITULO   (0:1)
---                 |-- IPAGTB015_DET_PIX_QR_CODE (0:1)
+--                 |-- IPAGTB015_DET_PIX_CODIGO_QR (0:1)
 --                 |-- IPAGTB016_DET_TRIBUTO_SEM_CB     (0:1)
 --                 |-- IPAGTB017_DET_TRIBUTO_COM_CB     (0:1)
 --                 |-- IPAGTB018_DET_COMPL_TRIBUTO     (0:1)
@@ -1739,11 +1739,11 @@ COMMENT ON COLUMN IPAGTB024_DET_COMPL_RETORNO.NO_USUARIO_ALTERACAO       IS 'Log
 --   * IPAGTB037_SERVICO_DESTINO  - dominio dos servicos de destino
 --   * IPAGTB025_CONTROLE_CARGA   - checkpoint de carga por arquivo
 --   * IPAGTB026_CTRL_CARGA_LOTE  - checkpoint de carga por lote
---   * IPAGTB027_DISPATCH_LOTE    - estado atual de dispatch por lote/servico
---   * IPAGTB028_HISTORICO_DISPATCH - log imutavel de tentativas de dispatch
+--   * IPAGTB027_DESPACHO_LOTE    - estado atual de despacho por lote/servico
+--   * IPAGTB028_HISTORICO_DESPACHO - log imutavel de tentativas de despacho
 --   * ALTER em IPAGTB031_TIPO_SERVICO - FK para servico de destino
 --   * IPAGTV001_STATUS_ARQUIVO   - view de monitoramento de arquivos
---   * IPAGTV002_DISPATCH_PENDENTE - fila de trabalho para workers
+--   * IPAGTV002_DESPACHO_PENDENTE - fila de trabalho para processos
 -- =============================================================================
 
 -- =============================================================================
@@ -1755,9 +1755,9 @@ CREATE TABLE IPAGTB037_SERVICO_DESTINO (
     ID_SERVICO_DESTINO   NUMBER        DEFAULT ON NULL IPAGTB037_SERVICO_DESTINO_SQ.NEXTVAL,
     CO_SERVICO           VARCHAR2(20)  NOT NULL,
     NO_SERVICO           VARCHAR2(100) NOT NULL,
-    TE_ENDPOINT_URL      VARCHAR2(500),
+    TE_URL_DESTINO      VARCHAR2(500),
     NU_MAX_TENTATIVA    NUMBER(2)     DEFAULT 3    NOT NULL,
-    NU_INTERVALO_RETRY_S NUMBER(6)     DEFAULT 300  NOT NULL,
+    NU_INTERVALO_RETENTATIVA NUMBER(6)     DEFAULT 300  NOT NULL,
     IN_ATIVO             CHAR(1)       DEFAULT 'S'  NOT NULL,
     DH_INCLUSAO          DATE          DEFAULT SYSDATE NOT NULL,
     DH_ALTERACAO         DATE,
@@ -1772,7 +1772,7 @@ CREATE TABLE IPAGTB037_SERVICO_DESTINO (
 COMMENT ON TABLE IPAGTB037_SERVICO_DESTINO IS
     'Dominio dos servicos de destino para envio dos lotes CNAB240. '
     'Cada registro representa um microsservico consumidor (Boletos, Pagamentos, Tributos). '
-    'Configuracoes de endpoint e politica de retry sao centralizadas aqui.';
+    'Configuracoes de endereco e politica de retentativa sao centralizadas aqui.';
 
 COMMENT ON COLUMN IPAGTB037_SERVICO_DESTINO.ID_SERVICO_DESTINO IS
     'Identificador surrogate gerado por sequence. Chave primaria interna sem significado de negocio.';
@@ -1780,14 +1780,14 @@ COMMENT ON COLUMN IPAGTB037_SERVICO_DESTINO.CO_SERVICO IS
     'Codigo unico do servico de destino. Valores esperados: BOLETO, PAGAMENTO, TRIBUTO.';
 COMMENT ON COLUMN IPAGTB037_SERVICO_DESTINO.NO_SERVICO IS
     'Nome legivel do servico de destino. Exemplo: Servico de Boletos Bancarios.';
-COMMENT ON COLUMN IPAGTB037_SERVICO_DESTINO.TE_ENDPOINT_URL IS
-    'URL do endpoint REST do servico consumidor. Preenchido pela equipe de infraestrutura.';
+COMMENT ON COLUMN IPAGTB037_SERVICO_DESTINO.TE_URL_DESTINO IS
+    'URL do endereco REST do servico consumidor. Preenchido pela equipe de infraestrutura.';
 COMMENT ON COLUMN IPAGTB037_SERVICO_DESTINO.NU_MAX_TENTATIVA IS
-    'Numero maximo de tentativas de envio antes de marcar o dispatch como erro definitivo. Padrao: 3.';
-COMMENT ON COLUMN IPAGTB037_SERVICO_DESTINO.NU_INTERVALO_RETRY_S IS
-    'Intervalo em segundos entre tentativas de retry. Padrao: 300 segundos (5 minutos).';
+    'Numero maximo de tentativas de envio antes de marcar o despacho como erro definitivo. Padrao: 3.';
+COMMENT ON COLUMN IPAGTB037_SERVICO_DESTINO.NU_INTERVALO_RETENTATIVA IS
+    'Intervalo em segundos entre tentativas de retentativa. Padrao: 300 segundos (5 minutos).';
 COMMENT ON COLUMN IPAGTB037_SERVICO_DESTINO.IN_ATIVO IS
-    'Indicador se o servico esta ativo para receber dispatches. S=Sim, N=Nao.';
+    'Indicador se o servico esta ativo para receber despachos. S=Sim, N=Nao.';
 COMMENT ON COLUMN IPAGTB037_SERVICO_DESTINO.DH_INCLUSAO IS
     'Data e hora de inclusao do registro. Preenchida automaticamente via DEFAULT SYSDATE.';
 COMMENT ON COLUMN IPAGTB037_SERVICO_DESTINO.DH_ALTERACAO IS
@@ -1799,17 +1799,17 @@ COMMENT ON COLUMN IPAGTB037_SERVICO_DESTINO.NO_USUARIO_ALTERACAO IS
 
 -- Dados iniciais dos tres servicos de destino
 INSERT INTO IPAGTB037_SERVICO_DESTINO
-    (CO_SERVICO, NO_SERVICO, NU_MAX_TENTATIVA, NU_INTERVALO_RETRY_S, IN_ATIVO,
+    (CO_SERVICO, NO_SERVICO, NU_MAX_TENTATIVA, NU_INTERVALO_RETENTATIVA, IN_ATIVO,
      NO_USUARIO_INCLUSAO)
 VALUES ('BOLETO',    'Servico de Boletos Bancarios',      3, 300, 'S', 'SYSTEM');
 
 INSERT INTO IPAGTB037_SERVICO_DESTINO
-    (CO_SERVICO, NO_SERVICO, NU_MAX_TENTATIVA, NU_INTERVALO_RETRY_S, IN_ATIVO,
+    (CO_SERVICO, NO_SERVICO, NU_MAX_TENTATIVA, NU_INTERVALO_RETENTATIVA, IN_ATIVO,
      NO_USUARIO_INCLUSAO)
 VALUES ('PAGAMENTO', 'Servico de Pagamentos e Transferencias', 3, 300, 'S', 'SYSTEM');
 
 INSERT INTO IPAGTB037_SERVICO_DESTINO
-    (CO_SERVICO, NO_SERVICO, NU_MAX_TENTATIVA, NU_INTERVALO_RETRY_S, IN_ATIVO,
+    (CO_SERVICO, NO_SERVICO, NU_MAX_TENTATIVA, NU_INTERVALO_RETENTATIVA, IN_ATIVO,
      NO_USUARIO_INCLUSAO)
 VALUES ('TRIBUTO',   'Servico de Pagamento de Tributos',  3, 300, 'S', 'SYSTEM');
 
@@ -1900,12 +1900,12 @@ COMMENT ON COLUMN IPAGTB025_CONTROLE_CARGA.CO_STATUS_CARGA IS
 COMMENT ON COLUMN IPAGTB025_CONTROLE_CARGA.NU_TENTATIVA IS
     'Numero de tentativas de carga realizadas, incluindo retomadas. Incrementado a cada nova tentativa.';
 COMMENT ON COLUMN IPAGTB025_CONTROLE_CARGA.QT_LOTE_ESPERADO IS
-    'Total de lotes esperados no arquivo, extraido do Trailer de Arquivo (campo G058). '
-    'Preenchido no inicio da carga apos leitura do Trailer.';
+    'Total de lotes esperados no arquivo, extraido do Rodape de Arquivo (campo G058). '
+    'Preenchido no inicio da carga apos leitura do Rodape.';
 COMMENT ON COLUMN IPAGTB025_CONTROLE_CARGA.QT_LOTE_CONCLUIDO IS
     'Quantidade de lotes ja carregados com sucesso. Incrementado conforme cada lote e concluido.';
 COMMENT ON COLUMN IPAGTB025_CONTROLE_CARGA.QT_REGISTRO_ESPERADO IS
-    'Total de registros esperados no arquivo conforme Trailer de Arquivo (campo G066).';
+    'Total de registros esperados no arquivo conforme Rodape de Arquivo (campo G066).';
 COMMENT ON COLUMN IPAGTB025_CONTROLE_CARGA.QT_REGISTRO_PROCESSADO IS
     'Quantidade de registros ja inseridos no banco. Permite calcular percentual de progresso.';
 COMMENT ON COLUMN IPAGTB025_CONTROLE_CARGA.ID_ULTIMO_LOTE_CONCLUIDO IS
@@ -1978,7 +1978,7 @@ COMMENT ON COLUMN IPAGTB026_CTRL_CARGA_LOTE.CO_STATUS_LOTE IS
     'CONCLUIDO=todos os detalhes e segmentos carregados; ERRO=falha no processamento.';
 COMMENT ON COLUMN IPAGTB026_CTRL_CARGA_LOTE.QT_DETALHE_ESPERADO IS
     'Quantidade de registros de detalhe (Tipo 3) esperados neste lote, '
-    'extraida do Trailer de Lote (campo G057).';
+    'extraida do Rodape de Lote (campo G057).';
 COMMENT ON COLUMN IPAGTB026_CTRL_CARGA_LOTE.QT_DETALHE_PROCESSADO IS
     'Quantidade de registros de detalhe ja inseridos em IPAGTB007_DETALHE_REG. '
     'Incrementado a cada detalhe processado com sucesso.';
@@ -2002,15 +2002,15 @@ COMMENT ON COLUMN IPAGTB026_CTRL_CARGA_LOTE.NO_USUARIO_ALTERACAO IS
     'Login do usuario ou processo que realizou a ultima alteracao no registro de controle.';
 
 -- =============================================================================
--- IPAGTB027_DISPATCH_LOTE: estado atual de dispatch por lote e servico
+-- IPAGTB027_DESPACHO_LOTE: estado atual de despacho por lote e servico
 -- =============================================================================
-CREATE SEQUENCE IPAGTB027_DISPATCH_LOTE_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE SEQUENCE IPAGTB027_DESPACHO_LOTE_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
 
-CREATE TABLE IPAGTB027_DISPATCH_LOTE (
-    ID_DISPATCH_LOTE        NUMBER        DEFAULT ON NULL IPAGTB027_DISPATCH_LOTE_SQ.NEXTVAL,
+CREATE TABLE IPAGTB027_DESPACHO_LOTE (
+    ID_DESPACHO_LOTE        NUMBER        DEFAULT ON NULL IPAGTB027_DESPACHO_LOTE_SQ.NEXTVAL,
     ID_LOTE                 NUMBER        NOT NULL,
     ID_SERVICO_DESTINO      NUMBER        NOT NULL,
-    CO_STATUS_DISPATCH      VARCHAR2(20)  DEFAULT 'PENDENTE' NOT NULL,
+    CO_STATUS_DESPACHO      VARCHAR2(20)  DEFAULT 'PENDENTE' NOT NULL,
     NU_TENTATIVA_ATUAL      NUMBER(3)     DEFAULT 0 NOT NULL,
     NU_MAX_TENTATIVA       NUMBER(3)     DEFAULT 3 NOT NULL,
     DH_PROXIMO_ENVIO        DATE,
@@ -2018,155 +2018,155 @@ CREATE TABLE IPAGTB027_DISPATCH_LOTE (
     DH_CONFIRMACAO          DATE,
     NU_PROTOCOLO_EXTERNO    VARCHAR2(100),
     NU_CORRELACAO_EXTERNA   VARCHAR2(100),
-    CO_HTTP_STATUS          NUMBER(3),
-    TE_PAYLOAD_ENVIADO      CLOB,
+    CO_STATUS_HTTP          NUMBER(3),
+    TE_CONTEUDO_ENVIADO      CLOB,
     TE_RESPOSTA_SERVICO     CLOB,
     DH_INCLUSAO             DATE          DEFAULT SYSDATE NOT NULL,
     DH_ALTERACAO            DATE,
     NO_USUARIO_INCLUSAO     VARCHAR2(60)  NOT NULL,
     NO_USUARIO_ALTERACAO    VARCHAR2(60),
-    CONSTRAINT IPAGTB027_DISPATCH_LOTE_PK   PRIMARY KEY (ID_DISPATCH_LOTE),
-    CONSTRAINT IPAGTB027_DISPATCH_LOTE_UK01 UNIQUE (ID_LOTE, ID_SERVICO_DESTINO),
+    CONSTRAINT IPAGTB027_DESPACHO_LOTE_PK   PRIMARY KEY (ID_DESPACHO_LOTE),
+    CONSTRAINT IPAGTB027_DESPACHO_LOTE_UK01 UNIQUE (ID_LOTE, ID_SERVICO_DESTINO),
     CONSTRAINT IPAGTB004_IPAGTB027_FK01
         FOREIGN KEY (ID_LOTE) REFERENCES IPAGTB004_LOTE (ID_LOTE),
     CONSTRAINT IPAGTB037_IPAGTB027_FK02
         FOREIGN KEY (ID_SERVICO_DESTINO) REFERENCES IPAGTB037_SERVICO_DESTINO (ID_SERVICO_DESTINO),
-    CONSTRAINT IPAGTB027_DISPATCH_LOTE_CO_STATUS_CK01
-        CHECK (CO_STATUS_DISPATCH IN ('PENDENTE','ENVIADO','CONFIRMADO','ERRO','RETENTATIVA','CANCELADO'))
+    CONSTRAINT IPAGTB027_DESPACHO_LOTE_CO_STATUS_CK01
+        CHECK (CO_STATUS_DESPACHO IN ('PENDENTE','ENVIADO','CONFIRMADO','ERRO','RETENTATIVA','CANCELADO'))
 );
 
-CREATE INDEX IPAGTB027_DISPATCH_LOTE_IDX01 ON IPAGTB027_DISPATCH_LOTE (CO_STATUS_DISPATCH, DH_PROXIMO_ENVIO);
-CREATE INDEX IPAGTB027_DISPATCH_LOTE_IDX02 ON IPAGTB027_DISPATCH_LOTE (ID_SERVICO_DESTINO, CO_STATUS_DISPATCH);
-CREATE INDEX IPAGTB027_DISPATCH_LOTE_IDX03 ON IPAGTB027_DISPATCH_LOTE (ID_LOTE, CO_STATUS_DISPATCH);
+CREATE INDEX IPAGTB027_DESPACHO_LOTE_IDX01 ON IPAGTB027_DESPACHO_LOTE (CO_STATUS_DESPACHO, DH_PROXIMO_ENVIO);
+CREATE INDEX IPAGTB027_DESPACHO_LOTE_IDX02 ON IPAGTB027_DESPACHO_LOTE (ID_SERVICO_DESTINO, CO_STATUS_DESPACHO);
+CREATE INDEX IPAGTB027_DESPACHO_LOTE_IDX03 ON IPAGTB027_DESPACHO_LOTE (ID_LOTE, CO_STATUS_DESPACHO);
 
-COMMENT ON TABLE IPAGTB027_DISPATCH_LOTE IS
-    'Registra o estado atual de envio (dispatch) de cada lote para cada servico de destino. '
+COMMENT ON TABLE IPAGTB027_DESPACHO_LOTE IS
+    'Registra o estado atual de envio (despacho) de cada lote para cada servico de destino. '
     'Representa a visao corrente da maquina de estados: PENDENTE->ENVIADO->CONFIRMADO ou ERRO->RETENTATIVA. '
     'Relacao N:N entre lotes e servicos de destino com estado de controle.';
 
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.ID_DISPATCH_LOTE IS
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.ID_DESPACHO_LOTE IS
     'Identificador surrogate gerado por sequence. Chave primaria interna sem significado de negocio.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.ID_LOTE IS
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.ID_LOTE IS
     'FK para IPAGTB004_LOTE. Lote CNAB240 a ser despachado para o servico de destino.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.ID_SERVICO_DESTINO IS
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.ID_SERVICO_DESTINO IS
     'FK para IPAGTB037_SERVICO_DESTINO. Servico que deve receber este lote (BOLETO, PAGAMENTO ou TRIBUTO).';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.CO_STATUS_DISPATCH IS
-    'Estado atual na maquina de estados de dispatch. '
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.CO_STATUS_DESPACHO IS
+    'Estado atual na maquina de estados de despacho. '
     'PENDENTE=aguardando envio; ENVIADO=requisicao enviada, aguardando confirmacao; '
     'CONFIRMADO=processamento confirmado pelo servico; ERRO=falha definitiva apos max tentativas; '
     'RETENTATIVA=aguardando proximo envio conforme DH_PROXIMO_ENVIO; CANCELADO=cancelado manualmente.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.NU_TENTATIVA_ATUAL IS
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.NU_TENTATIVA_ATUAL IS
     'Numero da tentativa de envio atual. Comeca em 0 (sem tentativa) e incrementa a cada envio.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.NU_MAX_TENTATIVA IS
-    'Numero maximo de tentativas para este dispatch. Copiado de IPAGTB037_SERVICO_DESTINO no momento da criacao.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.DH_PROXIMO_ENVIO IS
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.NU_MAX_TENTATIVA IS
+    'Numero maximo de tentativas para este despacho. Copiado de IPAGTB037_SERVICO_DESTINO no momento da criacao.';
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.DH_PROXIMO_ENVIO IS
     'Data e hora agendada para a proxima tentativa de envio. '
-    'Calculada como DH_ULTIMO_ENVIO + NU_INTERVALO_RETRY_S segundos.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.DH_ULTIMO_ENVIO IS
+    'Calculada como DH_ULTIMO_ENVIO + NU_INTERVALO_RETENTATIVA segundos.';
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.DH_ULTIMO_ENVIO IS
     'Data e hora do ultimo envio realizado (independente de sucesso ou falha).';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.DH_CONFIRMACAO IS
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.DH_CONFIRMACAO IS
     'Data e hora em que o servico de destino confirmou o processamento bem-sucedido do lote.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.NU_PROTOCOLO_EXTERNO IS
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.NU_PROTOCOLO_EXTERNO IS
     'Identificador do protocolo ou ticket gerado pelo servico de destino ao receber o lote. '
     'Usado para rastreabilidade e consulta de status no servico externo.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.NU_CORRELACAO_EXTERNA IS
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.NU_CORRELACAO_EXTERNA IS
     'Numero de correlacao para rastreamento fim-a-fim da mensagem entre sistemas. '
     'Pode ser um UUID gerado no envio ou fornecido pelo servico receptor.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.CO_HTTP_STATUS IS
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.CO_STATUS_HTTP IS
     'Codigo HTTP da ultima resposta recebida do servico de destino. '
     'Exemplos: 200=OK, 202=Accepted, 400=BadRequest, 500=InternalServerError.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.TE_PAYLOAD_ENVIADO IS
-    'Payload JSON ou XML enviado ao servico de destino na ultima tentativa. '
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.TE_CONTEUDO_ENVIADO IS
+    'Conteudo JSON ou XML enviado ao servico de destino na ultima tentativa. '
     'Armazenado para auditoria e diagnostico de falhas.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.TE_RESPOSTA_SERVICO IS
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.TE_RESPOSTA_SERVICO IS
     'Corpo da resposta retornada pelo servico de destino na ultima tentativa. '
     'Pode conter mensagem de erro ou confirmacao de recebimento.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.DH_INCLUSAO IS
-    'Data e hora de criacao do registro de dispatch. Preenchida automaticamente via DEFAULT SYSDATE.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.DH_ALTERACAO IS
-    'Data e hora da ultima alteracao do estado de dispatch. Atualizada a cada transicao de estado.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.NO_USUARIO_INCLUSAO IS
-    'Login do usuario ou identificador do processo que criou o registro de dispatch.';
-COMMENT ON COLUMN IPAGTB027_DISPATCH_LOTE.NO_USUARIO_ALTERACAO IS
-    'Login do usuario ou processo que realizou a ultima alteracao no estado de dispatch.';
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.DH_INCLUSAO IS
+    'Data e hora de criacao do registro de despacho. Preenchida automaticamente via DEFAULT SYSDATE.';
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao do estado de despacho. Atualizada a cada transicao de estado.';
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou identificador do processo que criou o registro de despacho.';
+COMMENT ON COLUMN IPAGTB027_DESPACHO_LOTE.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que realizou a ultima alteracao no estado de despacho.';
 
 -- =============================================================================
--- IPAGTB028_HISTORICO_DISPATCH: log imutavel de tentativas de dispatch
+-- IPAGTB028_HISTORICO_DESPACHO: log imutavel de tentativas de despacho
 -- =============================================================================
-CREATE SEQUENCE IPAGTB028_HISTORICO_DISPATCH_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE SEQUENCE IPAGTB028_HISTORICO_DESPACHO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
 
-CREATE TABLE IPAGTB028_HISTORICO_DISPATCH (
-    ID_HISTORICO_DISPATCH   NUMBER        DEFAULT ON NULL IPAGTB028_HISTORICO_DISPATCH_SQ.NEXTVAL,
-    ID_DISPATCH_LOTE        NUMBER        NOT NULL,
+CREATE TABLE IPAGTB028_HISTORICO_DESPACHO (
+    ID_HISTORICO_DESPACHO   NUMBER        DEFAULT ON NULL IPAGTB028_HISTORICO_DESPACHO_SQ.NEXTVAL,
+    ID_DESPACHO_LOTE        NUMBER        NOT NULL,
     NU_NUMERO_TENTATIVA     NUMBER(3)     NOT NULL,
     CO_STATUS_RESULTADO     VARCHAR2(20)  NOT NULL,
     DH_ENVIO                DATE          NOT NULL,
     DH_RESPOSTA             DATE,
     NU_DURACAO_MS           NUMBER(10),
-    CO_HTTP_STATUS          NUMBER(3),
+    CO_STATUS_HTTP          NUMBER(3),
     NU_PROTOCOLO_EXTERNO    VARCHAR2(100),
-    TE_PAYLOAD_ENVIADO      CLOB,
+    TE_CONTEUDO_ENVIADO      CLOB,
     TE_RESPOSTA_SERVICO     CLOB,
     TE_MENSAGEM_ERRO        VARCHAR2(4000),
     NO_PROCESSO_EXECUTOR    VARCHAR2(100),
     NO_SERVIDOR_EXECUTOR    VARCHAR2(100),
     DH_INCLUSAO             DATE          DEFAULT SYSDATE NOT NULL,
     NO_USUARIO_INCLUSAO     VARCHAR2(60)  NOT NULL,
-    CONSTRAINT IPAGTB028_HISTORICO_DISPATCH_PK   PRIMARY KEY (ID_HISTORICO_DISPATCH),
-    CONSTRAINT IPAGTB028_HISTORICO_DISPATCH_UK01 UNIQUE (ID_DISPATCH_LOTE, NU_NUMERO_TENTATIVA),
+    CONSTRAINT IPAGTB028_HISTORICO_DESPACHO_PK   PRIMARY KEY (ID_HISTORICO_DESPACHO),
+    CONSTRAINT IPAGTB028_HISTORICO_DESPACHO_UK01 UNIQUE (ID_DESPACHO_LOTE, NU_NUMERO_TENTATIVA),
     CONSTRAINT IPAGTB027_IPAGTB028_FK01
-        FOREIGN KEY (ID_DISPATCH_LOTE) REFERENCES IPAGTB027_DISPATCH_LOTE (ID_DISPATCH_LOTE),
-    CONSTRAINT IPAGTB028_HISTORICO_DISPATCH_CO_STATUS_CK01
+        FOREIGN KEY (ID_DESPACHO_LOTE) REFERENCES IPAGTB027_DESPACHO_LOTE (ID_DESPACHO_LOTE),
+    CONSTRAINT IPAGTB028_HISTORICO_DESPACHO_CO_STATUS_CK01
         CHECK (CO_STATUS_RESULTADO IN ('ENVIADO','CONFIRMADO','ERRO','TIMEOUT','CANCELADO'))
 );
 
-CREATE INDEX IPAGTB028_HISTORICO_DISPATCH_IDX01 ON IPAGTB028_HISTORICO_DISPATCH (ID_DISPATCH_LOTE, NU_NUMERO_TENTATIVA);
-CREATE INDEX IPAGTB028_HISTORICO_DISPATCH_IDX02 ON IPAGTB028_HISTORICO_DISPATCH (DH_ENVIO, CO_STATUS_RESULTADO);
+CREATE INDEX IPAGTB028_HISTORICO_DESPACHO_IDX01 ON IPAGTB028_HISTORICO_DESPACHO (ID_DESPACHO_LOTE, NU_NUMERO_TENTATIVA);
+CREATE INDEX IPAGTB028_HISTORICO_DESPACHO_IDX02 ON IPAGTB028_HISTORICO_DESPACHO (DH_ENVIO, CO_STATUS_RESULTADO);
 
-COMMENT ON TABLE IPAGTB028_HISTORICO_DISPATCH IS
-    'Log imutavel (append-only) de todas as tentativas de dispatch de lotes para servicos externos. '
+COMMENT ON TABLE IPAGTB028_HISTORICO_DESPACHO IS
+    'Log imutavel (append-only) de todas as tentativas de despacho de lotes para servicos externos. '
     'Nunca atualizado apos insert â€” cada tentativa gera um novo registro. '
     'Permite auditoria completa do historico de envios, falhas e retentativas por lote/servico.';
 
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.ID_HISTORICO_DISPATCH IS
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.ID_HISTORICO_DESPACHO IS
     'Identificador surrogate gerado por sequence. Chave primaria interna sem significado de negocio.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.ID_DISPATCH_LOTE IS
-    'FK para IPAGTB027_DISPATCH_LOTE. Liga o historico ao registro de estado atual do dispatch.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.NU_NUMERO_TENTATIVA IS
-    'Numero sequencial desta tentativa para o dispatch. '
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.ID_DESPACHO_LOTE IS
+    'FK para IPAGTB027_DESPACHO_LOTE. Liga o historico ao registro de estado atual do despacho.';
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.NU_NUMERO_TENTATIVA IS
+    'Numero sequencial desta tentativa para o despacho. '
     'Corresponde ao valor de NU_TENTATIVA_ATUAL em IPAGTB027 no momento do envio.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.CO_STATUS_RESULTADO IS
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.CO_STATUS_RESULTADO IS
     'Resultado desta tentativa especifica. '
     'ENVIADO=enviado, confirmacao pendente; CONFIRMADO=confirmado pelo servico; '
     'ERRO=falha de negocio ou HTTP error; TIMEOUT=sem resposta no prazo; CANCELADO=cancelado.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.DH_ENVIO IS
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.DH_ENVIO IS
     'Data e hora exata em que a requisicao foi enviada ao servico de destino.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.DH_RESPOSTA IS
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.DH_RESPOSTA IS
     'Data e hora em que a resposta foi recebida do servico. Nulo em caso de timeout.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.NU_DURACAO_MS IS
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.NU_DURACAO_MS IS
     'Duracao da chamada em milissegundos (DH_RESPOSTA - DH_ENVIO). '
     'Util para monitoramento de latencia e SLA do servico de destino.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.CO_HTTP_STATUS IS
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.CO_STATUS_HTTP IS
     'Codigo HTTP recebido do servico nesta tentativa. Nulo em caso de timeout ou erro de conectividade.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.NU_PROTOCOLO_EXTERNO IS
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.NU_PROTOCOLO_EXTERNO IS
     'Identificador do protocolo gerado pelo servico de destino nesta tentativa especifica.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.TE_PAYLOAD_ENVIADO IS
-    'Payload exato enviado nesta tentativa. Preservado para auditoria mesmo que tentativas subsequentes '
-    'enviem payload diferente (ex: apos correcao de dados).';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.TE_RESPOSTA_SERVICO IS
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.TE_CONTEUDO_ENVIADO IS
+    'Conteudo exato enviado nesta tentativa. Preservado para auditoria mesmo que tentativas subsequentes '
+    'enviem conteudo diferente (ex: apos correcao de dados).';
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.TE_RESPOSTA_SERVICO IS
     'Corpo exato da resposta recebida nesta tentativa. Nulo em caso de timeout.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.TE_MENSAGEM_ERRO IS
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.TE_MENSAGEM_ERRO IS
     'Descricao tecnica do erro ocorrido nesta tentativa, quando aplicavel. '
     'Pode conter excecao Java, mensagem HTTP ou descricao do timeout.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.NO_PROCESSO_EXECUTOR IS
-    'Identificador do processo ou thread que executou este dispatch. '
-    'Util para diagnostico em ambientes com multiplos workers.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.NO_SERVIDOR_EXECUTOR IS
-    'Nome ou IP do servidor que executou este dispatch. '
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.NO_PROCESSO_EXECUTOR IS
+    'Identificador do processo ou thread que executou este despacho. '
+    'Util para diagnostico em ambientes com multiplos processos.';
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.NO_SERVIDOR_EXECUTOR IS
+    'Nome ou IP do servidor que executou este despacho. '
     'Util para diagnostico em ambientes com multiplas instancias do servico de carga.';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.DH_INCLUSAO IS
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.DH_INCLUSAO IS
     'Data e hora de insercao do registro historico. Imutavel apos insert (nao deve ser atualizado).';
-COMMENT ON COLUMN IPAGTB028_HISTORICO_DISPATCH.NO_USUARIO_INCLUSAO IS
+COMMENT ON COLUMN IPAGTB028_HISTORICO_DESPACHO.NO_USUARIO_INCLUSAO IS
     'Login do usuario ou identificador do processo que gerou este registro historico. '
     'Nao ha NO_USUARIO_ALTERACAO pois este registro e imutavel.';
 
@@ -2191,30 +2191,30 @@ SELECT
     cc.DH_INICIO_CARGA,
     cc.DH_FIM_CARGA,
     cc.DH_ULTIMA_ATUALIZACAO,
-    -- Contagem de dispatches por status para cada servico
-    SUM(CASE WHEN sd.CO_SERVICO = 'BOLETO'    AND dl.CO_STATUS_DISPATCH = 'CONFIRMADO' THEN 1 ELSE 0 END)
+    -- Contagem de despachos por status para cada servico
+    SUM(CASE WHEN sd.CO_SERVICO = 'BOLETO'    AND dl.CO_STATUS_DESPACHO = 'CONFIRMADO' THEN 1 ELSE 0 END)
                                                  AS QT_LOTE_BOLETO_CONFIRMADO,
-    SUM(CASE WHEN sd.CO_SERVICO = 'BOLETO'    AND dl.CO_STATUS_DISPATCH = 'PENDENTE'   THEN 1 ELSE 0 END)
+    SUM(CASE WHEN sd.CO_SERVICO = 'BOLETO'    AND dl.CO_STATUS_DESPACHO = 'PENDENTE'   THEN 1 ELSE 0 END)
                                                  AS QT_LOTE_BOLETO_PENDENTE,
-    SUM(CASE WHEN sd.CO_SERVICO = 'BOLETO'    AND dl.CO_STATUS_DISPATCH = 'ERRO'       THEN 1 ELSE 0 END)
+    SUM(CASE WHEN sd.CO_SERVICO = 'BOLETO'    AND dl.CO_STATUS_DESPACHO = 'ERRO'       THEN 1 ELSE 0 END)
                                                  AS QT_LOTE_BOLETO_ERRO,
-    SUM(CASE WHEN sd.CO_SERVICO = 'PAGAMENTO' AND dl.CO_STATUS_DISPATCH = 'CONFIRMADO' THEN 1 ELSE 0 END)
+    SUM(CASE WHEN sd.CO_SERVICO = 'PAGAMENTO' AND dl.CO_STATUS_DESPACHO = 'CONFIRMADO' THEN 1 ELSE 0 END)
                                                  AS QT_LOTE_PAGAMENTO_CONFIRMADO,
-    SUM(CASE WHEN sd.CO_SERVICO = 'PAGAMENTO' AND dl.CO_STATUS_DISPATCH = 'PENDENTE'   THEN 1 ELSE 0 END)
+    SUM(CASE WHEN sd.CO_SERVICO = 'PAGAMENTO' AND dl.CO_STATUS_DESPACHO = 'PENDENTE'   THEN 1 ELSE 0 END)
                                                  AS QT_LOTE_PAGAMENTO_PENDENTE,
-    SUM(CASE WHEN sd.CO_SERVICO = 'PAGAMENTO' AND dl.CO_STATUS_DISPATCH = 'ERRO'       THEN 1 ELSE 0 END)
+    SUM(CASE WHEN sd.CO_SERVICO = 'PAGAMENTO' AND dl.CO_STATUS_DESPACHO = 'ERRO'       THEN 1 ELSE 0 END)
                                                  AS QT_LOTE_PAGAMENTO_ERRO,
-    SUM(CASE WHEN sd.CO_SERVICO = 'TRIBUTO'   AND dl.CO_STATUS_DISPATCH = 'CONFIRMADO' THEN 1 ELSE 0 END)
+    SUM(CASE WHEN sd.CO_SERVICO = 'TRIBUTO'   AND dl.CO_STATUS_DESPACHO = 'CONFIRMADO' THEN 1 ELSE 0 END)
                                                  AS QT_LOTE_TRIBUTO_CONFIRMADO,
-    SUM(CASE WHEN sd.CO_SERVICO = 'TRIBUTO'   AND dl.CO_STATUS_DISPATCH = 'PENDENTE'   THEN 1 ELSE 0 END)
+    SUM(CASE WHEN sd.CO_SERVICO = 'TRIBUTO'   AND dl.CO_STATUS_DESPACHO = 'PENDENTE'   THEN 1 ELSE 0 END)
                                                  AS QT_LOTE_TRIBUTO_PENDENTE,
-    SUM(CASE WHEN sd.CO_SERVICO = 'TRIBUTO'   AND dl.CO_STATUS_DISPATCH = 'ERRO'       THEN 1 ELSE 0 END)
+    SUM(CASE WHEN sd.CO_SERVICO = 'TRIBUTO'   AND dl.CO_STATUS_DESPACHO = 'ERRO'       THEN 1 ELSE 0 END)
                                                  AS QT_LOTE_TRIBUTO_ERRO
 FROM
     IPAGTB001_ARQUIVO            arq
     LEFT JOIN IPAGTB025_CONTROLE_CARGA   cc  ON cc.ID_ARQUIVO = arq.ID_ARQUIVO
     LEFT JOIN IPAGTB004_LOTE             lt  ON lt.ID_ARQUIVO = arq.ID_ARQUIVO
-    LEFT JOIN IPAGTB027_DISPATCH_LOTE    dl  ON dl.ID_LOTE    = lt.ID_LOTE
+    LEFT JOIN IPAGTB027_DESPACHO_LOTE    dl  ON dl.ID_LOTE    = lt.ID_LOTE
     LEFT JOIN IPAGTB037_SERVICO_DESTINO  sd  ON sd.ID_SERVICO_DESTINO = dl.ID_SERVICO_DESTINO
 GROUP BY
     arq.ID_ARQUIVO,
@@ -2233,16 +2233,16 @@ GROUP BY
     cc.DH_ULTIMA_ATUALIZACAO;
 
 COMMENT ON TABLE IPAGTV001_STATUS_ARQUIVO IS
-    'Visao consolidada do status de carga e dispatch de cada arquivo CNAB240. '
+    'Visao consolidada do status de carga e despacho de cada arquivo CNAB240. '
     'Exibe o progresso da carga e a contagem de lotes por estado para cada servico de destino '
     '(BOLETO, PAGAMENTO, TRIBUTO). Uso recomendado: painel de monitoramento operacional.';
 
 -- =============================================================================
--- VIEW IPAGTV002_DISPATCH_PENDENTE: fila de trabalho para workers de dispatch
+-- VIEW IPAGTV002_DESPACHO_PENDENTE: fila de trabalho para processos de despacho
 -- =============================================================================
-CREATE OR REPLACE VIEW IPAGTV002_DISPATCH_PENDENTE AS
+CREATE OR REPLACE VIEW IPAGTV002_DESPACHO_PENDENTE AS
 SELECT
-    dl.ID_DISPATCH_LOTE,
+    dl.ID_DESPACHO_LOTE,
     dl.ID_LOTE,
     lt.ID_ARQUIVO,
     arq.NO_NOME_ARQUIVO,
@@ -2252,36 +2252,36 @@ SELECT
     sd.ID_SERVICO_DESTINO,
     sd.CO_SERVICO,
     sd.NO_SERVICO,
-    sd.TE_ENDPOINT_URL,
-    dl.CO_STATUS_DISPATCH,
+    sd.TE_URL_DESTINO,
+    dl.CO_STATUS_DESPACHO,
     dl.NU_TENTATIVA_ATUAL,
     dl.NU_MAX_TENTATIVA,
     dl.DH_PROXIMO_ENVIO,
     dl.DH_ULTIMO_ENVIO,
     CASE
-        WHEN dl.CO_STATUS_DISPATCH = 'PENDENTE'    THEN 1
-        WHEN dl.CO_STATUS_DISPATCH = 'RETENTATIVA' THEN 2
+        WHEN dl.CO_STATUS_DESPACHO = 'PENDENTE'    THEN 1
+        WHEN dl.CO_STATUS_DESPACHO = 'RETENTATIVA' THEN 2
         ELSE 9
     END AS NU_PRIORIDADE_FILA
 FROM
-    IPAGTB027_DISPATCH_LOTE      dl
+    IPAGTB027_DESPACHO_LOTE      dl
     JOIN IPAGTB004_LOTE          lt  ON lt.ID_LOTE             = dl.ID_LOTE
     JOIN IPAGTB001_ARQUIVO       arq ON arq.ID_ARQUIVO          = lt.ID_ARQUIVO
     JOIN IPAGTB031_TIPO_SERVICO  ts  ON ts.ID_TIPO_SERVICO      = lt.ID_TIPO_SERVICO
     JOIN IPAGTB037_SERVICO_DESTINO sd ON sd.ID_SERVICO_DESTINO  = dl.ID_SERVICO_DESTINO
 WHERE
-    dl.CO_STATUS_DISPATCH IN ('PENDENTE', 'RETENTATIVA')
+    dl.CO_STATUS_DESPACHO IN ('PENDENTE', 'RETENTATIVA')
     AND (dl.DH_PROXIMO_ENVIO IS NULL OR dl.DH_PROXIMO_ENVIO <= SYSDATE)
     AND dl.NU_TENTATIVA_ATUAL < dl.NU_MAX_TENTATIVA
     AND sd.IN_ATIVO = 'S'
 ORDER BY
     NU_PRIORIDADE_FILA,
     dl.DH_PROXIMO_ENVIO NULLS FIRST,
-    dl.ID_DISPATCH_LOTE;
+    dl.ID_DESPACHO_LOTE;
 
-COMMENT ON TABLE IPAGTV002_DISPATCH_PENDENTE IS
-    'Fila de trabalho para workers de dispatch: lista os lotes prontos para envio ou retentativa. '
-    'Retorna apenas dispatches PENDENTES ou em RETENTATIVA cujo DH_PROXIMO_ENVIO ja passou. '
+COMMENT ON TABLE IPAGTV002_DESPACHO_PENDENTE IS
+    'Fila de trabalho para processos de despacho: lista os lotes prontos para envio ou retentativa. '
+    'Retorna apenas despachos PENDENTES ou em RETENTATIVA cujo DH_PROXIMO_ENVIO ja passou. '
     'Ordenada por prioridade (PENDENTE antes de RETENTATIVA) e depois por tempo de espera. '
     'Workers devem selecionar e travar registros com SELECT ... FOR UPDATE SKIP LOCKED.';
 
@@ -2294,9 +2294,9 @@ COMMENT ON TABLE IPAGTV002_DISPATCH_PENDENTE IS
 --    c. Para cada lote do arquivo:
 --       - Inserir em IPAGTB004_LOTE
 --       - Inserir em IPAGTB026_CTRL_CARGA_LOTE (CO_STATUS_LOTE='PENDENTE')
---       - Processar Header, Trailer, Detalhes e Segmentos do lote
+--       - Processar Cabecalho, Rodape, Detalhes e Segmentos do lote
 --       - Atualizar IPAGTB026: CO_STATUS_LOTE='CONCLUIDO'
---       - Criar IPAGTB027_DISPATCH_LOTE para o servico mapeado no tipo de servico do lote
+--       - Criar IPAGTB027_DESPACHO_LOTE para o servico mapeado no tipo de servico do lote
 --       - Atualizar IPAGTB025: ID_ULTIMO_LOTE_CONCLUIDO = ID deste lote
 --    d. Ao fim: IPAGTB025.CO_STATUS_CARGA='CONCLUIDO'
 --
@@ -2307,14 +2307,14 @@ COMMENT ON TABLE IPAGTV002_DISPATCH_PENDENTE IS
 --    d. Incrementar NU_TENTATIVA em IPAGTB025
 --
 -- 3. DISPATCH PARA SERVICOS
---    a. Worker consulta IPAGTV002_DISPATCH_PENDENTE (SELECT FOR UPDATE SKIP LOCKED)
---    b. Envia payload ao servico (TE_ENDPOINT_URL)
---    c. Registra tentativa em IPAGTB028_HISTORICO_DISPATCH (insert imutavel)
---    d. Atualiza IPAGTB027_DISPATCH_LOTE com resultado:
---       - Sucesso: CO_STATUS_DISPATCH='CONFIRMADO', DH_CONFIRMACAO=SYSDATE
---       - Falha com tentativas restantes: CO_STATUS_DISPATCH='RETENTATIVA',
---         DH_PROXIMO_ENVIO=SYSDATE+NU_INTERVALO_RETRY_S/86400
---       - Falha definitiva (sem tentativas): CO_STATUS_DISPATCH='ERRO'
+--    a. Worker consulta IPAGTV002_DESPACHO_PENDENTE (SELECT FOR UPDATE SKIP LOCKED)
+--    b. Envia conteudo ao servico (TE_URL_DESTINO)
+--    c. Registra tentativa em IPAGTB028_HISTORICO_DESPACHO (insert imutavel)
+--    d. Atualiza IPAGTB027_DESPACHO_LOTE com resultado:
+--       - Sucesso: CO_STATUS_DESPACHO='CONFIRMADO', DH_CONFIRMACAO=SYSDATE
+--       - Falha com tentativas restantes: CO_STATUS_DESPACHO='RETENTATIVA',
+--         DH_PROXIMO_ENVIO=SYSDATE+NU_INTERVALO_RETENTATIVA/86400
+--       - Falha definitiva (sem tentativas): CO_STATUS_DESPACHO='ERRO'
 --
 -- 4. MONITORAMENTO
 --    Consultar IPAGTV001_STATUS_ARQUIVO para visao consolidada por arquivo.
@@ -2373,7 +2373,7 @@ COMMENT ON COLUMN IPAGTB029_CONTROLE_LINHA.NU_NUMERO_LINHA IS
     'Junto com ID_ARQUIVO, identifica unicamente qualquer linha de qualquer arquivo.';
 COMMENT ON COLUMN IPAGTB029_CONTROLE_LINHA.CO_TIPO_REGISTRO IS
     'Tipo de registro CNAB240 identificado na posicao 8 da linha. '
-    '0=Header Arquivo, 1=Header Lote, 3=Detalhe, 5=Trailer Lote, 9=Trailer Arquivo. '
+    '0=Cabecalho Arquivo, 1=Cabecalho Lote, 3=Detalhe, 5=Rodape Lote, 9=Rodape Arquivo. '
     'Campo G001 do padrao FEBRABAN CNAB240.';
 COMMENT ON COLUMN IPAGTB029_CONTROLE_LINHA.CO_SEGMENTO IS
     'Codigo do segmento para registros de detalhe (CO_TIPO_REGISTRO=3), posicao 14 da linha. '
@@ -2381,7 +2381,7 @@ COMMENT ON COLUMN IPAGTB029_CONTROLE_LINHA.CO_SEGMENTO IS
     'Campo G062 do padrao FEBRABAN CNAB240.';
 COMMENT ON COLUMN IPAGTB029_CONTROLE_LINHA.NU_LOTE_CNAB IS
     'Numero do lote conforme informado na propria linha CNAB (posicoes 4-7). '
-    'Valor 0000 para Header/Trailer de Arquivo e 9999 para Trailer de Arquivo. '
+    'Valor 0000 para Cabecalho/Rodape de Arquivo e 9999 para Rodape de Arquivo. '
     'Permite correlacionar a linha ao lote sem depender de FK para IPAGTB004.';
 COMMENT ON COLUMN IPAGTB029_CONTROLE_LINHA.TE_CONTEUDO_LINHA IS
     'Conteudo literal da linha fisica do arquivo CNAB240, exatamente 240 caracteres. '
@@ -2393,7 +2393,7 @@ COMMENT ON COLUMN IPAGTB029_CONTROLE_LINHA.CO_STATUS_LINHA IS
     '(ex: linha de padding, tipo nao suportado na versao atual).';
 COMMENT ON COLUMN IPAGTB029_CONTROLE_LINHA.NO_TABELA_DESTINO IS
     'Nome da tabela Oracle onde esta linha foi persistida apos processamento bem-sucedido. '
-    'Exemplos: IPAGTB002_HEADER_ARQUIVO, IPAGTB010_DET_PAGAMENTO, IPAGTB004_LOTE. '
+    'Exemplos: IPAGTB002_CABECALHO_ARQUIVO, IPAGTB010_DET_PAGAMENTO, IPAGTB004_LOTE. '
     'Nulo enquanto CO_STATUS_LINHA for PENDENTE ou ERRO.';
 COMMENT ON COLUMN IPAGTB029_CONTROLE_LINHA.ID_ENTIDADE_CRIADA IS
     'PK do registro criado em NO_TABELA_DESTINO a partir desta linha. '
@@ -2472,19 +2472,19 @@ COMMENT ON COLUMN IPAGTB007_DETALHE_REG.ID_TIPO_MOVIMENTO IS
     'para o registro de dominio, identificando se o detalhe e Inclusao, Alteracao, Exclusao, etc. '
     'Preenchido apos lookup durante a carga do registro de detalhe.';
 
--- IPAGTB002_HEADER_ARQUIVO: FK para tipo de inscricao da empresa
+-- IPAGTB002_CABECALHO_ARQUIVO: FK para tipo de inscricao da empresa
 
-COMMENT ON COLUMN IPAGTB002_HEADER_ARQUIVO.ID_TIPO_INSCRICAO IS
+COMMENT ON COLUMN IPAGTB002_CABECALHO_ARQUIVO.ID_TIPO_INSCRICAO IS
     'FK para IPAGTB034_TIPO_INSCRICAO. Resolve CO_TIPO_INSCRICAO_EMPRESA (campo G005, posicao 18 do CNAB240) '
     'para o registro de dominio: 1=CPF, 2=CNPJ, 3=PIS/PASEP, 9=Outros. '
-    'Preenchido apos lookup durante a carga do Header de Arquivo.';
+    'Preenchido apos lookup durante a carga do Cabecalho de Arquivo.';
 
--- IPAGTB005_HEADER_LOTE: FK para tipo de inscricao da empresa no lote
+-- IPAGTB005_CABECALHO_LOTE: FK para tipo de inscricao da empresa no lote
 
-COMMENT ON COLUMN IPAGTB005_HEADER_LOTE.ID_TIPO_INSCRICAO IS
-    'FK para IPAGTB034_TIPO_INSCRICAO. Resolve CO_TIPO_INSCRICAO_EMPRESA (posicoes 18 do header de lote) '
+COMMENT ON COLUMN IPAGTB005_CABECALHO_LOTE.ID_TIPO_INSCRICAO IS
+    'FK para IPAGTB034_TIPO_INSCRICAO. Resolve CO_TIPO_INSCRICAO_EMPRESA (posicoes 18 do cabecalho de lote) '
     'para o registro de dominio correspondente. Permite filtros e joins por tipo de pessoa juridica/fisica '
-    'da empresa pagadora em cada lote. Preenchido apos lookup durante a carga do Header de Lote.';
+    'da empresa pagadora em cada lote. Preenchido apos lookup durante a carga do Cabecalho de Lote.';
 
 -- IPAGTB010_DET_PAGAMENTO: FK para tipo de moeda e camara centralizadora
 
@@ -2500,7 +2500,7 @@ COMMENT ON COLUMN IPAGTB010_DET_PAGAMENTO.ID_CAMARA_CENTRALIZADORA IS
 -- IPAGTB011_DET_INFO_FAVORECIDO: FK para tipo de inscricao do favorecido
 
 COMMENT ON COLUMN IPAGTB011_DET_INFO_FAVORECIDO.ID_TIPO_INSCRICAO IS
-    'FK para IPAGTB034_TIPO_INSCRICAO. Resolve CO_TIPO_INSCRICAO_FAVO (tipo de inscricao do favorecido '
+    'FK para IPAGTB034_TIPO_INSCRICAO. Resolve CO_TIPO_INSCRICAO_FAVORECIDO (tipo de inscricao do favorecido '
     'no Segmento B) para o registro de dominio: 1=CPF, 2=CNPJ. '
     'Preenchido apos lookup durante a carga do Segmento B.';
 
@@ -2509,20 +2509,20 @@ COMMENT ON COLUMN IPAGTB011_DET_INFO_FAVORECIDO.ID_TIPO_INSCRICAO IS
 COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.ID_TIPO_INSCRICAO_PAGADOR IS
     'FK para IPAGTB034_TIPO_INSCRICAO. Resolve CO_TIPO_INSCRICAO_PAGADOR (Segmento J-52) '
     'para o dominio de tipo de pessoa: 1=CPF, 2=CNPJ. Identifica o tipo de inscricao do pagador do boleto.';
-COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.ID_TIPO_INSCRICAO_BENEF IS
-    'FK para IPAGTB034_TIPO_INSCRICAO. Resolve CO_TIPO_INSCRICAO_BENEF (Segmento J-52) '
+COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.ID_TIPO_INSCRICAO_BENEFICIARIO IS
+    'FK para IPAGTB034_TIPO_INSCRICAO. Resolve CO_TIPO_INSCRICAO_BENEFICIARIO (Segmento J-52) '
     'para o dominio de tipo de pessoa. Identifica se o beneficiario e pessoa fisica (CPF) ou juridica (CNPJ).';
 COMMENT ON COLUMN IPAGTB014_DET_PARTES_TITULO.ID_TIPO_INSCRICAO_SACADOR IS
     'FK para IPAGTB034_TIPO_INSCRICAO. Resolve CO_TIPO_INSCRICAO_SACADOR (Segmento J-52) '
     'para o dominio de tipo de pessoa. Identifica o tipo de inscricao do sacador/avalista do titulo.';
 
--- IPAGTB015_DET_PIX_QR_CODE: FKs para tipos de inscricao (devedor e favorecido)
+-- IPAGTB015_DET_PIX_CODIGO_QR: FKs para tipos de inscricao (devedor e favorecido)
 
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.ID_TIPO_INSCRICAO_DEVEDOR IS
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.ID_TIPO_INSCRICAO_DEVEDOR IS
     'FK para IPAGTB034_TIPO_INSCRICAO. Resolve CO_TIPO_INSCRICAO_DEVEDOR (Segmento J-52 PIX) '
     'para o dominio de tipo de pessoa do devedor do QR Code Pix. 1=CPF, 2=CNPJ.';
-COMMENT ON COLUMN IPAGTB015_DET_PIX_QR_CODE.ID_TIPO_INSCRICAO_FAVO IS
-    'FK para IPAGTB034_TIPO_INSCRICAO. Resolve CO_TIPO_INSCRICAO_FAVO (Segmento J-52 PIX) '
+COMMENT ON COLUMN IPAGTB015_DET_PIX_CODIGO_QR.ID_TIPO_INSCRICAO_FAVORECIDO IS
+    'FK para IPAGTB034_TIPO_INSCRICAO. Resolve CO_TIPO_INSCRICAO_FAVORECIDO (Segmento J-52 PIX) '
     'para o dominio de tipo de pessoa do favorecido/recebedor do Pix. 1=CPF, 2=CNPJ.';
 
 -- IPAGTB020_DET_DADOS_TITULO: FK para tipo de inscricao do sacado
@@ -2550,8 +2550,8 @@ COMMENT ON COLUMN IPAGTB023_DET_RETORNO_TITULO.ID_TIPO_INSCRICAO_SACADO IS
 
 COMMENT ON COLUMN IPAGTB029_CONTROLE_LINHA.ID_TIPO_REGISTRO IS
     'FK para IPAGTB030_TIPO_REGISTRO. Resolve CO_TIPO_REGISTRO (posicao 8 da linha CNAB240) para '
-    'o registro de dominio correspondente: 0=Header Arquivo, 1=Header Lote, 3=Detalhe, '
-    '5=Trailer Lote, 9=Trailer Arquivo. Permite filtros relacionais por tipo sem depender '
+    'o registro de dominio correspondente: 0=Cabecalho Arquivo, 1=Cabecalho Lote, 3=Detalhe, '
+    '5=Rodape Lote, 9=Rodape Arquivo. Permite filtros relacionais por tipo sem depender '
     'do codigo CHAR. Preenchido durante a leitura e classificacao de cada linha do arquivo.';
 
 
