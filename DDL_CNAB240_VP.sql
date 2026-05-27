@@ -1347,3 +1347,677 @@ ORDER BY
 -- IPAGTB023_DET_RETORNO_TITULO: FK para tipo de inscricao do sacado (retorno de cobranca)
 
 -- IPAGTB029_CONTROLE_LINHA: FK para tipo de registro
+
+-- =============================================================================
+-- NOVOS SEGMENTOS CNAB240 (IPAGTB040-068)
+-- =============================================================================
+
+CREATE TABLE IPAGTB040_DET_MENSAGEM_SACADO (
+    ID_SEG_S                                 NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    CO_TIPO_IMPRESSAO                        CHAR(1),
+    NU_NUMERO_LINHA                          NUMBER(2),
+    TE_MENSAGEM                              VARCHAR2(140),
+    CO_TIPO_FONTE                            NUMBER(2),
+    TE_INFORMACAO_5                          VARCHAR2(40),
+    TE_INFORMACAO_6                          VARCHAR2(40),
+    TE_INFORMACAO_7                          VARCHAR2(40),
+    TE_INFORMACAO_8                          VARCHAR2(40),
+    TE_INFORMACAO_9                          VARCHAR2(40),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB040_PK
+        PRIMARY KEY (ID_SEG_S),
+    CONSTRAINT IPAGTB007_IPAGTB040_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB041_DET_BOLETO_ELETRONICO (
+    ID_SEG_G                                 NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    TE_CODIGO_BARRAS                         VARCHAR2(44),
+    CO_TIPO_INSCRICAO_BENEFICIARIO           CHAR(1),
+    NU_INSCRICAO_BENEFICIARIO                VARCHAR2(15),  -- [DADO_PESSOAL]
+    NO_BENEFICIARIO                          VARCHAR2(30),
+    DH_VENCIMENTO                            DATE,
+    NU_VALOR_NOMINAL                         NUMBER(15,2),
+    QT_MOEDA                                 NUMBER(15,5),
+    CO_MOEDA                                 NUMBER(2),
+    NU_DOCUMENTO_COBRANCA                    VARCHAR2(15),
+    NU_AGENCIA_COBRADORA                     NUMBER(5),
+    CO_DV_AGENCIA_COBRADORA                  CHAR(1),
+    TE_PRACA                                 VARCHAR2(10),
+    CO_CARTEIRA                              CHAR(1),
+    CO_ESPECIE_TITULO                        NUMBER(2),
+    DH_EMISSAO_TITULO                        DATE,
+    NU_JUROS_MORA                            NUMBER(15,2),
+    CO_DESCONTO_1                            CHAR(1),
+    DH_DESCONTO_1                            DATE,
+    NU_VALOR_DESCONTO_1                      NUMBER(15,2),
+    CO_PROTESTO                              CHAR(1),
+    NU_PRAZO_PROTESTO                        NUMBER(2),
+    DH_LIMITE_PAGAMENTO                      DATE,
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB041_PK
+        PRIMARY KEY (ID_SEG_G),
+    CONSTRAINT IPAGTB007_IPAGTB041_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB042_DET_COMPLEMENTO_BOLETO (
+    ID_SEG_H_BOLETO                          NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    CO_TIPO_INSCRICAO_SACADOR                CHAR(1),
+    NU_INSCRICAO_SACADOR                     VARCHAR2(15),  -- [DADO_PESSOAL]
+    NO_SACADOR_AVALISTA                      VARCHAR2(40),
+    CO_DESCONTO_2                            CHAR(1),
+    DH_DESCONTO_2                            DATE,
+    NU_VALOR_DESCONTO_2                      NUMBER(15,2),
+    CO_DESCONTO_3                            CHAR(1),
+    DH_DESCONTO_3                            DATE,
+    NU_VALOR_DESCONTO_3                      NUMBER(15,2),
+    CO_MULTA                                 CHAR(1),
+    DH_MULTA                                 DATE,
+    NU_VALOR_MULTA                           NUMBER(15,2),
+    NU_VALOR_ABATIMENTO                      NUMBER(15,2),
+    TE_INFORMACAO_1                          VARCHAR2(40),
+    TE_INFORMACAO_2                          VARCHAR2(40),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB042_PK
+        PRIMARY KEY (ID_SEG_H_BOLETO),
+    CONSTRAINT IPAGTB007_IPAGTB042_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB043_DET_EXTRATO_CONCILIACAO (
+    ID_SEG_E                                 NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    CO_TIPO_INSCRICAO_EMPRESA                CHAR(1),
+    NU_INSCRICAO_EMPRESA                     VARCHAR2(14),  -- [DADO_PESSOAL]
+    CO_CONVENIO                              VARCHAR2(20),
+    NU_AGENCIA                               NUMBER(5),
+    CO_DV_AGENCIA                            CHAR(1),
+    NU_CONTA_CORRENTE                        VARCHAR2(12),
+    CO_DV_CONTA                              CHAR(1),
+    CO_DV_AGENCIA_CONTA                      CHAR(1),
+    NO_EMPRESA                               VARCHAR2(30),
+    CO_NATUREZA_LANCAMENTO                   VARCHAR2(3),
+    CO_TIPO_COMPLEMENTO                      NUMBER(2),
+    TE_COMPLEMENTO_LANCAMENTO                VARCHAR2(20),
+    CO_ISENCAO_CPMF                          CHAR(1),
+    DH_CONTABIL                              DATE,
+    DH_LANCAMENTO                            DATE,
+    NU_VALOR_LANCAMENTO                      NUMBER(18,2),
+    CO_TIPO_LANCAMENTO                       CHAR(1),
+    CO_CATEGORIA_LANCAMENTO                  NUMBER(3),
+    CO_HISTORICO_BANCO                       VARCHAR2(4),
+    TE_HISTORICO                             VARCHAR2(25),
+    TE_NUMERO_DOCUMENTO                      VARCHAR2(39),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB043_PK
+        PRIMARY KEY (ID_SEG_E),
+    CONSTRAINT IPAGTB007_IPAGTB043_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB044_DET_EXTRATO_GESTAO_CAIXA (
+    ID_SEG_F                                 NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    TE_HORARIO_TRANSACAO                     VARCHAR2(6),
+    CO_NATUREZA_LANCAMENTO                   VARCHAR2(3),
+    CO_TIPO_COMPLEMENTO                      NUMBER(2),
+    TE_COMPLEMENTO_LANCAMENTO                VARCHAR2(20),
+    CO_ISENCAO_CPMF                          CHAR(1),
+    DH_CONTABIL                              DATE,
+    DH_LANCAMENTO                            DATE,
+    NU_VALOR_LANCAMENTO                      NUMBER(18,2),
+    CO_TIPO_LANCAMENTO                       CHAR(1),
+    CO_CATEGORIA_LANCAMENTO                  NUMBER(3),
+    CO_HISTORICO_BANCO                       VARCHAR2(5),
+    TE_HISTORICO                             VARCHAR2(25),
+    TE_NUMERO_DOCUMENTO                      VARCHAR2(38),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB044_PK
+        PRIMARY KEY (ID_SEG_F),
+    CONSTRAINT IPAGTB007_IPAGTB044_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB045_DET_VALOR_LANCAMENTO (
+    ID_SEG_I_CAIXA                           NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    NU_VALOR_TOTAL                           NUMBER(18,2),
+    NU_VALOR_DISPONIVEL                      NUMBER(18,2),
+    NU_VALOR_VINCULADO                       NUMBER(18,2),
+    NU_VALOR_BLOQUEADO                       NUMBER(18,2),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB045_PK
+        PRIMARY KEY (ID_SEG_I_CAIXA),
+    CONSTRAINT IPAGTB007_IPAGTB045_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB046_DET_CONTRATO_VENDOR (
+    ID_SEG_K                                 NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    CO_INSTRUCAO_MOVIMENTO                   NUMBER(2),
+    CO_MOTIVO_OCORRENCIA                     NUMBER(3),
+    CO_TIPO_INSCRICAO_COMPRADOR              CHAR(1),
+    NU_INSCRICAO_COMPRADOR                   VARCHAR2(14),  -- [DADO_PESSOAL]
+    NO_COMPRADOR                             VARCHAR2(40),
+    TE_ENDERECO_COMPRADOR                    VARCHAR2(40),
+    TE_BAIRRO_COMPRADOR                      VARCHAR2(15),
+    NU_CEP_COMPRADOR                         NUMBER(5),
+    NU_SUFIXO_CEP_COMPRADOR                  NUMBER(3),
+    NO_CIDADE_COMPRADOR                      VARCHAR2(15),
+    SG_UF_COMPRADOR                          CHAR(2),
+    NU_BANCO_DEBITO                          NUMBER(3),
+    NU_AGENCIA_DEBITO                        NUMBER(5),
+    CO_DV_AGENCIA_DEBITO                     CHAR(1),
+    NU_CONTA_DEBITO                          VARCHAR2(12),
+    CO_DV_CONTA_DEBITO                       CHAR(1),
+    CO_DV_AGENCIA_CONTA_DEBITO               CHAR(1),
+    NU_NOSSO_NUMERO                          VARCHAR2(20),
+    CO_RAMO_ATIVIDADE                        NUMBER(6),
+    CO_PROGRAMA_OPERACIONAL                  VARCHAR2(5),
+    TE_MENSAGEM                              VARCHAR2(5),
+    TE_USO_EMPRESA_BENEFICIARIO              VARCHAR2(27),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB046_PK
+        PRIMARY KEY (ID_SEG_K),
+    CONSTRAINT IPAGTB007_IPAGTB046_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB047_DET_PAGAMENTO_VENDOR (
+    ID_SEG_L                                 NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    NU_DOCUMENTO                             VARCHAR2(15),
+    NU_CONTRATO                              NUMBER(10),
+    DH_EMISSAO_TITULO                        DATE,
+    DH_FINANCIAMENTO                         DATE,
+    NU_VALOR_NOMINAL                         NUMBER(15,2),
+    NU_TAXA_VENDEDOR                         NUMBER(8,5),
+    NU_TAXA_COMPRADOR                        NUMBER(8,5),
+    CO_MOEDA_VENDEDOR                        NUMBER(2),
+    CO_MOEDA_COMPRADOR                       NUMBER(2),
+    DH_PRIMEIRO_VENCIMENTO                   DATE,
+    DH_VENCIMENTO_FINAL                      DATE,
+    CO_TIPO_VENCIMENTO_PARCELA               CHAR(1),
+    NU_PERIODICIDADE_VENCIMENTO              NUMBER(2),
+    QT_PARCELA                               NUMBER(2),
+    CO_FORMA_PAGAMENTO                       CHAR(1),
+    CO_EQUALIZACAO                           CHAR(1),
+    CO_MODALIDADE_EQUALIZACAO                CHAR(1),
+    DH_PRIMEIRA_REPACTUACAO                  DATE,
+    DH_ULTIMA_REPACTUACAO                    DATE,
+    NU_PERIODICIDADE_REPACTUACAO             NUMBER(2),
+    CO_MULTA                                 CHAR(1),
+    DH_MULTA                                 DATE,
+    NU_VALOR_MULTA                           NUMBER(15,2),
+    CO_DESCONTO                              CHAR(1),
+    DH_DESCONTO                              DATE,
+    NU_VALOR_DESCONTO                        NUMBER(15,2),
+    DH_PRORROGACAO_VENCIMENTO                DATE,
+    NU_NOVA_TAXA_VENDEDOR                    NUMBER(8,5),
+    NU_NOVA_TAXA_COMPRADOR                   NUMBER(8,5),
+    CO_PAGAMENTO_IOF                         CHAR(1),
+    NU_PRAZO_DEBITO_TRANSFERENCIA            NUMBER(2),
+    CO_PROTESTO                              CHAR(1),
+    NU_PRAZO_PROTESTO                        VARCHAR2(2),
+    NU_VALOR_ABATIMENTO                      NUMBER(15,2),
+    CO_ESPECIE_TITULO                        NUMBER(2),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB047_PK
+        PRIMARY KEY (ID_SEG_L),
+    CONSTRAINT IPAGTB007_IPAGTB047_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB048_DET_RETORNO_CONTRATO_VENDOR (
+    ID_SEG_M                                 NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    CO_MOVIMENTO_RETORNO                     NUMBER(2),
+    CO_MOTIVO_OCORRENCIA                     NUMBER(3),
+    NU_CONTRATO                              NUMBER(10),
+    NU_DOCUMENTO                             VARCHAR2(15),
+    CO_FORMA_PAGAMENTO                       CHAR(1),
+    QT_PARCELA                               NUMBER(2),
+    NU_NUMERO_PARCELA                        NUMBER(2),
+    DH_PRIMEIRO_VENCIMENTO                   DATE,
+    DH_VENCIMENTO_ULTIMA_PARCELA             DATE,
+    NU_TAXA_VENDEDOR                         NUMBER(8,5),
+    NU_TAXA_COMPRADOR                        NUMBER(8,5),
+    CO_MOEDA_VENDEDOR                        NUMBER(2),
+    CO_MOEDA_COMPRADOR                       NUMBER(2),
+    NU_TAXA_ANUAL_VENDEDOR                   NUMBER(8,5),
+    NU_TAXA_ANUAL_COMPRADOR                  NUMBER(8,5),
+    CO_EQUALIZACAO                           CHAR(1),
+    CO_MODALIDADE_EQUALIZACAO                CHAR(1),
+    CO_TIPO_LANCAMENTO_EQUALIZACAO           CHAR(1),
+    CO_PAGAMENTO_IOF                         CHAR(1),
+    NU_VALOR_NOMINAL                         NUMBER(15,2),
+    NU_VALOR_FINANCIADO                      NUMBER(15,2),
+    NU_VALOR_EQUALIZACAO                     NUMBER(15,2),
+    NU_VALOR_IOF                             NUMBER(15,2),
+    NU_VALOR_RESGATE                         NUMBER(15,2),
+    NU_VALOR_TARIFA                          NUMBER(15,2),
+    NU_VALOR_LIQUIDO                         NUMBER(15,2),
+    TE_USO_EMPRESA_BENEFICIARIO              VARCHAR2(25),
+    CO_ESPECIE_TITULO                        NUMBER(2),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB048_PK
+        PRIMARY KEY (ID_SEG_M),
+    CONSTRAINT IPAGTB007_IPAGTB048_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR (
+    ID_SEG_N_VENDOR                          NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    CO_MOVIMENTO_RETORNO                     NUMBER(2),
+    CO_MOTIVO_OCORRENCIA                     NUMBER(3),
+    NU_VALOR_VENCIMENTO                      NUMBER(15,2),
+    DH_BAIXA_LIQUIDACAO                      DATE,
+    NU_VALOR_PAGO                            NUMBER(15,2),
+    NU_VALOR_JUROS_MORA                      NUMBER(15,2),
+    NU_VALOR_IOF_ATRASO                      NUMBER(15,2),
+    NU_VALOR_MULTA                           NUMBER(15,2),
+    NU_VALOR_DESCONTO                        NUMBER(15,2),
+    NU_VALOR_EQUALIZACAO                     NUMBER(15,2),
+    CO_SITUACAO_CONTRATO                     CHAR(1),
+    CO_SITUACAO_PARCELA                      CHAR(1),
+    DH_PRORROGACAO_VENCIMENTO                DATE,
+    NU_NOVA_TAXA_VENDEDOR                    NUMBER(8,5),
+    NU_NOVA_TAXA_COMPRADOR                   NUMBER(8,5),
+    CO_DESCONTO                              CHAR(1),
+    DH_DESCONTO                              DATE,
+    NU_VALOR_DESCONTO_CONCEDIDO              NUMBER(15,2),
+    CO_PROTESTO                              CHAR(1),
+    NU_PRAZO_PROTESTO                        VARCHAR2(2),
+    NU_VALOR_ABATIMENTO                      NUMBER(15,2),
+    NU_VALOR_CONCENTRADO                     NUMBER(15,2),
+    NU_PERCENTUAL_CONCENTRACAO               NUMBER(8,5),
+    NU_VALOR_ENCARGO_COMPRADOR               NUMBER(15,2),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB049_PK
+        PRIMARY KEY (ID_SEG_N_VENDOR),
+    CONSTRAINT IPAGTB007_IPAGTB049_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB050_DET_CUSTODIA_CHEQUE (
+    ID_SEG_D                                 NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    CO_TIPO_MOVIMENTO                        NUMBER(2),
+    CO_FINALIDADE                            NUMBER(2),
+    CO_FORMA_ENTRADA                         CHAR(1),
+    TE_CMC7                                  VARCHAR2(34),
+    CO_TIPO_INSCRICAO_EMITENTE               CHAR(1),
+    NU_INSCRICAO_EMITENTE                    VARCHAR2(14),  -- [DADO_PESSOAL]
+    NU_VALOR_CHEQUE                          NUMBER(15,2),
+    DH_CAPTURA                               DATE,
+    DH_DEPOSITO                              DATE,
+    DH_CREDITO                               DATE,
+    TE_SEU_NUMERO                            VARCHAR2(20),
+    NU_AGENCIA_DEVOLUCAO                     NUMBER(5),
+    NU_CONTA_DEVOLUCAO                       VARCHAR2(12),
+    NU_VALOR_JUROS                           NUMBER(11,2),
+    NU_VALOR_IOF                             NUMBER(11,2),
+    NU_VALOR_OUTROS_ENCARGO                  NUMBER(11,2),
+    NU_NUMERO_CONTRATO                       NUMBER(17),
+    NU_TAXA_JUROS                            NUMBER(7,4),
+    TE_OCORRENCIA                            CHAR(10),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB050_PK
+        PRIMARY KEY (ID_SEG_D),
+    CONSTRAINT IPAGTB007_IPAGTB050_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO (
+    ID_SEG_H_EMPRESTIMO                      NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    CO_TIPO_MOVIMENTO                        CHAR(1),
+    NO_MUTUARIO                              VARCHAR2(30),
+    CO_UNIDADE_ADMINISTRATIVA                VARCHAR2(6),
+    NU_CPF_MUTUARIO                          NUMBER(11),  -- [DADO_PESSOAL]
+    TE_IDENTIFICACAO_MUTUARIO                VARCHAR2(12),
+    CO_STATUS_MUTUARIO                       CHAR(1),
+    CO_REGIME_CONTRATACAO                    CHAR(1),
+    CO_SITUACAO_SINDICAL                     CHAR(1),
+    CO_VERBA_RESCISORIA                      CHAR(1),
+    NU_VALOR_MARGEM                          NUMBER(9,2),
+    NU_IDENTIFICACAO_SINDICATO               NUMBER(8),
+    CO_CENTRAL_SINDICAL                      CHAR(1),
+    CO_TIPO_OPERACAO                         CHAR(1),
+    NU_DIA_VENCIMENTO                        NUMBER(2),
+    NU_MES_VENCIMENTO                        NUMBER(2),
+    NU_ANO_VENCIMENTO                        NUMBER(4),
+    NU_NUMERO_PARCELA                        NUMBER(2),
+    QT_PARCELA                               NUMBER(2),
+    DH_INICIO_CONTRATO                       DATE,
+    DH_FIM_CONTRATO                          DATE,
+    NU_VALOR_LIBERADO                        NUMBER(9,2),
+    NU_VALOR_OPERACAO                        NUMBER(9,2),
+    NU_VALOR_PARCELA                         NUMBER(9,2),
+    NU_VALOR_SALDO_DEVEDOR                   NUMBER(9,2),
+    TE_IDENTIFICACAO_CONTRATO                VARCHAR2(20),
+    QT_CONTRATO                              NUMBER(2),
+    NU_VALOR_CONTRAPRESTACAO                 NUMBER(9,2),
+    NU_VALOR_RESIDUAL_GARANTIDO              NUMBER(9,2),
+    CO_TIPO_RESIDUAL_GARANTIDO               CHAR(1),
+    NU_AGENCIA_MUTUARIO                      NUMBER(5),
+    CO_DV_AGENCIA_MUTUARIO                   CHAR(1),
+    NU_CONTA_MUTUARIO                        VARCHAR2(12),
+    CO_DV_CONTA_MUTUARIO                     CHAR(1),
+    TE_OCORRENCIA                            CHAR(10),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB051_PK
+        PRIMARY KEY (ID_SEG_H_EMPRESTIMO),
+    CONSTRAINT IPAGTB007_IPAGTB051_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB052_DET_COMPROR (
+    ID_SEG_I_COMPROR                         NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    NU_CONTRATO                              NUMBER(10),
+    NU_DOCUMENTO                             VARCHAR2(15),
+    DH_COMPRA                                DATE,
+    CO_REGIME_ENCARGO                        CHAR(1),
+    CO_MODALIDADE_ENCARGO                    NUMBER(2),
+    NU_TAXA_JUROS                            NUMBER(8,5),
+    CO_FORMA_REPOSICAO                       CHAR(1),
+    CO_METODOLOGIA_CALCULO                   CHAR(1),
+    DH_PRIMEIRO_VENCIMENTO                   DATE,
+    DH_VENCIMENTO_FINAL                      DATE,
+    CO_TIPO_VENCIMENTO_PARCELA               CHAR(1),
+    NU_PERIODICIDADE_VENCIMENTO              NUMBER(2),
+    QT_PARCELA                               NUMBER(2),
+    NU_NOSSO_NUMERO                          VARCHAR2(20),
+    CO_FORMA_PAGAMENTO                       CHAR(1),
+    NU_VALOR_ENCARGO                         NUMBER(15,2),
+    CO_PAGAMENTO_IOF                         CHAR(1),
+    NU_VALOR_IOF                             NUMBER(15,2),
+    NU_VALOR_RESGATE                         NUMBER(15,2),
+    NU_VALOR_JUROS_MORA                      NUMBER(15,2),
+    NU_VALOR_IOF_ATRASO                      NUMBER(15,2),
+    NU_VALOR_MULTA                           NUMBER(15,2),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB052_PK
+        PRIMARY KEY (ID_SEG_I_COMPROR),
+    CONSTRAINT IPAGTB007_IPAGTB052_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB053_DET_PARCELA_COMPROR (
+    ID_SEG_I11                               NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    NU_NUMERO_PARCELA_1                      NUMBER(2),
+    NU_VALOR_PARCELA_1                       NUMBER(15,2),
+    DH_VENCIMENTO_PARCELA_1                  DATE,
+    NU_NOSSO_NUMERO_PARCELA_1                VARCHAR2(20),
+    NU_NUMERO_PARCELA_2                      NUMBER(2),
+    NU_VALOR_PARCELA_2                       NUMBER(15,2),
+    DH_VENCIMENTO_PARCELA_2                  DATE,
+    NU_NOSSO_NUMERO_PARCELA_2                VARCHAR2(20),
+    NU_NUMERO_PARCELA_3                      NUMBER(2),
+    NU_VALOR_PARCELA_3                       NUMBER(15,2),
+    DH_VENCIMENTO_PARCELA_3                  DATE,
+    NU_NOSSO_NUMERO_PARCELA_3                VARCHAR2(20),
+    NU_NUMERO_PARCELA_4                      NUMBER(2),
+    NU_VALOR_PARCELA_4                       NUMBER(15,2),
+    DH_VENCIMENTO_PARCELA_4                  DATE,
+    NU_NOSSO_NUMERO_PARCELA_4                VARCHAR2(20),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB053_PK
+        PRIMARY KEY (ID_SEG_I11),
+    CONSTRAINT IPAGTB007_IPAGTB053_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB060_DET_SACADOR_AVALISTA (
+    ID_SEG_Y01                               NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    CO_TIPO_INSCRICAO                        CHAR(1),
+    NU_INSCRICAO                             VARCHAR2(15),  -- [DADO_PESSOAL]
+    NO_SACADOR_AVALISTA                      VARCHAR2(40),
+    TE_ENDERECO                              VARCHAR2(40),
+    TE_BAIRRO                                VARCHAR2(15),
+    NU_CEP                                   NUMBER(5),
+    NU_SUFIXO_CEP                            NUMBER(3),
+    NO_CIDADE                                VARCHAR2(15),
+    SG_UF                                    CHAR(2),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB060_PK
+        PRIMARY KEY (ID_SEG_Y01),
+    CONSTRAINT IPAGTB007_IPAGTB060_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB061_DET_ALEGACAO_PAGADOR (
+    ID_SEG_Y02                               NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    TE_CODIGO_BARRAS                         VARCHAR2(44),
+    CO_PADRAO                                VARCHAR2(2),
+    CO_OCORRENCIA                            VARCHAR2(4),
+    TE_COMPLEMENTO_OCORRENCIA                VARCHAR2(150),
+    TE_OCORRENCIA_RETORNO                    CHAR(10),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB061_PK
+        PRIMARY KEY (ID_SEG_Y02),
+    CONSTRAINT IPAGTB007_IPAGTB061_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB062_DET_DADOS_PAGADOR (
+    ID_SEG_Y03                               NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    CO_TIPO_INSCRICAO_PAGADOR                CHAR(1),
+    NU_INSCRICAO_PAGADOR                     VARCHAR2(15),  -- [DADO_PESSOAL]
+    NO_PAGADOR                               VARCHAR2(40),
+    TE_ENDERECO                              VARCHAR2(40),
+    TE_BAIRRO                                VARCHAR2(15),
+    NU_CEP                                   NUMBER(5),
+    NU_SUFIXO_CEP                            NUMBER(3),
+    NO_CIDADE                                VARCHAR2(15),
+    SG_UF                                    CHAR(2),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB062_PK
+        PRIMARY KEY (ID_SEG_Y03),
+    CONSTRAINT IPAGTB007_IPAGTB062_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB063_DET_ENVIO_ALTERNATIVO (
+    ID_SEG_Y04                               NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    TE_EMAIL                                 VARCHAR2(50),
+    NU_DDD                                   NUMBER(2),
+    NU_CELULAR                               NUMBER(9),
+    CO_TIPO_CHAVE_PIX                        CHAR(1),
+    TE_CHAVE_PIX_URL                         VARCHAR2(77),
+    TE_TXID                                  VARCHAR2(35),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB063_PK
+        PRIMARY KEY (ID_SEG_Y04),
+    CONSTRAINT IPAGTB007_IPAGTB063_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB064_DET_CHEQUE_PAGAMENTO (
+    ID_SEG_Y05                               NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    TE_CMC7_CHEQUE_1                         VARCHAR2(34),
+    TE_CMC7_CHEQUE_2                         VARCHAR2(34),
+    TE_CMC7_CHEQUE_3                         VARCHAR2(34),
+    TE_CMC7_CHEQUE_4                         VARCHAR2(34),
+    TE_CMC7_CHEQUE_5                         VARCHAR2(34),
+    TE_CMC7_CHEQUE_6                         VARCHAR2(34),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB064_PK
+        PRIMARY KEY (ID_SEG_Y05),
+    CONSTRAINT IPAGTB007_IPAGTB064_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB065_DET_RATEIO_CREDITO (
+    ID_SEG_Y50                               NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    NU_AGENCIA                               NUMBER(5),
+    CO_DV_AGENCIA                            CHAR(1),
+    NU_CONTA_CORRENTE                        VARCHAR2(12),
+    CO_DV_CONTA                              CHAR(1),
+    CO_DV_AGENCIA_CONTA                      CHAR(1),
+    NU_NOSSO_NUMERO                          VARCHAR2(20),
+    CO_CALCULO_RATEIO                        CHAR(1),
+    CO_TIPO_VALOR_INFORMADO                  CHAR(1),
+    NU_VALOR_PERCENTUAL                      NUMBER(15,3),
+    NU_BANCO_BENEFICIARIO                    NUMBER(3),
+    NU_AGENCIA_BENEFICIARIO                  NUMBER(5),
+    CO_DV_AGENCIA_BENEFICIARIO               CHAR(1),
+    NU_CONTA_BENEFICIARIO                    VARCHAR2(12),
+    CO_DV_CONTA_BENEFICIARIO                 CHAR(1),
+    CO_DV_AGENCIA_CONTA_BENEFICIARIO         CHAR(1),
+    NO_BENEFICIARIO                          VARCHAR2(40),
+    TE_PARCELA                               VARCHAR2(6),
+    QT_FLOATING                              NUMBER(3),
+    DH_CREDITO                               DATE,
+    TE_MOTIVO_OCORRENCIA                     CHAR(10),
+    NU_ISPB_BANCO_DESTINATARIO               NUMBER(8),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB065_PK
+        PRIMARY KEY (ID_SEG_Y50),
+    CONSTRAINT IPAGTB007_IPAGTB065_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB066_DET_NOTA_FISCAL (
+    ID_SEG_Y51                               NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    NU_NOTA_FISCAL_1                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_1                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_1                 DATE,
+    NU_NOTA_FISCAL_2                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_2                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_2                 DATE,
+    NU_NOTA_FISCAL_3                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_3                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_3                 DATE,
+    NU_NOTA_FISCAL_4                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_4                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_4                 DATE,
+    NU_NOTA_FISCAL_5                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_5                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_5                 DATE,
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB066_PK
+        PRIMARY KEY (ID_SEG_Y51),
+    CONSTRAINT IPAGTB007_IPAGTB066_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB067_DET_NOTA_FISCAL_ADICIONAL (
+    ID_SEG_Y52                               NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    NU_NOTA_FISCAL_1                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_1                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_1                 DATE,
+    TE_CHAVE_DANFE_1                         VARCHAR2(44),
+    NU_NOTA_FISCAL_2                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_2                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_2                 DATE,
+    TE_CHAVE_DANFE_2                         VARCHAR2(44),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB067_PK
+        PRIMARY KEY (ID_SEG_Y52),
+    CONSTRAINT IPAGTB007_IPAGTB067_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE TABLE IPAGTB068_DET_TIPO_PAGAMENTO (
+    ID_SEG_Y53                               NUMBER,
+    ID_DETALHE_REG                           NUMBER NOT NULL,
+    CO_TIPO_PAGAMENTO                        NUMBER(2),
+    QT_PAGAMENTO_POSSIVEL                    NUMBER(2),
+    CO_TIPO_VALOR_MAXIMO                     CHAR(1),
+    NU_VALOR_MAXIMO                          NUMBER(15,2),
+    NU_PERCENTUAL_MAXIMO                     NUMBER(15,5),
+    CO_TIPO_VALOR_MINIMO                     CHAR(1),
+    NU_VALOR_MINIMO                          NUMBER(15,2),
+    NU_PERCENTUAL_MINIMO                     NUMBER(15,5),
+    DH_INCLUSAO                              DATE NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60) NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB068_PK
+        PRIMARY KEY (ID_SEG_Y53),
+    CONSTRAINT IPAGTB007_IPAGTB068_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);

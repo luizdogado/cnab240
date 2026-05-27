@@ -92,9 +92,15 @@ Arquivo (Tipo 0 + Tipo 9)
 | `IPAGTB020_DET_DADOS_TITULO` | **Segmento P** | Obrigatório | Dados do título em cobrança: nosso número, carteira, espécie, valor, vencimento, instrução de cobrança. Campo de referência: campos C001–C050. |
 | `IPAGTB021_DET_DADOS_SACADO` | **Segmento Q** | Obrigatório | Dados complementares do sacado: endereço completo, sacador/avalista, banco correspondente. |
 | `IPAGTB022_DET_DESCONTO_TITULO` | **Segmento R** | Opcional | Descontos adicionais (2 e 3), tipo e valor de multa, tipo e valor de mora. |
+| `IPAGTB040_DET_MENSAGEM_SACADO` | **Segmento S** | Opcional | Mensagem/informações a serem impressas no boleto. Dois formatos: linha única (140 chars) ou 5 mensagens (40 chars). |
+| `IPAGTB060_DET_SACADOR_AVALISTA` | **Segmento Y-01** | Opcional | Dados do sacador/avalista: inscrição, nome e endereço completo. |
+| `IPAGTB063_DET_ENVIO_ALTERNATIVO` | **Segmento Y-04** | Opcional | Envio de documento por meio alternativo: e-mail, SMS, chave PIX, URL QR Code, TXID. |
+| `IPAGTB065_DET_RATEIO_CREDITO` | **Segmento Y-50** | Opcional | Rateio de crédito entre beneficiários: conta, nosso número, percentual, floating. |
+| `IPAGTB066_DET_NOTA_FISCAL` | **Segmento Y-51** | Opcional | Dados de notas fiscais (até 5 por registro): número, valor, data emissão. |
+| `IPAGTB067_DET_NOTA_FISCAL_ADICIONAL` | **Segmento Y-52** | Opcional | Informações adicionais de NF com chave DANFE (até 2 por registro). Múltiplas ocorrências. |
+| `IPAGTB068_DET_TIPO_PAGAMENTO` | **Segmento Y-53** | Opcional | Tipo de pagamento e regras de alteração do valor nominal (máximo, mínimo, percentual). |
 
-**Serviço:** Cobrança — Títulos em Cobrança — Remessa  
-**Nota:** Segmentos S e Y também fazem parte deste fluxo mas ainda não estão modelados.
+**Serviço:** Cobrança — Títulos em Cobrança — Remessa
 
 ---
 
@@ -104,13 +110,102 @@ Arquivo (Tipo 0 + Tipo 9)
 |--------|----------|----------------|-----------|
 | `IPAGTB023_DET_RETORNO_TITULO` | **Segmento T** | Obrigatório | Confirmação dos dados do título no retorno: nosso número, carteira, ocorrência bancária, valor. |
 | `IPAGTB024_DET_COMPL_RETORNO` | **Segmento U** | Obrigatório | Valores financeiros da liquidação no retorno: acréscimos, descontos, abatimentos, IOF, outros créditos/débitos. |
+| `IPAGTB064_DET_CHEQUE_PAGAMENTO` | **Segmento Y-05** | Opcional | Dados de cheques usados para pagamento (até 6 CMC7 por registro). Múltiplas ocorrências. |
 
-**Serviço:** Cobrança — Títulos em Cobrança — Retorno  
-**Nota:** Segmento Y (retorno cobrança) ainda não modelado.
+**Serviço:** Cobrança — Títulos em Cobrança — Retorno
 
 ---
 
-## 8. Tabelas de Controle Operacional (sem segmento CNAB)
+## 8. Segmentos de Boleto de Pagamento Eletrônico
+
+| Tabela | Segmento | Obrigatoriedade | Descrição |
+|--------|----------|----------------|-----------|
+| `IPAGTB041_DET_BOLETO_ELETRONICO` | **Segmento G** | Obrigatório | Dados do título capturado: código de barras, beneficiário, vencimento, valor, moeda, carteira, espécie, juros, desconto. |
+| `IPAGTB042_DET_COMPLEMENTO_BOLETO` | **Segmento H** | Opcional | Sacador/avalista, descontos 2 e 3, multa, abatimento e mensagens ao pagador. |
+| `IPAGTB062_DET_DADOS_PAGADOR` | **Segmento Y-03** | Opcional | Dados do pagador: inscrição, nome e endereço completo. |
+
+**Serviço:** Boleto de Pagamento Eletrônico — Retorno
+
+---
+
+## 9. Segmento de Alegação do Pagador
+
+| Tabela | Segmento | Obrigatoriedade | Descrição |
+|--------|----------|----------------|-----------|
+| `IPAGTB061_DET_ALEGACAO_PAGADOR` | **Segmento Y-02** | Obrigatório | Contestação de boleto: código de barras, código padrão, ocorrência e complemento. |
+
+**Serviço:** Alegação do Pagador — Remessa e Retorno
+
+---
+
+## 10. Segmentos de Extrato
+
+| Tabela | Segmento | Obrigatoriedade | Descrição |
+|--------|----------|----------------|-----------|
+| `IPAGTB043_DET_EXTRATO_CONCILIACAO` | **Segmento E** | Obrigatório | Extrato de conta corrente para conciliação: empresa, conta, natureza, valor, tipo, categoria, histórico. |
+| `IPAGTB044_DET_EXTRATO_GESTAO_CAIXA` | **Segmento F** | Obrigatório | Extrato para gestão de caixa: similar ao E mas com horário e campo histórico de 5 chars. |
+| `IPAGTB045_DET_VALOR_LANCAMENTO` | **Segmento I** | Opcional | Decomposição do lançamento: valor disponível, vinculado e bloqueado. Complementar ao F. |
+
+**Serviço:** Extrato de Conta Corrente (E) e Extrato para Gestão de Caixa (F, I) — Retorno
+
+---
+
+## 11. Segmentos de Débito em Conta Corrente
+
+Reutiliza os mesmos segmentos A, B, C de Pagamento (IPAGTB010–012).
+
+**Serviço:** Débito em Conta Corrente — Remessa e Retorno
+
+---
+
+## 12. Segmentos de Vendor
+
+| Tabela | Segmento | Obrigatoriedade | Descrição |
+|--------|----------|----------------|-----------|
+| `IPAGTB046_DET_CONTRATO_VENDOR` | **Segmento K** | Obrigatório | Dados do comprador e contrato: inscrição, endereço, conta débito, nosso número, ramo de atividade. |
+| `IPAGTB047_DET_PAGAMENTO_VENDOR` | **Segmento L** | Obrigatório | Pagamento ao fornecedor: documento, contrato, taxas, parcelas, multa, desconto, protesto. |
+| `IPAGTB048_DET_RETORNO_CONTRATO_VENDOR` | **Segmento M** | Obrigatório | Confirmação do contrato: taxas anuais, equalização, valores (nominal, financiado, IOF, líquido). |
+| `IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR` | **Segmento N** | Obrigatório | Liquidação da parcela: valores pagos, juros, IOF, multa, desconto, situação contrato/parcela. |
+
+**Serviço:** Vendor — Remessa (K, L) e Retorno (K, M, N)
+
+---
+
+## 13. Segmento de Custódia de Cheques
+
+| Tabela | Segmento | Obrigatoriedade | Descrição |
+|--------|----------|----------------|-----------|
+| `IPAGTB050_DET_CUSTODIA_CHEQUE` | **Segmento D** | Obrigatório | Dados do cheque: CMC7, emitente, valor, datas captura/depósito/crédito, dados de devolução e empréstimo. |
+
+**Serviço:** Custódia de Cheques — Remessa e Retorno
+
+---
+
+## 14. Segmento de Empréstimo por Consignação
+
+| Tabela | Segmento | Obrigatoriedade | Descrição |
+|--------|----------|----------------|-----------|
+| `IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO` | **Segmento H** | Obrigatório | Dados do mutuário, operação de crédito, parcelas, valores, arrendamento mercantil, conta corrente. |
+
+**Serviço:** Empréstimo por Consignação — Remessa e Retorno
+
+---
+
+## 15. Segmentos de Compror / Compror Rotativo
+
+| Tabela | Segmento | Obrigatoriedade | Descrição |
+|--------|----------|----------------|-----------|
+| `IPAGTB010_DET_PAGAMENTO` | **Segmento A** | Obrigatório | Reutiliza layout de Pagamento (alternativa ao J). |
+| `IPAGTB011_DET_INFO_FAVORECIDO` | **Segmento B** | Obrigatório | Reutiliza layout de Pagamento. |
+| `IPAGTB052_DET_COMPROR` | **Segmento I** | Obrigatório | Dados do financiamento Compror: contrato, taxas, parcelas, encargos, IOF, multa. |
+| `IPAGTB053_DET_PARCELA_COMPROR` | **Segmento I-11** | Opcional | Informação de parcelas (até 4 por registro). Múltiplas ocorrências. |
+| `IPAGTB013_DET_TITULO_COBRANCA` | **Segmento J** | Obrigatório | Reutiliza layout de Pagamento de Títulos (alternativa ao A). |
+
+**Serviço:** Compror / Compror Rotativo — Remessa e Retorno
+
+---
+
+## 16. Tabelas de Controle Operacional
 
 | Tabela | Descrição |
 |--------|-----------|
@@ -122,7 +217,7 @@ Arquivo (Tipo 0 + Tipo 9)
 
 ---
 
-## 9. Tabelas de Domínio (IPAGTB030–037)
+## 17. Tabelas de Domínio (IPAGTB030–037)
 
 | Tabela | Domínio | Campo CNAB |
 |--------|---------|-----------|
@@ -137,7 +232,7 @@ Arquivo (Tipo 0 + Tipo 9)
 
 ---
 
-## 10. Views (IPAGTV)
+## 18. Views (IPAGTV)
 
 | View | Descrição |
 |------|-----------|
@@ -147,27 +242,13 @@ Arquivo (Tipo 0 + Tipo 9)
 
 ---
 
-## 11. Segmentos FEBRABAN ainda não modelados
+## 19. Cobertura Completa
 
-Os segmentos abaixo constam no padrão CNAB240 V10.9 (PDF FEBRABAN) mas ainda não possuem tabela no modelo atual:
-
-| Segmento | Serviço | Obs |
-|----------|---------|-----|
-| **D** | Custódia de Cheques — Remessa e Retorno | — |
-| **E** | Extrato de Conta Corrente para Conciliação Bancária | Somente Retorno |
-| **F** | Extrato para Gestão de Caixa | Somente Retorno |
-| **G** | Boleto de Pagamento Eletrônico (Captura de Títulos) | Somente Retorno |
-| **H** | Empréstimo por Consignação | Remessa e Retorno |
-| **I** | Extrato para Gestão de Caixa (opcional) / Compror | Retorno |
-| **K** | Vendor — Remessa | Obrigatório |
-| **L** | Vendor — Remessa | Obrigatório |
-| **M** | Vendor — Retorno | Obrigatório |
-| **S** | Cobrança Remessa — Títulos em Cobrança | Opcional |
-| **Y** | Cobrança Remessa/Retorno, Boleto Eletrônico, Alegação do Pagador | Obrigatório em Alegação |
+Todos os segmentos do padrão CNAB240 FEBRABAN V10.9 estão modelados no schema atual.
 
 ---
 
-## 12. Resumo Visual: Tabela x Segmento
+## 20. Resumo Visual: Tabela x Segmento
 
 | # | Tabela | Segmento | Serviço Principal |
 |---|--------|----------|------------------|
@@ -193,6 +274,29 @@ Os segmentos abaixo constam no padrão CNAB240 V10.9 (PDF FEBRABAN) mas ainda n�
 | TB022 | IPAGTB022_DET_DESCONTO_TITULO | **Seg R** | Cobrança Remessa — Descontos |
 | TB023 | IPAGTB023_DET_RETORNO_TITULO | **Seg T** | Cobrança Retorno — Confirmação |
 | TB024 | IPAGTB024_DET_COMPL_RETORNO | **Seg U** | Cobrança Retorno — Valores |
+| TB040 | IPAGTB040_DET_MENSAGEM_SACADO | **Seg S** | Cobrança Remessa — Mensagem Boleto |
+| TB041 | IPAGTB041_DET_BOLETO_ELETRONICO | **Seg G** | Boleto Eletrônico (Retorno) |
+| TB042 | IPAGTB042_DET_COMPLEMENTO_BOLETO | **Seg H** | Boleto Eletrônico — Complemento |
+| TB043 | IPAGTB043_DET_EXTRATO_CONCILIACAO | **Seg E** | Extrato Conciliação (Retorno) |
+| TB044 | IPAGTB044_DET_EXTRATO_GESTAO_CAIXA | **Seg F** | Extrato Gestão de Caixa (Retorno) |
+| TB045 | IPAGTB045_DET_VALOR_LANCAMENTO | **Seg I** | Decomposição Lançamento — Gestão Caixa |
+| TB046 | IPAGTB046_DET_CONTRATO_VENDOR | **Seg K** | Vendor — Contrato Comprador |
+| TB047 | IPAGTB047_DET_PAGAMENTO_VENDOR | **Seg L** | Vendor — Pagamento (Remessa) |
+| TB048 | IPAGTB048_DET_RETORNO_CONTRATO_VENDOR | **Seg M** | Vendor — Retorno Contrato |
+| TB049 | IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR | **Seg N** | Vendor — Retorno Pagamento |
+| TB050 | IPAGTB050_DET_CUSTODIA_CHEQUE | **Seg D** | Custódia de Cheques |
+| TB051 | IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO | **Seg H** | Empréstimo por Consignação |
+| TB052 | IPAGTB052_DET_COMPROR | **Seg I** | Compror — Financiamento |
+| TB053 | IPAGTB053_DET_PARCELA_COMPROR | **Seg I-11** | Compror — Parcelas |
+| TB060 | IPAGTB060_DET_SACADOR_AVALISTA | **Seg Y-01** | Cobrança — Sacador/Avalista |
+| TB061 | IPAGTB061_DET_ALEGACAO_PAGADOR | **Seg Y-02** | Alegação do Pagador |
+| TB062 | IPAGTB062_DET_DADOS_PAGADOR | **Seg Y-03** | Boleto Eletrônico — Dados Pagador |
+| TB063 | IPAGTB063_DET_ENVIO_ALTERNATIVO | **Seg Y-04** | Envio Alternativo (e-mail/SMS/PIX) |
+| TB064 | IPAGTB064_DET_CHEQUE_PAGAMENTO | **Seg Y-05** | Cobrança Retorno — Cheques CMC7 |
+| TB065 | IPAGTB065_DET_RATEIO_CREDITO | **Seg Y-50** | Cobrança — Rateio de Crédito |
+| TB066 | IPAGTB066_DET_NOTA_FISCAL | **Seg Y-51** | Cobrança — Notas Fiscais |
+| TB067 | IPAGTB067_DET_NOTA_FISCAL_ADICIONAL | **Seg Y-52** | Cobrança — NF com DANFE |
+| TB068 | IPAGTB068_DET_TIPO_PAGAMENTO | **Seg Y-53** | Cobrança — Tipo de Pagamento |
 | TB025 | IPAGTB025_CONTROLE_CARGA | — | Controle de Carga (operacional) |
 | TB026 | IPAGTB026_CTRL_CARGA_LOTE | — | Controle de Carga por Lote |
 | TB027 | IPAGTB027_DESPACHO_LOTE | — | Estado de Despacho |
@@ -210,7 +314,7 @@ Os segmentos abaixo constam no padrão CNAB240 V10.9 (PDF FEBRABAN) mas ainda n�
 
 ---
 
-## 13. Chaves Estrangeiras por Tabela
+## 21. Chaves Estrangeiras por Tabela
 
 ### IPAGTB002_CABECALHO_ARQUIVO
 
@@ -394,4 +498,34 @@ Os segmentos abaixo constam no padrão CNAB240 V10.9 (PDF FEBRABAN) mas ainda n�
 | Constraint | Coluna(s) | Tabela Pai | Coluna(s) Pai |
 |------------|-----------|------------|---------------|
 | `IPAGTB037_IPAGTB031_FK01` | `ID_SERVICO_DESTINO` | `IPAGTB037_SERVICO_DESTINO` | `ID_SERVICO_DESTINO` |
+
+### IPAGTB040–068 (Novos Segmentos)
+
+Todas as 23 novas tabelas de segmento possuem uma única FK para IPAGTB007_DETALHE_REG:
+
+| Tabela | Constraint | Coluna(s) | Tabela Pai |
+|--------|------------|-----------|------------|
+| `IPAGTB040_DET_MENSAGEM_SACADO` | `IPAGTB007_IPAGTB040_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB041_DET_BOLETO_ELETRONICO` | `IPAGTB007_IPAGTB041_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB042_DET_COMPLEMENTO_BOLETO` | `IPAGTB007_IPAGTB042_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB043_DET_EXTRATO_CONCILIACAO` | `IPAGTB007_IPAGTB043_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB044_DET_EXTRATO_GESTAO_CAIXA` | `IPAGTB007_IPAGTB044_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB045_DET_VALOR_LANCAMENTO` | `IPAGTB007_IPAGTB045_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB046_DET_CONTRATO_VENDOR` | `IPAGTB007_IPAGTB046_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB047_DET_PAGAMENTO_VENDOR` | `IPAGTB007_IPAGTB047_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB048_DET_RETORNO_CONTRATO_VENDOR` | `IPAGTB007_IPAGTB048_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR` | `IPAGTB007_IPAGTB049_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB050_DET_CUSTODIA_CHEQUE` | `IPAGTB007_IPAGTB050_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO` | `IPAGTB007_IPAGTB051_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB052_DET_COMPROR` | `IPAGTB007_IPAGTB052_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB053_DET_PARCELA_COMPROR` | `IPAGTB007_IPAGTB053_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB060_DET_SACADOR_AVALISTA` | `IPAGTB007_IPAGTB060_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB061_DET_ALEGACAO_PAGADOR` | `IPAGTB007_IPAGTB061_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB062_DET_DADOS_PAGADOR` | `IPAGTB007_IPAGTB062_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB063_DET_ENVIO_ALTERNATIVO` | `IPAGTB007_IPAGTB063_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB064_DET_CHEQUE_PAGAMENTO` | `IPAGTB007_IPAGTB064_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB065_DET_RATEIO_CREDITO` | `IPAGTB007_IPAGTB065_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB066_DET_NOTA_FISCAL` | `IPAGTB007_IPAGTB066_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB067_DET_NOTA_FISCAL_ADICIONAL` | `IPAGTB007_IPAGTB067_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
+| `IPAGTB068_DET_TIPO_PAGAMENTO` | `IPAGTB007_IPAGTB068_FK01` | `ID_DETALHE_REG` | `IPAGTB007_DETALHE_REG` |
 

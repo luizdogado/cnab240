@@ -2558,3 +2558,1948 @@ COMMENT ON COLUMN IPAGTB029_CONTROLE_LINHA.ID_TIPO_REGISTRO IS
 
 
 
+
+-- =============================================================================
+-- NOVOS SEGMENTOS CNAB240 (IPAGTB040-068)
+-- =============================================================================
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB040_DET_MENSAGEM_SACADO - Segmento S
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB040_DET_MENSAGEM_SACADO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB040_DET_MENSAGEM_SACADO (
+    ID_SEG_S                                 NUMBER  DEFAULT ON NULL IPAGTB040_DET_MENSAGEM_SACADO_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    CO_TIPO_IMPRESSAO                        CHAR(1),
+    NU_NUMERO_LINHA                          NUMBER(2),
+    TE_MENSAGEM                              VARCHAR2(140),
+    CO_TIPO_FONTE                            NUMBER(2),
+    TE_INFORMACAO_5                          VARCHAR2(40),
+    TE_INFORMACAO_6                          VARCHAR2(40),
+    TE_INFORMACAO_7                          VARCHAR2(40),
+    TE_INFORMACAO_8                          VARCHAR2(40),
+    TE_INFORMACAO_9                          VARCHAR2(40),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB040_PK
+        PRIMARY KEY (ID_SEG_S),
+    CONSTRAINT IPAGTB007_IPAGTB040_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB040_DET_MENSAGEM_SACADO_IDX01 ON IPAGTB040_DET_MENSAGEM_SACADO (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB040_DET_MENSAGEM_SACADO IS
+    'Segmento S da Cobranca (Remessa). Mensagem ou informacoes a serem impressas no boleto de cobranca. Possui dois formatos conforme CO_TIPO_IMPRESSAO: tipos 1/2 (linha unica 140 chars) ou tipo 3 (5 mensagens de 40 chars).';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.ID_SEG_S IS
+    'Identificador surrogate gerado por sequence. Chave primaria.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG. Vincula o segmento ao registro de detalhe.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.CO_TIPO_IMPRESSAO IS
+    'Tipo de impressao do boleto. Campo C040. 1=Frente, 2=Verso, 3=Corpo de instrucoes.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.NU_NUMERO_LINHA IS
+    'Numero da linha a ser impressa. Campo C041. Usado nos tipos 1 e 2.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.TE_MENSAGEM IS
+    'Mensagem a ser impressa no boleto. Campo C042. Usado nos tipos 1 e 2.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.CO_TIPO_FONTE IS
+    'Tipo de caracter a ser impresso. Campo C043. Usado nos tipos 1 e 2.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.TE_INFORMACAO_5 IS
+    'Mensagem 5 do corpo de instrucoes. Campo C037. Usado no tipo 3.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.TE_INFORMACAO_6 IS
+    'Mensagem 6 do corpo de instrucoes. Campo C037. Usado no tipo 3.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.TE_INFORMACAO_7 IS
+    'Mensagem 7 do corpo de instrucoes. Campo C037. Usado no tipo 3.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.TE_INFORMACAO_8 IS
+    'Mensagem 8 do corpo de instrucoes. Campo C037. Usado no tipo 3.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.TE_INFORMACAO_9 IS
+    'Mensagem 9 do corpo de instrucoes. Campo C037. Usado no tipo 3.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB040_DET_MENSAGEM_SACADO.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB041_DET_BOLETO_ELETRONICO - Segmento G
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB041_DET_BOLETO_ELETRONICO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB041_DET_BOLETO_ELETRONICO (
+    ID_SEG_G                                 NUMBER  DEFAULT ON NULL IPAGTB041_DET_BOLETO_ELETRONICO_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    TE_CODIGO_BARRAS                         VARCHAR2(44),
+    CO_TIPO_INSCRICAO_BENEFICIARIO           CHAR(1),
+    NU_INSCRICAO_BENEFICIARIO                VARCHAR2(15),
+    NO_BENEFICIARIO                          VARCHAR2(30),
+    DH_VENCIMENTO                            DATE,
+    NU_VALOR_NOMINAL                         NUMBER(15,2),
+    QT_MOEDA                                 NUMBER(15,5),
+    CO_MOEDA                                 NUMBER(2),
+    NU_DOCUMENTO_COBRANCA                    VARCHAR2(15),
+    NU_AGENCIA_COBRADORA                     NUMBER(5),
+    CO_DV_AGENCIA_COBRADORA                  CHAR(1),
+    TE_PRACA                                 VARCHAR2(10),
+    CO_CARTEIRA                              CHAR(1),
+    CO_ESPECIE_TITULO                        NUMBER(2),
+    DH_EMISSAO_TITULO                        DATE,
+    NU_JUROS_MORA                            NUMBER(15,2),
+    CO_DESCONTO_1                            CHAR(1),
+    DH_DESCONTO_1                            DATE,
+    NU_VALOR_DESCONTO_1                      NUMBER(15,2),
+    CO_PROTESTO                              CHAR(1),
+    NU_PRAZO_PROTESTO                        NUMBER(2),
+    DH_LIMITE_PAGAMENTO                      DATE,
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB041_PK
+        PRIMARY KEY (ID_SEG_G),
+    CONSTRAINT IPAGTB007_IPAGTB041_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB041_DET_BOLETO_ELETRONICO_IDX01 ON IPAGTB041_DET_BOLETO_ELETRONICO (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB041_DET_BOLETO_ELETRONICO IS
+    'Segmento G do Boleto de Pagamento Eletronico (Retorno). Dados do titulo capturado em carteira pelo banco: codigo de barras, beneficiario, vencimento, valor nominal, moeda, carteira, especie, juros e desconto.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.ID_SEG_G IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.TE_CODIGO_BARRAS IS
+    'Codigo de barras do titulo. Campo G063.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.CO_TIPO_INSCRICAO_BENEFICIARIO IS
+    'Tipo de inscricao do beneficiario. Campo G005. 1=CPF, 2=CNPJ.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.NU_INSCRICAO_BENEFICIARIO IS
+    '[DADO_PESSOAL] Numero de inscricao (CPF/CNPJ) do beneficiario. Campo G006.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.NO_BENEFICIARIO IS
+    'Nome do beneficiario do titulo. Campo G013.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.DH_VENCIMENTO IS
+    'Data de vencimento do titulo. Campo C012.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.NU_VALOR_NOMINAL IS
+    'Valor nominal do titulo. Campo G070.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.QT_MOEDA IS
+    'Quantidade da moeda. Campo G041.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.CO_MOEDA IS
+    'Codigo da moeda. Campo G065.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.NU_DOCUMENTO_COBRANCA IS
+    'Numero do documento de cobranca. Campo C011.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.NU_AGENCIA_COBRADORA IS
+    'Agencia encarregada da cobranca. Campo C014.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.CO_DV_AGENCIA_COBRADORA IS
+    'Digito verificador da agencia cobradora. Campo G009.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.TE_PRACA IS
+    'Praca cobradora. Campo B001.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.CO_CARTEIRA IS
+    'Codigo da carteira. Campo C006.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.CO_ESPECIE_TITULO IS
+    'Especie do titulo. Campo C015.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.DH_EMISSAO_TITULO IS
+    'Data de emissao do titulo. Campo G071.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.NU_JUROS_MORA IS
+    'Juros de mora por dia. Campo C020.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.CO_DESCONTO_1 IS
+    'Codigo do desconto 1. Campo C021.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.DH_DESCONTO_1 IS
+    'Data do desconto 1. Campo C022.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.NU_VALOR_DESCONTO_1 IS
+    'Valor ou percentual do desconto 1. Campo C023.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.CO_PROTESTO IS
+    'Codigo para protesto. Campo C026.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.NU_PRAZO_PROTESTO IS
+    'Numero de dias para protesto. Campo C027.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.DH_LIMITE_PAGAMENTO IS
+    'Data limite para pagamento do titulo. Campo C075.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB041_DET_BOLETO_ELETRONICO.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB042_DET_COMPLEMENTO_BOLETO - Segmento H (Boleto)
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB042_DET_COMPLEMENTO_BOLETO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB042_DET_COMPLEMENTO_BOLETO (
+    ID_SEG_H_BOLETO                          NUMBER  DEFAULT ON NULL IPAGTB042_DET_COMPLEMENTO_BOLETO_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    CO_TIPO_INSCRICAO_SACADOR                CHAR(1),
+    NU_INSCRICAO_SACADOR                     VARCHAR2(15),
+    NO_SACADOR_AVALISTA                      VARCHAR2(40),
+    CO_DESCONTO_2                            CHAR(1),
+    DH_DESCONTO_2                            DATE,
+    NU_VALOR_DESCONTO_2                      NUMBER(15,2),
+    CO_DESCONTO_3                            CHAR(1),
+    DH_DESCONTO_3                            DATE,
+    NU_VALOR_DESCONTO_3                      NUMBER(15,2),
+    CO_MULTA                                 CHAR(1),
+    DH_MULTA                                 DATE,
+    NU_VALOR_MULTA                           NUMBER(15,2),
+    NU_VALOR_ABATIMENTO                      NUMBER(15,2),
+    TE_INFORMACAO_1                          VARCHAR2(40),
+    TE_INFORMACAO_2                          VARCHAR2(40),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB042_PK
+        PRIMARY KEY (ID_SEG_H_BOLETO),
+    CONSTRAINT IPAGTB007_IPAGTB042_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB042_DET_COMPLEMENTO_BOLETO_IDX01 ON IPAGTB042_DET_COMPLEMENTO_BOLETO (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB042_DET_COMPLEMENTO_BOLETO IS
+    'Segmento H do Boleto de Pagamento Eletronico (Retorno). Dados complementares: sacador/avalista, descontos 2 e 3, multa, abatimento e mensagens ao pagador.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.ID_SEG_H_BOLETO IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.CO_TIPO_INSCRICAO_SACADOR IS
+    'Tipo de inscricao do sacador/avalista. Campo G005.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.NU_INSCRICAO_SACADOR IS
+    '[DADO_PESSOAL] Numero de inscricao do sacador/avalista. Campo G006.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.NO_SACADOR_AVALISTA IS
+    'Nome do sacador/avalista. Campo G013.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.CO_DESCONTO_2 IS
+    'Codigo do desconto 2. Campo C021.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.DH_DESCONTO_2 IS
+    'Data do desconto 2. Campo C022.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.NU_VALOR_DESCONTO_2 IS
+    'Valor/percentual do desconto 2. Campo C023.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.CO_DESCONTO_3 IS
+    'Codigo do desconto 3. Campo C021.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.DH_DESCONTO_3 IS
+    'Data do desconto 3. Campo C022.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.NU_VALOR_DESCONTO_3 IS
+    'Valor/percentual do desconto 3. Campo C023.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.CO_MULTA IS
+    'Codigo da multa. Campo G073.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.DH_MULTA IS
+    'Data da multa. Campo G074.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.NU_VALOR_MULTA IS
+    'Valor/percentual da multa. Campo G075.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.NU_VALOR_ABATIMENTO IS
+    'Valor do abatimento. Campo G045.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.TE_INFORMACAO_1 IS
+    'Mensagem 1 ao pagador. Campo C073.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.TE_INFORMACAO_2 IS
+    'Mensagem 2 ao pagador. Campo C073.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB042_DET_COMPLEMENTO_BOLETO.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB043_DET_EXTRATO_CONCILIACAO - Segmento E
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB043_DET_EXTRATO_CONCILIACAO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB043_DET_EXTRATO_CONCILIACAO (
+    ID_SEG_E                                 NUMBER  DEFAULT ON NULL IPAGTB043_DET_EXTRATO_CONCILIACAO_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    CO_TIPO_INSCRICAO_EMPRESA                CHAR(1),
+    NU_INSCRICAO_EMPRESA                     VARCHAR2(14),
+    CO_CONVENIO                              VARCHAR2(20),
+    NU_AGENCIA                               NUMBER(5),
+    CO_DV_AGENCIA                            CHAR(1),
+    NU_CONTA_CORRENTE                        VARCHAR2(12),
+    CO_DV_CONTA                              CHAR(1),
+    CO_DV_AGENCIA_CONTA                      CHAR(1),
+    NO_EMPRESA                               VARCHAR2(30),
+    CO_NATUREZA_LANCAMENTO                   VARCHAR2(3),
+    CO_TIPO_COMPLEMENTO                      NUMBER(2),
+    TE_COMPLEMENTO_LANCAMENTO                VARCHAR2(20),
+    CO_ISENCAO_CPMF                          CHAR(1),
+    DH_CONTABIL                              DATE,
+    DH_LANCAMENTO                            DATE,
+    NU_VALOR_LANCAMENTO                      NUMBER(18,2),
+    CO_TIPO_LANCAMENTO                       CHAR(1),
+    CO_CATEGORIA_LANCAMENTO                  NUMBER(3),
+    CO_HISTORICO_BANCO                       VARCHAR2(4),
+    TE_HISTORICO                             VARCHAR2(25),
+    TE_NUMERO_DOCUMENTO                      VARCHAR2(39),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB043_PK
+        PRIMARY KEY (ID_SEG_E),
+    CONSTRAINT IPAGTB007_IPAGTB043_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB043_DET_EXTRATO_CONCILIACAO_IDX01 ON IPAGTB043_DET_EXTRATO_CONCILIACAO (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB043_DET_EXTRATO_CONCILIACAO IS
+    'Segmento E do Extrato de Conta Corrente para Conciliacao Bancaria (Retorno). Dados do lancamento contabil: empresa, conta corrente, natureza, valor, tipo (debito/credito), categoria, historico e documento.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.ID_SEG_E IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.CO_TIPO_INSCRICAO_EMPRESA IS
+    'Tipo de inscricao da empresa. Campo G005.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.NU_INSCRICAO_EMPRESA IS
+    '[DADO_PESSOAL] Numero de inscricao (CPF/CNPJ) da empresa. Campo G006.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.CO_CONVENIO IS
+    'Codigo do convenio no banco. Campo G007.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.NU_AGENCIA IS
+    'Agencia mantenedora da conta. Campo G008.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.CO_DV_AGENCIA IS
+    'Digito verificador da agencia. Campo G009.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.NU_CONTA_CORRENTE IS
+    'Numero da conta corrente. Campo G010.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.CO_DV_CONTA IS
+    'Digito verificador da conta. Campo G011.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.CO_DV_AGENCIA_CONTA IS
+    'Digito verificador da agencia/conta. Campo G012.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.NO_EMPRESA IS
+    'Nome da empresa. Campo G013.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.CO_NATUREZA_LANCAMENTO IS
+    'Natureza do lancamento. Campo G084.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.CO_TIPO_COMPLEMENTO IS
+    'Tipo do complemento do lancamento. Campo G085.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.TE_COMPLEMENTO_LANCAMENTO IS
+    'Complemento do lancamento. Campo G086.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.CO_ISENCAO_CPMF IS
+    'Identificacao de isencao do CPMF. Campo G087.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.DH_CONTABIL IS
+    'Data contabil do lancamento. Campo G088.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.DH_LANCAMENTO IS
+    'Data do lancamento. Campo G089.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.NU_VALOR_LANCAMENTO IS
+    'Valor do lancamento. Campo G090.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.CO_TIPO_LANCAMENTO IS
+    'Tipo do lancamento: D=Debito, C=Credito. Campo G091.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.CO_CATEGORIA_LANCAMENTO IS
+    'Categoria do lancamento. Campo G092.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.CO_HISTORICO_BANCO IS
+    'Codigo historico do lancamento no banco. Campo G093.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.TE_HISTORICO IS
+    'Descricao do historico do lancamento no banco. Campo G094.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.TE_NUMERO_DOCUMENTO IS
+    'Numero do documento ou complemento. Campo G095.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB043_DET_EXTRATO_CONCILIACAO.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB044_DET_EXTRATO_GESTAO_CAIXA - Segmento F
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB044_DET_EXTRATO_GESTAO_CAIXA_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB044_DET_EXTRATO_GESTAO_CAIXA (
+    ID_SEG_F                                 NUMBER  DEFAULT ON NULL IPAGTB044_DET_EXTRATO_GESTAO_CAIXA_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    TE_HORARIO_TRANSACAO                     VARCHAR2(6),
+    CO_NATUREZA_LANCAMENTO                   VARCHAR2(3),
+    CO_TIPO_COMPLEMENTO                      NUMBER(2),
+    TE_COMPLEMENTO_LANCAMENTO                VARCHAR2(20),
+    CO_ISENCAO_CPMF                          CHAR(1),
+    DH_CONTABIL                              DATE,
+    DH_LANCAMENTO                            DATE,
+    NU_VALOR_LANCAMENTO                      NUMBER(18,2),
+    CO_TIPO_LANCAMENTO                       CHAR(1),
+    CO_CATEGORIA_LANCAMENTO                  NUMBER(3),
+    CO_HISTORICO_BANCO                       VARCHAR2(5),
+    TE_HISTORICO                             VARCHAR2(25),
+    TE_NUMERO_DOCUMENTO                      VARCHAR2(38),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB044_PK
+        PRIMARY KEY (ID_SEG_F),
+    CONSTRAINT IPAGTB007_IPAGTB044_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB044_DET_EXTRATO_GESTAO_CAIXA_IDX01 ON IPAGTB044_DET_EXTRATO_GESTAO_CAIXA (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB044_DET_EXTRATO_GESTAO_CAIXA IS
+    'Segmento F do Extrato para Gestao de Caixa (Retorno). Similar ao Seg E mas inclui horario da transacao e campo de historico com 5 caracteres. Dados do lancamento para gestao de fluxo de caixa.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.ID_SEG_F IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.TE_HORARIO_TRANSACAO IS
+    'Horario da transacao no formato HHMMSS. Campo F006.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.CO_NATUREZA_LANCAMENTO IS
+    'Natureza do lancamento. Campo G084.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.CO_TIPO_COMPLEMENTO IS
+    'Tipo do complemento do lancamento. Campo G085.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.TE_COMPLEMENTO_LANCAMENTO IS
+    'Complemento do lancamento. Campo G086.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.CO_ISENCAO_CPMF IS
+    'Identificacao de isencao do CPMF. Campo G087.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.DH_CONTABIL IS
+    'Data contabil do lancamento. Campo G088.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.DH_LANCAMENTO IS
+    'Data do lancamento. Campo G089.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.NU_VALOR_LANCAMENTO IS
+    'Valor do lancamento. Campo G090.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.CO_TIPO_LANCAMENTO IS
+    'Tipo do lancamento: D=Debito, C=Credito. Campo G091.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.CO_CATEGORIA_LANCAMENTO IS
+    'Categoria do lancamento. Campo G092.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.CO_HISTORICO_BANCO IS
+    'Codigo historico do lancamento no banco. Campo G093. 5 chars neste extrato.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.TE_HISTORICO IS
+    'Descricao do historico do lancamento no banco. Campo G094.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.TE_NUMERO_DOCUMENTO IS
+    'Numero do documento ou complemento. Campo G095. 38 chars neste extrato.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB044_DET_EXTRATO_GESTAO_CAIXA.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB045_DET_VALOR_LANCAMENTO - Segmento I (Gestão Caixa)
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB045_DET_VALOR_LANCAMENTO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB045_DET_VALOR_LANCAMENTO (
+    ID_SEG_I_CAIXA                           NUMBER  DEFAULT ON NULL IPAGTB045_DET_VALOR_LANCAMENTO_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    NU_VALOR_TOTAL                           NUMBER(18,2),
+    NU_VALOR_DISPONIVEL                      NUMBER(18,2),
+    NU_VALOR_VINCULADO                       NUMBER(18,2),
+    NU_VALOR_BLOQUEADO                       NUMBER(18,2),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB045_PK
+        PRIMARY KEY (ID_SEG_I_CAIXA),
+    CONSTRAINT IPAGTB007_IPAGTB045_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB045_DET_VALOR_LANCAMENTO_IDX01 ON IPAGTB045_DET_VALOR_LANCAMENTO (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB045_DET_VALOR_LANCAMENTO IS
+    'Segmento I do Extrato para Gestao de Caixa (Retorno). Decomposicao do valor do lancamento nos montantes que afetam cada tipo de saldo: disponivel, vinculado e bloqueado.';
+COMMENT ON COLUMN IPAGTB045_DET_VALOR_LANCAMENTO.ID_SEG_I_CAIXA IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB045_DET_VALOR_LANCAMENTO.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB045_DET_VALOR_LANCAMENTO.NU_VALOR_TOTAL IS
+    'Valor total do lancamento (CDS). Campo G090.';
+COMMENT ON COLUMN IPAGTB045_DET_VALOR_LANCAMENTO.NU_VALOR_DISPONIVEL IS
+    'Valor disponivel do lancamento (DPV). Campo F007.';
+COMMENT ON COLUMN IPAGTB045_DET_VALOR_LANCAMENTO.NU_VALOR_VINCULADO IS
+    'Valor vinculado do lancamento (SCR). Campo F008.';
+COMMENT ON COLUMN IPAGTB045_DET_VALOR_LANCAMENTO.NU_VALOR_BLOQUEADO IS
+    'Valor bloqueado do lancamento (SSR). Campo F009.';
+COMMENT ON COLUMN IPAGTB045_DET_VALOR_LANCAMENTO.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB045_DET_VALOR_LANCAMENTO.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB045_DET_VALOR_LANCAMENTO.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB045_DET_VALOR_LANCAMENTO.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB046_DET_CONTRATO_VENDOR - Segmento K
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB046_DET_CONTRATO_VENDOR_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB046_DET_CONTRATO_VENDOR (
+    ID_SEG_K                                 NUMBER  DEFAULT ON NULL IPAGTB046_DET_CONTRATO_VENDOR_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    CO_INSTRUCAO_MOVIMENTO                   NUMBER(2),
+    CO_MOTIVO_OCORRENCIA                     NUMBER(3),
+    CO_TIPO_INSCRICAO_COMPRADOR              CHAR(1),
+    NU_INSCRICAO_COMPRADOR                   VARCHAR2(14),
+    NO_COMPRADOR                             VARCHAR2(40),
+    TE_ENDERECO_COMPRADOR                    VARCHAR2(40),
+    TE_BAIRRO_COMPRADOR                      VARCHAR2(15),
+    NU_CEP_COMPRADOR                         NUMBER(5),
+    NU_SUFIXO_CEP_COMPRADOR                  NUMBER(3),
+    NO_CIDADE_COMPRADOR                      VARCHAR2(15),
+    SG_UF_COMPRADOR                          CHAR(2),
+    NU_BANCO_DEBITO                          NUMBER(3),
+    NU_AGENCIA_DEBITO                        NUMBER(5),
+    CO_DV_AGENCIA_DEBITO                     CHAR(1),
+    NU_CONTA_DEBITO                          VARCHAR2(12),
+    CO_DV_CONTA_DEBITO                       CHAR(1),
+    CO_DV_AGENCIA_CONTA_DEBITO               CHAR(1),
+    NU_NOSSO_NUMERO                          VARCHAR2(20),
+    CO_RAMO_ATIVIDADE                        NUMBER(6),
+    CO_PROGRAMA_OPERACIONAL                  VARCHAR2(5),
+    TE_MENSAGEM                              VARCHAR2(5),
+    TE_USO_EMPRESA_BENEFICIARIO              VARCHAR2(27),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB046_PK
+        PRIMARY KEY (ID_SEG_K),
+    CONSTRAINT IPAGTB007_IPAGTB046_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB046_DET_CONTRATO_VENDOR_IDX01 ON IPAGTB046_DET_CONTRATO_VENDOR (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB046_DET_CONTRATO_VENDOR IS
+    'Segmento K do Vendor (Remessa/Retorno). Dados do comprador e do contrato de financiamento: inscricao, endereco, dados para debito, nosso numero e ramo de atividade.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.ID_SEG_K IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.CO_INSTRUCAO_MOVIMENTO IS
+    'Codigo da instrucao para movimento. Campo V002.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.CO_MOTIVO_OCORRENCIA IS
+    'Identificacao da ocorrencia. Campo V010.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.CO_TIPO_INSCRICAO_COMPRADOR IS
+    'Tipo de inscricao do comprador. Campo G005.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.NU_INSCRICAO_COMPRADOR IS
+    '[DADO_PESSOAL] Numero de inscricao (CPF/CNPJ) do comprador. Campo G006.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.NO_COMPRADOR IS
+    'Nome do comprador. Campo G013.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.TE_ENDERECO_COMPRADOR IS
+    'Endereco do comprador. Campo G032.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.TE_BAIRRO_COMPRADOR IS
+    'Bairro do comprador. Campo G032.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.NU_CEP_COMPRADOR IS
+    'CEP do comprador. Campo G034.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.NU_SUFIXO_CEP_COMPRADOR IS
+    'Sufixo do CEP do comprador. Campo G035.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.NO_CIDADE_COMPRADOR IS
+    'Cidade do comprador. Campo G033.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.SG_UF_COMPRADOR IS
+    'UF do comprador. Campo G036.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.NU_BANCO_DEBITO IS
+    'Codigo do banco na conta de debito. Campo G001.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.NU_AGENCIA_DEBITO IS
+    'Codigo da agencia de debito. Campo G008.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.CO_DV_AGENCIA_DEBITO IS
+    'Digito verificador da agencia de debito. Campo G009.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.NU_CONTA_DEBITO IS
+    'Conta corrente para debito. Campo G010.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.CO_DV_CONTA_DEBITO IS
+    'Digito verificador da conta de debito. Campo G011.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.CO_DV_AGENCIA_CONTA_DEBITO IS
+    'Digito verificador agencia/conta de debito. Campo G012.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.NU_NOSSO_NUMERO IS
+    'Identificador do titulo no banco. Campo G069.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.CO_RAMO_ATIVIDADE IS
+    'Ramo de atividade social do comprador. Campo V004.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.CO_PROGRAMA_OPERACIONAL IS
+    'Identifica caracteristicas da operacao. Campo V033.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.TE_MENSAGEM IS
+    'Mensagem. Campo V044.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.TE_USO_EMPRESA_BENEFICIARIO IS
+    'Identificador do titulo na empresa. Campo G072.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB046_DET_CONTRATO_VENDOR.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB047_DET_PAGAMENTO_VENDOR - Segmento L
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB047_DET_PAGAMENTO_VENDOR_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB047_DET_PAGAMENTO_VENDOR (
+    ID_SEG_L                                 NUMBER  DEFAULT ON NULL IPAGTB047_DET_PAGAMENTO_VENDOR_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    NU_DOCUMENTO                             VARCHAR2(15),
+    NU_CONTRATO                              NUMBER(10),
+    DH_EMISSAO_TITULO                        DATE,
+    DH_FINANCIAMENTO                         DATE,
+    NU_VALOR_NOMINAL                         NUMBER(15,2),
+    NU_TAXA_VENDEDOR                         NUMBER(8,5),
+    NU_TAXA_COMPRADOR                        NUMBER(8,5),
+    CO_MOEDA_VENDEDOR                        NUMBER(2),
+    CO_MOEDA_COMPRADOR                       NUMBER(2),
+    DH_PRIMEIRO_VENCIMENTO                   DATE,
+    DH_VENCIMENTO_FINAL                      DATE,
+    CO_TIPO_VENCIMENTO_PARCELA               CHAR(1),
+    NU_PERIODICIDADE_VENCIMENTO              NUMBER(2),
+    QT_PARCELA                               NUMBER(2),
+    CO_FORMA_PAGAMENTO                       CHAR(1),
+    CO_EQUALIZACAO                           CHAR(1),
+    CO_MODALIDADE_EQUALIZACAO                CHAR(1),
+    DH_PRIMEIRA_REPACTUACAO                  DATE,
+    DH_ULTIMA_REPACTUACAO                    DATE,
+    NU_PERIODICIDADE_REPACTUACAO             NUMBER(2),
+    CO_MULTA                                 CHAR(1),
+    DH_MULTA                                 DATE,
+    NU_VALOR_MULTA                           NUMBER(15,2),
+    CO_DESCONTO                              CHAR(1),
+    DH_DESCONTO                              DATE,
+    NU_VALOR_DESCONTO                        NUMBER(15,2),
+    DH_PRORROGACAO_VENCIMENTO                DATE,
+    NU_NOVA_TAXA_VENDEDOR                    NUMBER(8,5),
+    NU_NOVA_TAXA_COMPRADOR                   NUMBER(8,5),
+    CO_PAGAMENTO_IOF                         CHAR(1),
+    NU_PRAZO_DEBITO_TRANSFERENCIA            NUMBER(2),
+    CO_PROTESTO                              CHAR(1),
+    NU_PRAZO_PROTESTO                        VARCHAR2(2),
+    NU_VALOR_ABATIMENTO                      NUMBER(15,2),
+    CO_ESPECIE_TITULO                        NUMBER(2),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB047_PK
+        PRIMARY KEY (ID_SEG_L),
+    CONSTRAINT IPAGTB007_IPAGTB047_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB047_DET_PAGAMENTO_VENDOR_IDX01 ON IPAGTB047_DET_PAGAMENTO_VENDOR (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB047_DET_PAGAMENTO_VENDOR IS
+    'Segmento L do Vendor (Remessa). Dados do pagamento ao fornecedor: documento, contrato, datas, taxas, parcelas, multa, desconto, protesto e abatimento.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.ID_SEG_L IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_DOCUMENTO IS
+    'Numero da duplicata. Campo V045.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_CONTRATO IS
+    'Numero do contrato de financiamento. Campo V007.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.DH_EMISSAO_TITULO IS
+    'Data de emissao do titulo. Campo G071.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.DH_FINANCIAMENTO IS
+    'Data do financiamento. Campo V001.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_VALOR_NOMINAL IS
+    'Valor nominal do titulo. Campo G070.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_TAXA_VENDEDOR IS
+    'Taxa de juros do vendedor. Campo V011.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_TAXA_COMPRADOR IS
+    'Taxa de juros do comprador. Campo V012.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.CO_MOEDA_VENDEDOR IS
+    'Codigo da moeda do vendedor. Campo V032.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.CO_MOEDA_COMPRADOR IS
+    'Codigo da moeda do comprador. Campo G065.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.DH_PRIMEIRO_VENCIMENTO IS
+    'Data do primeiro vencimento do titulo. Campo V025.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.DH_VENCIMENTO_FINAL IS
+    'Data de vencimento final. Campo V008.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.CO_TIPO_VENCIMENTO_PARCELA IS
+    'Tipo de vencimento da parcela. Campo V009.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_PERIODICIDADE_VENCIMENTO IS
+    'Periodicidade do prazo de vencimento. Campo V046.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.QT_PARCELA IS
+    'Quantidade de parcelas. Campo V006.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.CO_FORMA_PAGAMENTO IS
+    'Forma de pagamento. Campo V005.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.CO_EQUALIZACAO IS
+    'Tipo de equalizacao. Campo V021.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.CO_MODALIDADE_EQUALIZACAO IS
+    'Modalidade da equalizacao. Campo V022.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.DH_PRIMEIRA_REPACTUACAO IS
+    'Data da primeira repactuacao. Campo V015.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.DH_ULTIMA_REPACTUACAO IS
+    'Data da ultima repactuacao. Campo V016.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_PERIODICIDADE_REPACTUACAO IS
+    'Periodicidade da repactuacao. Campo V017.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.CO_MULTA IS
+    'Codigo da multa. Campo G073.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.DH_MULTA IS
+    'Data da multa. Campo G074.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_VALOR_MULTA IS
+    'Valor/percentual da multa. Campo G075.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.CO_DESCONTO IS
+    'Codigo do desconto. Campo V040.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.DH_DESCONTO IS
+    'Data do desconto. Campo V041.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_VALOR_DESCONTO IS
+    'Valor/percentual do desconto. Campo V037.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.DH_PRORROGACAO_VENCIMENTO IS
+    'Nova data de vencimento (prorrogacao). Campo V018.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_NOVA_TAXA_VENDEDOR IS
+    'Nova taxa de juros do vendedor. Campo V048.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_NOVA_TAXA_COMPRADOR IS
+    'Nova taxa de juros do comprador. Campo V049.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.CO_PAGAMENTO_IOF IS
+    'Forma de pagamento do IOF/abatimento. Campo V020.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_PRAZO_DEBITO_TRANSFERENCIA IS
+    'Prazo para debito e transferencia. Campo V019.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.CO_PROTESTO IS
+    'Codigo para protesto. Campo V042.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_PRAZO_PROTESTO IS
+    'Numero de dias para protesto. Campo V043.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NU_VALOR_ABATIMENTO IS
+    'Valor de abatimento. Campo G045.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.CO_ESPECIE_TITULO IS
+    'Especie do titulo. Campo C015.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB047_DET_PAGAMENTO_VENDOR.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB048_DET_RETORNO_CONTRATO_VENDOR - Segmento M
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB048_DET_RETORNO_CONTRATO_VENDOR_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB048_DET_RETORNO_CONTRATO_VENDOR (
+    ID_SEG_M                                 NUMBER  DEFAULT ON NULL IPAGTB048_DET_RETORNO_CONTRATO_VENDOR_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    CO_MOVIMENTO_RETORNO                     NUMBER(2),
+    CO_MOTIVO_OCORRENCIA                     NUMBER(3),
+    NU_CONTRATO                              NUMBER(10),
+    NU_DOCUMENTO                             VARCHAR2(15),
+    CO_FORMA_PAGAMENTO                       CHAR(1),
+    QT_PARCELA                               NUMBER(2),
+    NU_NUMERO_PARCELA                        NUMBER(2),
+    DH_PRIMEIRO_VENCIMENTO                   DATE,
+    DH_VENCIMENTO_ULTIMA_PARCELA             DATE,
+    NU_TAXA_VENDEDOR                         NUMBER(8,5),
+    NU_TAXA_COMPRADOR                        NUMBER(8,5),
+    CO_MOEDA_VENDEDOR                        NUMBER(2),
+    CO_MOEDA_COMPRADOR                       NUMBER(2),
+    NU_TAXA_ANUAL_VENDEDOR                   NUMBER(8,5),
+    NU_TAXA_ANUAL_COMPRADOR                  NUMBER(8,5),
+    CO_EQUALIZACAO                           CHAR(1),
+    CO_MODALIDADE_EQUALIZACAO                CHAR(1),
+    CO_TIPO_LANCAMENTO_EQUALIZACAO           CHAR(1),
+    CO_PAGAMENTO_IOF                         CHAR(1),
+    NU_VALOR_NOMINAL                         NUMBER(15,2),
+    NU_VALOR_FINANCIADO                      NUMBER(15,2),
+    NU_VALOR_EQUALIZACAO                     NUMBER(15,2),
+    NU_VALOR_IOF                             NUMBER(15,2),
+    NU_VALOR_RESGATE                         NUMBER(15,2),
+    NU_VALOR_TARIFA                          NUMBER(15,2),
+    NU_VALOR_LIQUIDO                         NUMBER(15,2),
+    TE_USO_EMPRESA_BENEFICIARIO              VARCHAR2(25),
+    CO_ESPECIE_TITULO                        NUMBER(2),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB048_PK
+        PRIMARY KEY (ID_SEG_M),
+    CONSTRAINT IPAGTB007_IPAGTB048_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB048_DET_RETORNO_CONTRATO_VENDOR_IDX01 ON IPAGTB048_DET_RETORNO_CONTRATO_VENDOR (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB048_DET_RETORNO_CONTRATO_VENDOR IS
+    'Segmento M do Vendor (Retorno). Confirmacao do contrato pelo banco: taxas anuais, equalizacao, valores (nominal, financiado, IOF, resgate, tarifa, liquido).';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.ID_SEG_M IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.CO_MOVIMENTO_RETORNO IS
+    'Codigo de movimento retorno. Campo V003.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.CO_MOTIVO_OCORRENCIA IS
+    'Motivo da ocorrencia. Campo V010.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_CONTRATO IS
+    'Numero do contrato de financiamento. Campo V007.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_DOCUMENTO IS
+    'Numero da duplicata. Campo V045.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.CO_FORMA_PAGAMENTO IS
+    'Forma de pagamento. Campo V005.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.QT_PARCELA IS
+    'Quantidade de parcelas. Campo V006.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_NUMERO_PARCELA IS
+    'Numero da parcela. Campo V026.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.DH_PRIMEIRO_VENCIMENTO IS
+    'Data do primeiro vencimento. Campo V025.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.DH_VENCIMENTO_ULTIMA_PARCELA IS
+    'Data do vencimento da ultima parcela. Campo V008.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_TAXA_VENDEDOR IS
+    'Taxa de juros do vendedor. Campo V011.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_TAXA_COMPRADOR IS
+    'Taxa de juros do comprador. Campo V012.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.CO_MOEDA_VENDEDOR IS
+    'Codigo da moeda do vendedor. Campo V032.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.CO_MOEDA_COMPRADOR IS
+    'Codigo da moeda do comprador. Campo G065.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_TAXA_ANUAL_VENDEDOR IS
+    'Taxa de juros anual do vendedor. Campo V013.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_TAXA_ANUAL_COMPRADOR IS
+    'Taxa de juros anual do comprador. Campo V014.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.CO_EQUALIZACAO IS
+    'Tipo de equalizacao. Campo V021.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.CO_MODALIDADE_EQUALIZACAO IS
+    'Modalidade da equalizacao. Campo V022.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.CO_TIPO_LANCAMENTO_EQUALIZACAO IS
+    'Tipo de lancamento do valor de equalizacao. Campo V047.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.CO_PAGAMENTO_IOF IS
+    'Forma de pagamento do IOF. Campo V020.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_VALOR_NOMINAL IS
+    'Valor nominal do titulo. Campo G070.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_VALOR_FINANCIADO IS
+    'Valor financiado. Campo V023.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_VALOR_EQUALIZACAO IS
+    'Valor da equalizacao. Campo V024.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_VALOR_IOF IS
+    'Valor do IOF recolhido. Campo G077.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_VALOR_RESGATE IS
+    'Valor de resgate. Campo V029.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_VALOR_TARIFA IS
+    'Valor da tarifa/custas. Campo G076.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NU_VALOR_LIQUIDO IS
+    'Valor liquido a ser creditado. Campo G078.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.TE_USO_EMPRESA_BENEFICIARIO IS
+    'Identificacao do titulo na empresa. Campo G072.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.CO_ESPECIE_TITULO IS
+    'Especie do titulo. Campo V051.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB048_DET_RETORNO_CONTRATO_VENDOR.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR - Segmento N (Vendor)
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR (
+    ID_SEG_N_VENDOR                          NUMBER  DEFAULT ON NULL IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    CO_MOVIMENTO_RETORNO                     NUMBER(2),
+    CO_MOTIVO_OCORRENCIA                     NUMBER(3),
+    NU_VALOR_VENCIMENTO                      NUMBER(15,2),
+    DH_BAIXA_LIQUIDACAO                      DATE,
+    NU_VALOR_PAGO                            NUMBER(15,2),
+    NU_VALOR_JUROS_MORA                      NUMBER(15,2),
+    NU_VALOR_IOF_ATRASO                      NUMBER(15,2),
+    NU_VALOR_MULTA                           NUMBER(15,2),
+    NU_VALOR_DESCONTO                        NUMBER(15,2),
+    NU_VALOR_EQUALIZACAO                     NUMBER(15,2),
+    CO_SITUACAO_CONTRATO                     CHAR(1),
+    CO_SITUACAO_PARCELA                      CHAR(1),
+    DH_PRORROGACAO_VENCIMENTO                DATE,
+    NU_NOVA_TAXA_VENDEDOR                    NUMBER(8,5),
+    NU_NOVA_TAXA_COMPRADOR                   NUMBER(8,5),
+    CO_DESCONTO                              CHAR(1),
+    DH_DESCONTO                              DATE,
+    NU_VALOR_DESCONTO_CONCEDIDO              NUMBER(15,2),
+    CO_PROTESTO                              CHAR(1),
+    NU_PRAZO_PROTESTO                        VARCHAR2(2),
+    NU_VALOR_ABATIMENTO                      NUMBER(15,2),
+    NU_VALOR_CONCENTRADO                     NUMBER(15,2),
+    NU_PERCENTUAL_CONCENTRACAO               NUMBER(8,5),
+    NU_VALOR_ENCARGO_COMPRADOR               NUMBER(15,2),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB049_PK
+        PRIMARY KEY (ID_SEG_N_VENDOR),
+    CONSTRAINT IPAGTB007_IPAGTB049_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR_IDX01 ON IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR IS
+    'Segmento N do Vendor (Retorno). Dados da liquidacao da parcela: valores pagos, juros, IOF, multa, desconto, equalizacao, situacao do contrato e da parcela.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.ID_SEG_N_VENDOR IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.CO_MOVIMENTO_RETORNO IS
+    'Codigo de movimento retorno. Campo V003.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.CO_MOTIVO_OCORRENCIA IS
+    'Motivo da ocorrencia. Campo V010.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_VALOR_VENCIMENTO IS
+    'Valor da parcela no vencimento. Campo V027.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.DH_BAIXA_LIQUIDACAO IS
+    'Data da baixa/liquidacao. Campo V036.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_VALOR_PAGO IS
+    'Valor da parcela paga. Campo V030.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_VALOR_JUROS_MORA IS
+    'Valor de juros de mora/comissao de permanencia. Campo V028.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_VALOR_IOF_ATRASO IS
+    'Valor do IOF sobre atraso. Campo V031.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_VALOR_MULTA IS
+    'Valor da multa. Campo G048.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_VALOR_DESCONTO IS
+    'Valor do desconto. Campo G046.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_VALOR_EQUALIZACAO IS
+    'Valor da equalizacao. Campo V024.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.CO_SITUACAO_CONTRATO IS
+    'Situacao do contrato. Campo V038.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.CO_SITUACAO_PARCELA IS
+    'Situacao da parcela. Campo V039.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.DH_PRORROGACAO_VENCIMENTO IS
+    'Nova data de vencimento. Campo V018.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_NOVA_TAXA_VENDEDOR IS
+    'Nova taxa de juros do vendedor. Campo V048.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_NOVA_TAXA_COMPRADOR IS
+    'Nova taxa de juros do comprador. Campo V049.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.CO_DESCONTO IS
+    'Codigo do desconto. Campo V040.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.DH_DESCONTO IS
+    'Data do desconto. Campo V041.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_VALOR_DESCONTO_CONCEDIDO IS
+    'Valor/percentual do desconto concedido. Campo V037.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.CO_PROTESTO IS
+    'Codigo para protesto. Campo V042.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_PRAZO_PROTESTO IS
+    'Numero de dias para protesto. Campo V043.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_VALOR_ABATIMENTO IS
+    'Valor de abatimento. Campo G045.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_VALOR_CONCENTRADO IS
+    'Valor concentrado. Campo V034.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_PERCENTUAL_CONCENTRACAO IS
+    'Percentual de concentracao. Campo V035.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NU_VALOR_ENCARGO_COMPRADOR IS
+    'Valor dos encargos do comprador. Campo V050.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB049_DET_RETORNO_PAGAMENTO_VENDOR.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB050_DET_CUSTODIA_CHEQUE - Segmento D
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB050_DET_CUSTODIA_CHEQUE_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB050_DET_CUSTODIA_CHEQUE (
+    ID_SEG_D                                 NUMBER  DEFAULT ON NULL IPAGTB050_DET_CUSTODIA_CHEQUE_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    CO_TIPO_MOVIMENTO                        NUMBER(2),
+    CO_FINALIDADE                            NUMBER(2),
+    CO_FORMA_ENTRADA                         CHAR(1),
+    TE_CMC7                                  VARCHAR2(34),
+    CO_TIPO_INSCRICAO_EMITENTE               CHAR(1),
+    NU_INSCRICAO_EMITENTE                    VARCHAR2(14),
+    NU_VALOR_CHEQUE                          NUMBER(15,2),
+    DH_CAPTURA                               DATE,
+    DH_DEPOSITO                              DATE,
+    DH_CREDITO                               DATE,
+    TE_SEU_NUMERO                            VARCHAR2(20),
+    NU_AGENCIA_DEVOLUCAO                     NUMBER(5),
+    NU_CONTA_DEVOLUCAO                       VARCHAR2(12),
+    NU_VALOR_JUROS                           NUMBER(11,2),
+    NU_VALOR_IOF                             NUMBER(11,2),
+    NU_VALOR_OUTROS_ENCARGO                  NUMBER(11,2),
+    NU_NUMERO_CONTRATO                       NUMBER(17),
+    NU_TAXA_JUROS                            NUMBER(7,4),
+    TE_OCORRENCIA                            CHAR(10),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB050_PK
+        PRIMARY KEY (ID_SEG_D),
+    CONSTRAINT IPAGTB007_IPAGTB050_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB050_DET_CUSTODIA_CHEQUE_IDX01 ON IPAGTB050_DET_CUSTODIA_CHEQUE (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB050_DET_CUSTODIA_CHEQUE IS
+    'Segmento D da Custodia de Cheques (Remessa/Retorno). Dados do cheque: CMC7, emitente, valor, datas de captura/deposito/credito, dados de devolucao e emprestimo.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.ID_SEG_D IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.CO_TIPO_MOVIMENTO IS
+    'Tipo de movimento remessa/retorno. Campo K002.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.CO_FINALIDADE IS
+    'Codigo da finalidade do movimento. Campo K003.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.CO_FORMA_ENTRADA IS
+    'Forma de entrada dos dados do cheque. Campo K004.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.TE_CMC7 IS
+    'Identificacao do cheque (CMC7). Campo K005.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.CO_TIPO_INSCRICAO_EMITENTE IS
+    'Tipo de inscricao do emitente. Campo K006.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.NU_INSCRICAO_EMITENTE IS
+    '[DADO_PESSOAL] Numero de inscricao do emitente do cheque. Campo K007.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.NU_VALOR_CHEQUE IS
+    'Valor do cheque. Campo K008.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.DH_CAPTURA IS
+    'Data da captura do cheque no cliente. Campo K009.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.DH_DEPOSITO IS
+    'Data para deposito do cheque. Campo K010.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.DH_CREDITO IS
+    'Data prevista para debito/credito. Campo K011.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.TE_SEU_NUMERO IS
+    'Numero atribuido pelo cliente. Campo K012.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.NU_AGENCIA_DEVOLUCAO IS
+    'Codigo da agencia para devolucao. Campo K013.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.NU_CONTA_DEVOLUCAO IS
+    'Numero da conta para devolucao. Campo K014.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.NU_VALOR_JUROS IS
+    'Valor de juros da operacao de emprestimo. Campo K015.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.NU_VALOR_IOF IS
+    'Valor de IOF da operacao de emprestimo. Campo K016.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.NU_VALOR_OUTROS_ENCARGO IS
+    'Valor de outros encargos da operacao de emprestimo. Campo K017.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.NU_NUMERO_CONTRATO IS
+    'Numero do contrato da operacao de emprestimo. Campo K018.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.NU_TAXA_JUROS IS
+    'Taxa de juros da operacao de emprestimo. Campo K019.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.TE_OCORRENCIA IS
+    'Codigos das ocorrencias do detalhe. Campo K020.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB050_DET_CUSTODIA_CHEQUE.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO - Segmento H (Empréstimo)
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO (
+    ID_SEG_H_EMPRESTIMO                      NUMBER  DEFAULT ON NULL IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    CO_TIPO_MOVIMENTO                        CHAR(1),
+    NO_MUTUARIO                              VARCHAR2(30),
+    CO_UNIDADE_ADMINISTRATIVA                VARCHAR2(6),
+    NU_CPF_MUTUARIO                          NUMBER(11),
+    TE_IDENTIFICACAO_MUTUARIO                VARCHAR2(12),
+    CO_STATUS_MUTUARIO                       CHAR(1),
+    CO_REGIME_CONTRATACAO                    CHAR(1),
+    CO_SITUACAO_SINDICAL                     CHAR(1),
+    CO_VERBA_RESCISORIA                      CHAR(1),
+    NU_VALOR_MARGEM                          NUMBER(9,2),
+    NU_IDENTIFICACAO_SINDICATO               NUMBER(8),
+    CO_CENTRAL_SINDICAL                      CHAR(1),
+    CO_TIPO_OPERACAO                         CHAR(1),
+    NU_DIA_VENCIMENTO                        NUMBER(2),
+    NU_MES_VENCIMENTO                        NUMBER(2),
+    NU_ANO_VENCIMENTO                        NUMBER(4),
+    NU_NUMERO_PARCELA                        NUMBER(2),
+    QT_PARCELA                               NUMBER(2),
+    DH_INICIO_CONTRATO                       DATE,
+    DH_FIM_CONTRATO                          DATE,
+    NU_VALOR_LIBERADO                        NUMBER(9,2),
+    NU_VALOR_OPERACAO                        NUMBER(9,2),
+    NU_VALOR_PARCELA                         NUMBER(9,2),
+    NU_VALOR_SALDO_DEVEDOR                   NUMBER(9,2),
+    TE_IDENTIFICACAO_CONTRATO                VARCHAR2(20),
+    QT_CONTRATO                              NUMBER(2),
+    NU_VALOR_CONTRAPRESTACAO                 NUMBER(9,2),
+    NU_VALOR_RESIDUAL_GARANTIDO              NUMBER(9,2),
+    CO_TIPO_RESIDUAL_GARANTIDO               CHAR(1),
+    NU_AGENCIA_MUTUARIO                      NUMBER(5),
+    CO_DV_AGENCIA_MUTUARIO                   CHAR(1),
+    NU_CONTA_MUTUARIO                        VARCHAR2(12),
+    CO_DV_CONTA_MUTUARIO                     CHAR(1),
+    TE_OCORRENCIA                            CHAR(10),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB051_PK
+        PRIMARY KEY (ID_SEG_H_EMPRESTIMO),
+    CONSTRAINT IPAGTB007_IPAGTB051_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO_IDX01 ON IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO IS
+    'Segmento H do Emprestimo por Consignacao (Remessa/Retorno). Dados do mutuario, operacao de credito, parcelas, valores, arrendamento mercantil e conta corrente.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.ID_SEG_H_EMPRESTIMO IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.CO_TIPO_MOVIMENTO IS
+    'Tipo de movimento. Campo G060.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NO_MUTUARIO IS
+    'Nome do mutuario. Campo G013.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.CO_UNIDADE_ADMINISTRATIVA IS
+    'Codigo de unidade administrativa. Campo H004.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_CPF_MUTUARIO IS
+    '[DADO_PESSOAL] Numero do CPF do mutuario. Campo H006.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.TE_IDENTIFICACAO_MUTUARIO IS
+    'Identificacao do mutuario na empresa/orgao. Campo H007.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.CO_STATUS_MUTUARIO IS
+    'Status do mutuario. Campo H008.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.CO_REGIME_CONTRATACAO IS
+    'Regime de contratacao do mutuario. Campo H009.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.CO_SITUACAO_SINDICAL IS
+    'Situacao sindical do mutuario. Campo H010.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.CO_VERBA_RESCISORIA IS
+    'Comprometimento da verba rescisoria. Campo H011.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_VALOR_MARGEM IS
+    'Valor da margem. Campo H012.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_IDENTIFICACAO_SINDICATO IS
+    'Identificador do sindicato. Campo H013.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.CO_CENTRAL_SINDICAL IS
+    'Identificacao da central sindical. Campo H014.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.CO_TIPO_OPERACAO IS
+    'Tipo de operacao de credito. Campo H015.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_DIA_VENCIMENTO IS
+    'Dia de vencimento da parcela. Campo H016.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_MES_VENCIMENTO IS
+    'Mes de vencimento da parcela. Campo H017.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_ANO_VENCIMENTO IS
+    'Ano de vencimento da parcela. Campo H018.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_NUMERO_PARCELA IS
+    'Numero da parcela a ser consignada. Campo H019.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.QT_PARCELA IS
+    'Quantidade de parcelas do contrato. Campo H020.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.DH_INICIO_CONTRATO IS
+    'Data de inicio do contrato. Campo H021.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.DH_FIM_CONTRATO IS
+    'Data de fim do contrato. Campo H022.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_VALOR_LIBERADO IS
+    'Valor total liberado. Campo H023.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_VALOR_OPERACAO IS
+    'Valor total da operacao. Campo H024.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_VALOR_PARCELA IS
+    'Valor total da parcela. Campo H025.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_VALOR_SALDO_DEVEDOR IS
+    'Valor total do saldo devedor. Campo H026.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.TE_IDENTIFICACAO_CONTRATO IS
+    'Identificacao do contrato no banco. Campo H027.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.QT_CONTRATO IS
+    'Quantidade de contratos no banco. Campo H028.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_VALOR_CONTRAPRESTACAO IS
+    'Valor da contraprestacao (arrendamento mercantil). Campo H029.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_VALOR_RESIDUAL_GARANTIDO IS
+    'Valor residual garantido (arrendamento mercantil). Campo H030.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.CO_TIPO_RESIDUAL_GARANTIDO IS
+    'Tipo residual garantido. Campo H031.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_AGENCIA_MUTUARIO IS
+    'Agencia mantenedora da conta do mutuario. Campo G008.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.CO_DV_AGENCIA_MUTUARIO IS
+    'Digito verificador da agencia do mutuario. Campo G009.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NU_CONTA_MUTUARIO IS
+    'Numero da conta corrente do mutuario. Campo G010.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.CO_DV_CONTA_MUTUARIO IS
+    'Digito verificador da conta do mutuario. Campo G011.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.TE_OCORRENCIA IS
+    'Codigos das ocorrencias para retorno. Campo G059.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB051_DET_EMPRESTIMO_CONSIGNACAO.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB052_DET_COMPROR - Segmento I (Compror)
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB052_DET_COMPROR_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB052_DET_COMPROR (
+    ID_SEG_I_COMPROR                         NUMBER  DEFAULT ON NULL IPAGTB052_DET_COMPROR_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    NU_CONTRATO                              NUMBER(10),
+    NU_DOCUMENTO                             VARCHAR2(15),
+    DH_COMPRA                                DATE,
+    CO_REGIME_ENCARGO                        CHAR(1),
+    CO_MODALIDADE_ENCARGO                    NUMBER(2),
+    NU_TAXA_JUROS                            NUMBER(8,5),
+    CO_FORMA_REPOSICAO                       CHAR(1),
+    CO_METODOLOGIA_CALCULO                   CHAR(1),
+    DH_PRIMEIRO_VENCIMENTO                   DATE,
+    DH_VENCIMENTO_FINAL                      DATE,
+    CO_TIPO_VENCIMENTO_PARCELA               CHAR(1),
+    NU_PERIODICIDADE_VENCIMENTO              NUMBER(2),
+    QT_PARCELA                               NUMBER(2),
+    NU_NOSSO_NUMERO                          VARCHAR2(20),
+    CO_FORMA_PAGAMENTO                       CHAR(1),
+    NU_VALOR_ENCARGO                         NUMBER(15,2),
+    CO_PAGAMENTO_IOF                         CHAR(1),
+    NU_VALOR_IOF                             NUMBER(15,2),
+    NU_VALOR_RESGATE                         NUMBER(15,2),
+    NU_VALOR_JUROS_MORA                      NUMBER(15,2),
+    NU_VALOR_IOF_ATRASO                      NUMBER(15,2),
+    NU_VALOR_MULTA                           NUMBER(15,2),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB052_PK
+        PRIMARY KEY (ID_SEG_I_COMPROR),
+    CONSTRAINT IPAGTB007_IPAGTB052_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB052_DET_COMPROR_IDX01 ON IPAGTB052_DET_COMPROR (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB052_DET_COMPROR IS
+    'Segmento I do Compror (Remessa/Retorno). Dados do financiamento Compror: contrato, documento, taxas, parcelas, encargos, IOF, resgate, juros e multa.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.ID_SEG_I_COMPROR IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NU_CONTRATO IS
+    'Numero do contrato de financiamento. Campo I001.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NU_DOCUMENTO IS
+    'Numero da nota fiscal, fatura ou duplicata. Campo I002.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.DH_COMPRA IS
+    'Data da compra. Campo I003.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.CO_REGIME_ENCARGO IS
+    'Regime de encargos financeiros. Campo I004.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.CO_MODALIDADE_ENCARGO IS
+    'Modalidade de encargos financeiros. Campo I005.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NU_TAXA_JUROS IS
+    'Taxa de juros da operacao. Campo I006.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.CO_FORMA_REPOSICAO IS
+    'Forma de reposicao. Campo I007.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.CO_METODOLOGIA_CALCULO IS
+    'Metodologia de calculo dos encargos. Campo I008.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.DH_PRIMEIRO_VENCIMENTO IS
+    'Data do primeiro vencimento da parcela. Campo I009.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.DH_VENCIMENTO_FINAL IS
+    'Data de vencimento final. Campo I010.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.CO_TIPO_VENCIMENTO_PARCELA IS
+    'Tipo de vencimento da parcela. Campo I011.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NU_PERIODICIDADE_VENCIMENTO IS
+    'Periodicidade do prazo de vencimento. Campo I012.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.QT_PARCELA IS
+    'Quantidade de parcelas. Campo I013.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NU_NOSSO_NUMERO IS
+    'Numero do documento atribuido pelo banco. Campo I014.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.CO_FORMA_PAGAMENTO IS
+    'Forma de pagamento. Campo I015.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NU_VALOR_ENCARGO IS
+    'Valor dos encargos da operacao. Campo I016.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.CO_PAGAMENTO_IOF IS
+    'Forma de pagamento do IOF. Campo I017.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NU_VALOR_IOF IS
+    'Valor do IOF recolhido. Campo G077.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NU_VALOR_RESGATE IS
+    'Valor de resgate. Campo I018.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NU_VALOR_JUROS_MORA IS
+    'Valor de juros de mora/comissao de permanencia. Campo I019.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NU_VALOR_IOF_ATRASO IS
+    'Valor do IOF sobre atraso. Campo I020.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NU_VALOR_MULTA IS
+    'Valor da multa. Campo G048.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB052_DET_COMPROR.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB053_DET_PARCELA_COMPROR - Segmento I-11
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB053_DET_PARCELA_COMPROR_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB053_DET_PARCELA_COMPROR (
+    ID_SEG_I11                               NUMBER  DEFAULT ON NULL IPAGTB053_DET_PARCELA_COMPROR_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    NU_NUMERO_PARCELA_1                      NUMBER(2),
+    NU_VALOR_PARCELA_1                       NUMBER(15,2),
+    DH_VENCIMENTO_PARCELA_1                  DATE,
+    NU_NOSSO_NUMERO_PARCELA_1                VARCHAR2(20),
+    NU_NUMERO_PARCELA_2                      NUMBER(2),
+    NU_VALOR_PARCELA_2                       NUMBER(15,2),
+    DH_VENCIMENTO_PARCELA_2                  DATE,
+    NU_NOSSO_NUMERO_PARCELA_2                VARCHAR2(20),
+    NU_NUMERO_PARCELA_3                      NUMBER(2),
+    NU_VALOR_PARCELA_3                       NUMBER(15,2),
+    DH_VENCIMENTO_PARCELA_3                  DATE,
+    NU_NOSSO_NUMERO_PARCELA_3                VARCHAR2(20),
+    NU_NUMERO_PARCELA_4                      NUMBER(2),
+    NU_VALOR_PARCELA_4                       NUMBER(15,2),
+    DH_VENCIMENTO_PARCELA_4                  DATE,
+    NU_NOSSO_NUMERO_PARCELA_4                VARCHAR2(20),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB053_PK
+        PRIMARY KEY (ID_SEG_I11),
+    CONSTRAINT IPAGTB007_IPAGTB053_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB053_DET_PARCELA_COMPROR_IDX01 ON IPAGTB053_DET_PARCELA_COMPROR (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB053_DET_PARCELA_COMPROR IS
+    'Segmento I-11 do Compror (Remessa/Retorno). Registro opcional com informacao das parcelas da operacao Compror. Cada registro contem ate 4 parcelas. Pode ocorrer multiplas vezes conforme a quantidade de parcelas do contrato.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.ID_SEG_I11 IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NU_NUMERO_PARCELA_1 IS
+    'Numero da parcela 1. Campo I021.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NU_VALOR_PARCELA_1 IS
+    'Valor da parcela 1. Campo I022.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.DH_VENCIMENTO_PARCELA_1 IS
+    'Data de vencimento da parcela 1. Campo I023.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NU_NOSSO_NUMERO_PARCELA_1 IS
+    'Nosso numero da parcela 1. Campo I014.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NU_NUMERO_PARCELA_2 IS
+    'Numero da parcela 2. Campo I021.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NU_VALOR_PARCELA_2 IS
+    'Valor da parcela 2. Campo I022.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.DH_VENCIMENTO_PARCELA_2 IS
+    'Data de vencimento da parcela 2. Campo I023.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NU_NOSSO_NUMERO_PARCELA_2 IS
+    'Nosso numero da parcela 2. Campo I014.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NU_NUMERO_PARCELA_3 IS
+    'Numero da parcela 3. Campo I021.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NU_VALOR_PARCELA_3 IS
+    'Valor da parcela 3. Campo I022.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.DH_VENCIMENTO_PARCELA_3 IS
+    'Data de vencimento da parcela 3. Campo I023.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NU_NOSSO_NUMERO_PARCELA_3 IS
+    'Nosso numero da parcela 3. Campo I014.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NU_NUMERO_PARCELA_4 IS
+    'Numero da parcela 4. Campo I021.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NU_VALOR_PARCELA_4 IS
+    'Valor da parcela 4. Campo I022.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.DH_VENCIMENTO_PARCELA_4 IS
+    'Data de vencimento da parcela 4. Campo I023.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NU_NOSSO_NUMERO_PARCELA_4 IS
+    'Nosso numero da parcela 4. Campo I014.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB053_DET_PARCELA_COMPROR.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB060_DET_SACADOR_AVALISTA - Segmento Y-01
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB060_DET_SACADOR_AVALISTA_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB060_DET_SACADOR_AVALISTA (
+    ID_SEG_Y01                               NUMBER  DEFAULT ON NULL IPAGTB060_DET_SACADOR_AVALISTA_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    CO_TIPO_INSCRICAO                        CHAR(1),
+    NU_INSCRICAO                             VARCHAR2(15),
+    NO_SACADOR_AVALISTA                      VARCHAR2(40),
+    TE_ENDERECO                              VARCHAR2(40),
+    TE_BAIRRO                                VARCHAR2(15),
+    NU_CEP                                   NUMBER(5),
+    NU_SUFIXO_CEP                            NUMBER(3),
+    NO_CIDADE                                VARCHAR2(15),
+    SG_UF                                    CHAR(2),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB060_PK
+        PRIMARY KEY (ID_SEG_Y01),
+    CONSTRAINT IPAGTB007_IPAGTB060_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB060_DET_SACADOR_AVALISTA_IDX01 ON IPAGTB060_DET_SACADOR_AVALISTA (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB060_DET_SACADOR_AVALISTA IS
+    'Segmento Y-01 da Cobranca (Remessa/Retorno). Dados do sacador/avalista: inscricao (CPF/CNPJ), nome e endereco completo.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.ID_SEG_Y01 IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.CO_TIPO_INSCRICAO IS
+    'Tipo de inscricao do sacador/avalista. Campo G005.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.NU_INSCRICAO IS
+    '[DADO_PESSOAL] Numero de inscricao do sacador/avalista. Campo G006.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.NO_SACADOR_AVALISTA IS
+    'Nome do sacador/avalista. Campo C060.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.TE_ENDERECO IS
+    'Endereco do sacador/avalista. Campo G032.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.TE_BAIRRO IS
+    'Bairro. Campo G032.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.NU_CEP IS
+    'CEP. Campo G034.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.NU_SUFIXO_CEP IS
+    'Sufixo do CEP. Campo G035.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.NO_CIDADE IS
+    'Cidade. Campo G033.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.SG_UF IS
+    'Unidade da Federacao. Campo G036.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB060_DET_SACADOR_AVALISTA.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB061_DET_ALEGACAO_PAGADOR - Segmento Y-02
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB061_DET_ALEGACAO_PAGADOR_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB061_DET_ALEGACAO_PAGADOR (
+    ID_SEG_Y02                               NUMBER  DEFAULT ON NULL IPAGTB061_DET_ALEGACAO_PAGADOR_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    TE_CODIGO_BARRAS                         VARCHAR2(44),
+    CO_PADRAO                                VARCHAR2(2),
+    CO_OCORRENCIA                            VARCHAR2(4),
+    TE_COMPLEMENTO_OCORRENCIA                VARCHAR2(150),
+    TE_OCORRENCIA_RETORNO                    CHAR(10),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB061_PK
+        PRIMARY KEY (ID_SEG_Y02),
+    CONSTRAINT IPAGTB007_IPAGTB061_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB061_DET_ALEGACAO_PAGADOR_IDX01 ON IPAGTB061_DET_ALEGACAO_PAGADOR (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB061_DET_ALEGACAO_PAGADOR IS
+    'Segmento Y-02 da Alegacao do Pagador (Remessa/Retorno). Contestacao de boleto pelo pagador: codigo de barras, codigo padrao, ocorrencia e complemento.';
+COMMENT ON COLUMN IPAGTB061_DET_ALEGACAO_PAGADOR.ID_SEG_Y02 IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB061_DET_ALEGACAO_PAGADOR.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB061_DET_ALEGACAO_PAGADOR.TE_CODIGO_BARRAS IS
+    'Codigo de barras do titulo. Campo G063.';
+COMMENT ON COLUMN IPAGTB061_DET_ALEGACAO_PAGADOR.CO_PADRAO IS
+    'Codigo padrao. Campo G062.';
+COMMENT ON COLUMN IPAGTB061_DET_ALEGACAO_PAGADOR.CO_OCORRENCIA IS
+    'Codigo de ocorrencia da alegacao. Campo A001.';
+COMMENT ON COLUMN IPAGTB061_DET_ALEGACAO_PAGADOR.TE_COMPLEMENTO_OCORRENCIA IS
+    'Complemento da ocorrencia. Campo A002.';
+COMMENT ON COLUMN IPAGTB061_DET_ALEGACAO_PAGADOR.TE_OCORRENCIA_RETORNO IS
+    'Codigo de ocorrencia para retorno. Campo G059.';
+COMMENT ON COLUMN IPAGTB061_DET_ALEGACAO_PAGADOR.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB061_DET_ALEGACAO_PAGADOR.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB061_DET_ALEGACAO_PAGADOR.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB061_DET_ALEGACAO_PAGADOR.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB062_DET_DADOS_PAGADOR - Segmento Y-03
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB062_DET_DADOS_PAGADOR_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB062_DET_DADOS_PAGADOR (
+    ID_SEG_Y03                               NUMBER  DEFAULT ON NULL IPAGTB062_DET_DADOS_PAGADOR_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    CO_TIPO_INSCRICAO_PAGADOR                CHAR(1),
+    NU_INSCRICAO_PAGADOR                     VARCHAR2(15),
+    NO_PAGADOR                               VARCHAR2(40),
+    TE_ENDERECO                              VARCHAR2(40),
+    TE_BAIRRO                                VARCHAR2(15),
+    NU_CEP                                   NUMBER(5),
+    NU_SUFIXO_CEP                            NUMBER(3),
+    NO_CIDADE                                VARCHAR2(15),
+    SG_UF                                    CHAR(2),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB062_PK
+        PRIMARY KEY (ID_SEG_Y03),
+    CONSTRAINT IPAGTB007_IPAGTB062_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB062_DET_DADOS_PAGADOR_IDX01 ON IPAGTB062_DET_DADOS_PAGADOR (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB062_DET_DADOS_PAGADOR IS
+    'Segmento Y-03 do Boleto Eletronico (Retorno). Dados do pagador informados pelo beneficiario: inscricao, nome e endereco completo.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.ID_SEG_Y03 IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.CO_TIPO_INSCRICAO_PAGADOR IS
+    'Tipo de inscricao do pagador. Campo G005.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.NU_INSCRICAO_PAGADOR IS
+    '[DADO_PESSOAL] Numero de inscricao do pagador. Campo G006.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.NO_PAGADOR IS
+    'Nome do pagador. Campo G013.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.TE_ENDERECO IS
+    'Endereco do pagador. Campo G032.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.TE_BAIRRO IS
+    'Bairro. Campo G032.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.NU_CEP IS
+    'CEP. Campo G034.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.NU_SUFIXO_CEP IS
+    'Sufixo do CEP. Campo G035.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.NO_CIDADE IS
+    'Cidade. Campo G033.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.SG_UF IS
+    'Unidade da Federacao. Campo G036.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB062_DET_DADOS_PAGADOR.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB063_DET_ENVIO_ALTERNATIVO - Segmento Y-04
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB063_DET_ENVIO_ALTERNATIVO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB063_DET_ENVIO_ALTERNATIVO (
+    ID_SEG_Y04                               NUMBER  DEFAULT ON NULL IPAGTB063_DET_ENVIO_ALTERNATIVO_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    TE_EMAIL                                 VARCHAR2(50),
+    NU_DDD                                   NUMBER(2),
+    NU_CELULAR                               NUMBER(9),
+    CO_TIPO_CHAVE_PIX                        CHAR(1),
+    TE_CHAVE_PIX_URL                         VARCHAR2(77),
+    TE_TXID                                  VARCHAR2(35),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB063_PK
+        PRIMARY KEY (ID_SEG_Y04),
+    CONSTRAINT IPAGTB007_IPAGTB063_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB063_DET_ENVIO_ALTERNATIVO_IDX01 ON IPAGTB063_DET_ENVIO_ALTERNATIVO (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB063_DET_ENVIO_ALTERNATIVO IS
+    'Segmento Y-04 (Remessa/Retorno). Dados para envio de documento por meio alternativo: e-mail, celular (SMS), chave PIX, URL do QR Code e TXID.';
+COMMENT ON COLUMN IPAGTB063_DET_ENVIO_ALTERNATIVO.ID_SEG_Y04 IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB063_DET_ENVIO_ALTERNATIVO.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB063_DET_ENVIO_ALTERNATIVO.TE_EMAIL IS
+    'E-mail para envio da informacao. Campo G032.';
+COMMENT ON COLUMN IPAGTB063_DET_ENVIO_ALTERNATIVO.NU_DDD IS
+    'Codigo DDD do celular. Campo G032.';
+COMMENT ON COLUMN IPAGTB063_DET_ENVIO_ALTERNATIVO.NU_CELULAR IS
+    'Numero do celular para envio de SMS. Campo G032.';
+COMMENT ON COLUMN IPAGTB063_DET_ENVIO_ALTERNATIVO.CO_TIPO_CHAVE_PIX IS
+    'Tipo de chave PIX. Campo G103.';
+COMMENT ON COLUMN IPAGTB063_DET_ENVIO_ALTERNATIVO.TE_CHAVE_PIX_URL IS
+    'Chave PIX ou URL do QR Code. Campo G102.';
+COMMENT ON COLUMN IPAGTB063_DET_ENVIO_ALTERNATIVO.TE_TXID IS
+    'Codigo de identificacao do QR Code (TXID). Campo G102.';
+COMMENT ON COLUMN IPAGTB063_DET_ENVIO_ALTERNATIVO.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB063_DET_ENVIO_ALTERNATIVO.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB063_DET_ENVIO_ALTERNATIVO.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB063_DET_ENVIO_ALTERNATIVO.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB064_DET_CHEQUE_PAGAMENTO - Segmento Y-05
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB064_DET_CHEQUE_PAGAMENTO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB064_DET_CHEQUE_PAGAMENTO (
+    ID_SEG_Y05                               NUMBER  DEFAULT ON NULL IPAGTB064_DET_CHEQUE_PAGAMENTO_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    TE_CMC7_CHEQUE_1                         VARCHAR2(34),
+    TE_CMC7_CHEQUE_2                         VARCHAR2(34),
+    TE_CMC7_CHEQUE_3                         VARCHAR2(34),
+    TE_CMC7_CHEQUE_4                         VARCHAR2(34),
+    TE_CMC7_CHEQUE_5                         VARCHAR2(34),
+    TE_CMC7_CHEQUE_6                         VARCHAR2(34),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB064_PK
+        PRIMARY KEY (ID_SEG_Y05),
+    CONSTRAINT IPAGTB007_IPAGTB064_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB064_DET_CHEQUE_PAGAMENTO_IDX01 ON IPAGTB064_DET_CHEQUE_PAGAMENTO (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB064_DET_CHEQUE_PAGAMENTO IS
+    'Segmento Y-05 da Cobranca (Retorno). Dados de cheques utilizados para pagamento. Cada registro contem ate 6 cheques identificados pelo CMC7. Pode ocorrer multiplas vezes.';
+COMMENT ON COLUMN IPAGTB064_DET_CHEQUE_PAGAMENTO.ID_SEG_Y05 IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB064_DET_CHEQUE_PAGAMENTO.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB064_DET_CHEQUE_PAGAMENTO.TE_CMC7_CHEQUE_1 IS
+    'Identificacao do cheque 1 (CMC7). Campo C076.';
+COMMENT ON COLUMN IPAGTB064_DET_CHEQUE_PAGAMENTO.TE_CMC7_CHEQUE_2 IS
+    'Identificacao do cheque 2 (CMC7). Campo C076.';
+COMMENT ON COLUMN IPAGTB064_DET_CHEQUE_PAGAMENTO.TE_CMC7_CHEQUE_3 IS
+    'Identificacao do cheque 3 (CMC7). Campo C076.';
+COMMENT ON COLUMN IPAGTB064_DET_CHEQUE_PAGAMENTO.TE_CMC7_CHEQUE_4 IS
+    'Identificacao do cheque 4 (CMC7). Campo C076.';
+COMMENT ON COLUMN IPAGTB064_DET_CHEQUE_PAGAMENTO.TE_CMC7_CHEQUE_5 IS
+    'Identificacao do cheque 5 (CMC7). Campo C076.';
+COMMENT ON COLUMN IPAGTB064_DET_CHEQUE_PAGAMENTO.TE_CMC7_CHEQUE_6 IS
+    'Identificacao do cheque 6 (CMC7). Campo C076.';
+COMMENT ON COLUMN IPAGTB064_DET_CHEQUE_PAGAMENTO.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB064_DET_CHEQUE_PAGAMENTO.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB064_DET_CHEQUE_PAGAMENTO.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB064_DET_CHEQUE_PAGAMENTO.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB065_DET_RATEIO_CREDITO - Segmento Y-50
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB065_DET_RATEIO_CREDITO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB065_DET_RATEIO_CREDITO (
+    ID_SEG_Y50                               NUMBER  DEFAULT ON NULL IPAGTB065_DET_RATEIO_CREDITO_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    NU_AGENCIA                               NUMBER(5),
+    CO_DV_AGENCIA                            CHAR(1),
+    NU_CONTA_CORRENTE                        VARCHAR2(12),
+    CO_DV_CONTA                              CHAR(1),
+    CO_DV_AGENCIA_CONTA                      CHAR(1),
+    NU_NOSSO_NUMERO                          VARCHAR2(20),
+    CO_CALCULO_RATEIO                        CHAR(1),
+    CO_TIPO_VALOR_INFORMADO                  CHAR(1),
+    NU_VALOR_PERCENTUAL                      NUMBER(15,3),
+    NU_BANCO_BENEFICIARIO                    NUMBER(3),
+    NU_AGENCIA_BENEFICIARIO                  NUMBER(5),
+    CO_DV_AGENCIA_BENEFICIARIO               CHAR(1),
+    NU_CONTA_BENEFICIARIO                    VARCHAR2(12),
+    CO_DV_CONTA_BENEFICIARIO                 CHAR(1),
+    CO_DV_AGENCIA_CONTA_BENEFICIARIO         CHAR(1),
+    NO_BENEFICIARIO                          VARCHAR2(40),
+    TE_PARCELA                               VARCHAR2(6),
+    QT_FLOATING                              NUMBER(3),
+    DH_CREDITO                               DATE,
+    TE_MOTIVO_OCORRENCIA                     CHAR(10),
+    NU_ISPB_BANCO_DESTINATARIO               NUMBER(8),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB065_PK
+        PRIMARY KEY (ID_SEG_Y50),
+    CONSTRAINT IPAGTB007_IPAGTB065_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB065_DET_RATEIO_CREDITO_IDX01 ON IPAGTB065_DET_RATEIO_CREDITO (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB065_DET_RATEIO_CREDITO IS
+    'Segmento Y-50 da Cobranca (Remessa/Retorno). Rateio de credito entre beneficiarios: conta corrente origem, nosso numero, tipo de calculo, dados do beneficiario do rateio, parcela, floating e motivo de ocorrencia. Pode ocorrer multiplas vezes.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.ID_SEG_Y50 IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.NU_AGENCIA IS
+    'Agencia mantenedora da conta. Campo G008.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.CO_DV_AGENCIA IS
+    'Digito verificador da agencia. Campo G009.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.NU_CONTA_CORRENTE IS
+    'Numero da conta corrente. Campo G010.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.CO_DV_CONTA IS
+    'Digito verificador da conta. Campo G011.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.CO_DV_AGENCIA_CONTA IS
+    'Digito verificador agencia/conta. Campo G012.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.NU_NOSSO_NUMERO IS
+    'Identificacao do titulo no banco. Campo G069.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.CO_CALCULO_RATEIO IS
+    'Codigo de calculo do rateio. Campo C061. 1=Valor Cobrado, 2=Valor Registro, 3=Menor Valor.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.CO_TIPO_VALOR_INFORMADO IS
+    'Tipo de valor informado. Campo C062. 1=Percentual, 2=Valor.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.NU_VALOR_PERCENTUAL IS
+    'Valor ou percentual do rateio. Campo C074.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.NU_BANCO_BENEFICIARIO IS
+    'Codigo do banco para credito do beneficiario. Campo G001.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.NU_AGENCIA_BENEFICIARIO IS
+    'Codigo da agencia para credito do beneficiario. Campo G008.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.CO_DV_AGENCIA_BENEFICIARIO IS
+    'Digito da agencia do beneficiario. Campo G009.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.NU_CONTA_BENEFICIARIO IS
+    'Conta corrente do beneficiario. Campo G010.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.CO_DV_CONTA_BENEFICIARIO IS
+    'Digito da conta do beneficiario. Campo G011.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.CO_DV_AGENCIA_CONTA_BENEFICIARIO IS
+    'Digito agencia/conta do beneficiario. Campo G012.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.NO_BENEFICIARIO IS
+    'Nome do beneficiario do rateio. Campo G013.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.TE_PARCELA IS
+    'Identificacao da parcela do rateio. Campo C063.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.QT_FLOATING IS
+    'Quantidade de dias para credito do beneficiario. Campo C064.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.DH_CREDITO IS
+    'Data de credito do beneficiario. Campo C065.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.TE_MOTIVO_OCORRENCIA IS
+    'Identificacao das rejeicoes. Campo C066.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.NU_ISPB_BANCO_DESTINATARIO IS
+    'ISPB do banco destinatario no SPB. Campo P015.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB065_DET_RATEIO_CREDITO.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB066_DET_NOTA_FISCAL - Segmento Y-51
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB066_DET_NOTA_FISCAL_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB066_DET_NOTA_FISCAL (
+    ID_SEG_Y51                               NUMBER  DEFAULT ON NULL IPAGTB066_DET_NOTA_FISCAL_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    NU_NOTA_FISCAL_1                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_1                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_1                 DATE,
+    NU_NOTA_FISCAL_2                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_2                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_2                 DATE,
+    NU_NOTA_FISCAL_3                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_3                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_3                 DATE,
+    NU_NOTA_FISCAL_4                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_4                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_4                 DATE,
+    NU_NOTA_FISCAL_5                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_5                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_5                 DATE,
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB066_PK
+        PRIMARY KEY (ID_SEG_Y51),
+    CONSTRAINT IPAGTB007_IPAGTB066_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB066_DET_NOTA_FISCAL_IDX01 ON IPAGTB066_DET_NOTA_FISCAL (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB066_DET_NOTA_FISCAL IS
+    'Segmento Y-51 da Cobranca/Boleto (Remessa/Retorno). Dados de notas fiscais vinculadas ao titulo. Cada registro contem ate 5 notas fiscais com numero, valor e data.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.ID_SEG_Y51 IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.NU_NOTA_FISCAL_1 IS
+    'Numero da nota fiscal 1. Campo C067.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.NU_VALOR_NOTA_FISCAL_1 IS
+    'Valor da nota fiscal 1. Campo C068.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.DH_EMISSAO_NOTA_FISCAL_1 IS
+    'Data de emissao da nota fiscal 1. Campo C069.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.NU_NOTA_FISCAL_2 IS
+    'Numero da nota fiscal 2. Campo C067.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.NU_VALOR_NOTA_FISCAL_2 IS
+    'Valor da nota fiscal 2. Campo C068.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.DH_EMISSAO_NOTA_FISCAL_2 IS
+    'Data de emissao da nota fiscal 2. Campo C069.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.NU_NOTA_FISCAL_3 IS
+    'Numero da nota fiscal 3. Campo C067.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.NU_VALOR_NOTA_FISCAL_3 IS
+    'Valor da nota fiscal 3. Campo C068.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.DH_EMISSAO_NOTA_FISCAL_3 IS
+    'Data de emissao da nota fiscal 3. Campo C069.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.NU_NOTA_FISCAL_4 IS
+    'Numero da nota fiscal 4. Campo C067.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.NU_VALOR_NOTA_FISCAL_4 IS
+    'Valor da nota fiscal 4. Campo C068.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.DH_EMISSAO_NOTA_FISCAL_4 IS
+    'Data de emissao da nota fiscal 4. Campo C069.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.NU_NOTA_FISCAL_5 IS
+    'Numero da nota fiscal 5. Campo C067.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.NU_VALOR_NOTA_FISCAL_5 IS
+    'Valor da nota fiscal 5. Campo C068.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.DH_EMISSAO_NOTA_FISCAL_5 IS
+    'Data de emissao da nota fiscal 5. Campo C069.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB066_DET_NOTA_FISCAL.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB067_DET_NOTA_FISCAL_ADICIONAL - Segmento Y-52
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB067_DET_NOTA_FISCAL_ADICIONAL_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB067_DET_NOTA_FISCAL_ADICIONAL (
+    ID_SEG_Y52                               NUMBER  DEFAULT ON NULL IPAGTB067_DET_NOTA_FISCAL_ADICIONAL_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    NU_NOTA_FISCAL_1                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_1                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_1                 DATE,
+    TE_CHAVE_DANFE_1                         VARCHAR2(44),
+    NU_NOTA_FISCAL_2                         VARCHAR2(15),
+    NU_VALOR_NOTA_FISCAL_2                   NUMBER(15,2),
+    DH_EMISSAO_NOTA_FISCAL_2                 DATE,
+    TE_CHAVE_DANFE_2                         VARCHAR2(44),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB067_PK
+        PRIMARY KEY (ID_SEG_Y52),
+    CONSTRAINT IPAGTB007_IPAGTB067_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB067_DET_NOTA_FISCAL_ADICIONAL_IDX01 ON IPAGTB067_DET_NOTA_FISCAL_ADICIONAL (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB067_DET_NOTA_FISCAL_ADICIONAL IS
+    'Segmento Y-52 da Cobranca/Boleto (Remessa/Retorno). Informacoes adicionais de nota fiscal incluindo chave de acesso DANFE. Cada registro contem ate 2 notas fiscais com numero, valor, data e chave DANFE. Pode ocorrer multiplas vezes.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.ID_SEG_Y52 IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.NU_NOTA_FISCAL_1 IS
+    'Numero da nota fiscal 1. Campo C067.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.NU_VALOR_NOTA_FISCAL_1 IS
+    'Valor da nota fiscal 1. Campo C068.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.DH_EMISSAO_NOTA_FISCAL_1 IS
+    'Data de emissao da nota fiscal 1. Campo C069.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.TE_CHAVE_DANFE_1 IS
+    'Chave de acesso DANFE da nota fiscal 1. Campo C083.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.NU_NOTA_FISCAL_2 IS
+    'Numero da nota fiscal 2. Campo C067.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.NU_VALOR_NOTA_FISCAL_2 IS
+    'Valor da nota fiscal 2. Campo C068.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.DH_EMISSAO_NOTA_FISCAL_2 IS
+    'Data de emissao da nota fiscal 2. Campo C069.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.TE_CHAVE_DANFE_2 IS
+    'Chave de acesso DANFE da nota fiscal 2. Campo C083.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB067_DET_NOTA_FISCAL_ADICIONAL.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
+
+-- ----------------------------------------------------------------------------
+-- IPAGTB068_DET_TIPO_PAGAMENTO - Segmento Y-53
+-- ----------------------------------------------------------------------------
+CREATE SEQUENCE IPAGTB068_DET_TIPO_PAGAMENTO_SQ START WITH 1 INCREMENT BY 1 NOCACHE;
+
+CREATE TABLE IPAGTB068_DET_TIPO_PAGAMENTO (
+    ID_SEG_Y53                               NUMBER  DEFAULT ON NULL IPAGTB068_DET_TIPO_PAGAMENTO_SQ.NEXTVAL  NOT NULL,
+    ID_DETALHE_REG                           NUMBER  NOT NULL,
+    CO_TIPO_PAGAMENTO                        NUMBER(2),
+    QT_PAGAMENTO_POSSIVEL                    NUMBER(2),
+    CO_TIPO_VALOR_MAXIMO                     CHAR(1),
+    NU_VALOR_MAXIMO                          NUMBER(15,2),
+    NU_PERCENTUAL_MAXIMO                     NUMBER(15,5),
+    CO_TIPO_VALOR_MINIMO                     CHAR(1),
+    NU_VALOR_MINIMO                          NUMBER(15,2),
+    NU_PERCENTUAL_MINIMO                     NUMBER(15,5),
+    DH_INCLUSAO                              DATE  DEFAULT SYSDATE  NOT NULL,
+    DH_ALTERACAO                             DATE,
+    NO_USUARIO_INCLUSAO                      VARCHAR2(60)  NOT NULL,
+    NO_USUARIO_ALTERACAO                     VARCHAR2(60),
+    CONSTRAINT IPAGTB068_PK
+        PRIMARY KEY (ID_SEG_Y53),
+    CONSTRAINT IPAGTB007_IPAGTB068_FK01
+        FOREIGN KEY (ID_DETALHE_REG) REFERENCES IPAGTB007_DETALHE_REG (ID_DETALHE_REG)
+);
+
+CREATE INDEX IPAGTB068_DET_TIPO_PAGAMENTO_IDX01 ON IPAGTB068_DET_TIPO_PAGAMENTO (ID_DETALHE_REG);
+
+COMMENT ON TABLE IPAGTB068_DET_TIPO_PAGAMENTO IS
+    'Segmento Y-53 da Cobranca (Remessa/Retorno). Identificacao do tipo de pagamento e regras para alteracao do valor nominal do titulo (valor maximo, minimo, percentual).';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.ID_SEG_Y53 IS
+    'Identificador surrogate gerado por sequence.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.ID_DETALHE_REG IS
+    'FK para IPAGTB007_DETALHE_REG.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.CO_TIPO_PAGAMENTO IS
+    'Identificacao do tipo de pagamento. Campo C078.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.QT_PAGAMENTO_POSSIVEL IS
+    'Quantidade de pagamentos possiveis. Campo C079.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.CO_TIPO_VALOR_MAXIMO IS
+    'Tipo de valor informado para valor maximo. Campo C080.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.NU_VALOR_MAXIMO IS
+    'Valor maximo permitido. Campo C081.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.NU_PERCENTUAL_MAXIMO IS
+    'Percentual maximo permitido. Campo C081.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.CO_TIPO_VALOR_MINIMO IS
+    'Tipo de valor informado para valor minimo. Campo C080.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.NU_VALOR_MINIMO IS
+    'Valor minimo permitido. Campo C082.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.NU_PERCENTUAL_MINIMO IS
+    'Percentual minimo permitido. Campo C082.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.DH_INCLUSAO IS
+    'Data e hora de inclusao do registro.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.DH_ALTERACAO IS
+    'Data e hora da ultima alteracao.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.NO_USUARIO_INCLUSAO IS
+    'Login do usuario ou processo que incluiu.';
+COMMENT ON COLUMN IPAGTB068_DET_TIPO_PAGAMENTO.NO_USUARIO_ALTERACAO IS
+    'Login do usuario ou processo que alterou.';
+
